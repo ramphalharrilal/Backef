@@ -41,3 +41,7 @@ Images are copied from the owner's portfolio repository: `public/images/gallery/
 
 Both pages were checked in Chromium at 320, 375, 390, 768, 1024 and 1440px widths for horizontal overflow, image loading, in-page anchors, a single H1 and JavaScript errors. Valid/invalid contact briefs, email URI encoding, native FAQ disclosure and `/Backef/` subpath hosting were checked. Desktop and mobile screenshots were visually reviewed. Reduced-motion preferences are respected; the site has no autoplay or essential animation.
 
+
+## About-section stock photograph
+
+The founder portrait is no longer used. The About section uses Annie Spratt’s stock photograph: https://unsplash.com/photos/group-of-people-using-laptop-computer-QckxruozjRg (Unsplash License: https://unsplash.com/license, checked 2026-09-25). The photo is served from images.unsplash.com and credited as stock imagery, not presented as actual SZARA staff. No AI-generated team image is used.

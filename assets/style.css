@@ -9,3 +9,6 @@
 
 
 
+
+/* Editorial stock photograph replaces the personal portrait. */
+.about-grid{grid-template-columns:1fr 1.15fr;gap:65px}.team-photo{margin:0;min-width:0}.team-photo img{width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;border-radius:5px;box-shadow:12px 12px 0 var(--sage);transform:rotate(-2deg)}.team-photo figcaption{font-size:11px;color:var(--muted);margin-top:25px}.team-photo a{color:inherit}@media(max-width:900px){.about-grid{grid-template-columns:1fr;gap:35px}.team-photo{max-width:580px;width:calc(100% - 12px);margin:auto}.team-photo img{transform:none}}
