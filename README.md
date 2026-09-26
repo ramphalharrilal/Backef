@@ -44,4 +44,6 @@ Both pages were checked in Chromium at 320, 375, 390, 768, 1024 and 1440px width
 
 ## About-section stock photograph
 
-The founder portrait is no longer used. The About section uses Annie Spratt’s stock photograph: https://unsplash.com/photos/group-of-people-using-laptop-computer-QckxruozjRg (Unsplash License: https://unsplash.com/license, checked 2026-09-25). The photo is served from images.unsplash.com and credited as stock imagery, not presented as actual SZARA staff. No AI-generated team image is used.
+The founder portrait is no longer used. The About section uses Annie Spratt’s stock photograph: https://unsplash.com/photos/group-of-people-using-laptop-computer-QckxruozjRg (Unsplash License: https://unsplash.com/license, checked 2026-09-25). The licensed photograph is hosted locally as assets/team-stock.avif. Attribution is retained here; the optional visible caption is omitted. Its alt text identifies stock imagery, not actual SZARA staff. No AI-generated team image is used.
+
+
