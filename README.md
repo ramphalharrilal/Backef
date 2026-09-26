@@ -15,7 +15,7 @@ Contact links use the existing public portfolio address, `harrilal20@gmail.com`,
 
 Before paid traffic: set up and test the branded mailbox, connect and test a real form-delivery service if desired, and agree the applicable privacy disclosures. No ads, analytics or conversion tracking were activated by this change.
 
-`withszara.com` is included as the brand domain. No `CNAME`, DNS change, redirect or canonical URL is added until domain routing is verified; this avoids sending the existing GitHub Pages site to an unconfigured domain. Domain activation remains a separate operation in GitHub Pages and the registrar.
+`withszara.com` is connected through Cloudflare DNS to GitHub Pages. The repository CNAME is `withszara.com`; GitHub DNS validation passed and Enforce HTTPS is enabled. The `www` CNAME points to `ramphalharrilal.github.io` and redirects to the apex domain. Both the homepage and `/small-business-websites/` were verified on HTTPS. Email routing/mailboxes are not yet configured.
 
 ## Offer
 
