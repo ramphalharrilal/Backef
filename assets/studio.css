@@ -30,3 +30,19 @@ body{background:var(--paper);-webkit-font-smoothing:antialiased}::selection{back
 
 /* Align wrapped paired labels and stack fields on phones. */
 .form-pair{align-items:end}@media(max-width:600px){.form-pair{grid-template-columns:1fr;gap:0}}
+
+/* Buyer review: give the work breathing room and improve mobile scanning. */
+.work-main{width:92%;left:0;top:5px;transform:rotate(-3deg)}
+.work-front{width:75%;right:0;bottom:15px;transform:rotate(4deg)}
+.work-ticket{width:30%;left:-1%;bottom:12px;transform:rotate(-7deg)}
+.work-stamp{display:none}.work-backdrop{inset:45px 2% 35px 19%}
+.window-bottom{display:none}.work-stage{height:570px}
+.content-checklist{border:1px solid #ffffff40;padding:18px 20px;margin-bottom:25px;font-size:14px}
+.content-checklist h3{font-size:20px;margin-bottom:10px}.content-checklist p{margin:0;color:#e1e5dc}
+.work-row[href*="ontymerides"],.work-row[href*="truluvhomes"]{border-left:3px solid var(--cobalt);padding-left:18px}
+.privacy-copy{max-width:760px}.privacy-copy h2{font-size:28px;letter-spacing:-1px;margin-top:35px}.privacy-copy p,.privacy-copy li{line-height:1.8}
+@media(min-width:721px) and (max-width:1100px){.work-stage{height:440px}.work-main{top:30px}.work-front{bottom:25px}.work-ticket{bottom:0;width:31%}}
+@media(max-width:720px){.work-stage{height:430px;margin-top:5px}.work-main{top:15px}.work-front{bottom:20px}.work-ticket{bottom:0}.hero-copy .micro{font-size:12px}.studio-hero .hero-bottom{display:none}.studio-hero{padding-bottom:20px}.studio-ribbon{padding:12px 20px}}
+@media(max-width:450px){.work-stage{height:295px;margin-bottom:15px}.work-main{top:12px;width:96%}.work-front{width:76%;bottom:15px}.work-ticket{width:30%;bottom:5px}.work-backdrop{inset:35px 3% 20px 18%}.studio-hero h1{font-size:clamp(43px,10.8vw,58px);margin-bottom:18px}.studio-hero .intro{font-size:14px;line-height:1.65}.studio-hero .hero-actions{gap:15px;margin-top:18px}.studio-hero .micro{margin-top:12px}.section-top{margin-bottom:28px}.case-studies{gap:28px}.case-study{padding-bottom:28px}}
+
+@media(min-width:1101px){.studio-hero h1{font-size:clamp(65px,6vw,90px);margin-right:0}}
