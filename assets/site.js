@@ -33,6 +33,11 @@
     notice.setAttribute('role', 'note');
     const submit = form.querySelector('button[type="submit"]');
     submit.textContent = 'Open email draft';
+    const privacy = form.querySelector('.micro');
+    const privacyLink = privacy && privacy.querySelector('a');
+    if (privacy && privacyLink) {
+      privacy.replaceChildren('Read ', privacyLink, '. This temporary email option uses your email app. Please leave out sensitive information. This enquiry is not a purchase or an agreement.');
+    }
     const status = form.querySelector('.form-status');
     const fallback = form.querySelector('.form-fallback');
     const copy = document.createElement('button');
