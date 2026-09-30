@@ -24,3 +24,44 @@
     link.href = url.href;
   }
 })();
+
+// Temporary delivery fallback while FormSubmit returns server errors.
+(() => {
+  for (const form of document.querySelectorAll('form.brief')) {
+    const notice = form.querySelector('.submit-note');
+    notice.textContent = 'Our form delivery service is temporarily unavailable. Open an email draft below, then send it from your email app. Nothing is sent automatically.';
+    notice.setAttribute('role', 'note');
+    const submit = form.querySelector('button[type="submit"]');
+    submit.textContent = 'Open email draft';
+    const status = form.querySelector('.form-status');
+    const fallback = form.querySelector('.form-fallback');
+    const copy = document.createElement('button');
+    copy.type = 'button';
+    copy.className = 'button light';
+    copy.textContent = 'Copy enquiry';
+    copy.style.marginTop = '12px';
+    fallback.before(copy);
+    function body() {
+      const values = new FormData(form);
+      return 'Name: ' + (values.get('name') || '') + '\nEmail: ' + (values.get('email') || '') +
+        '\n\n' + (values.get('message') || '') + '\n\nWebsite: ' + location.origin + location.pathname;
+    }
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      try { sessionStorage.removeItem('szara-enquiry-return-v1'); } catch {}
+      if (!form.reportValidity()) return;
+      status.textContent = 'Your enquiry has not been sent yet. Send the draft in your email app. If no app opens, copy your enquiry and email hello@withszara.com.';
+      location.href = 'mailto:hello@withszara.com?subject=' +
+        encodeURIComponent('New SZARA website enquiry') + '&body=' + encodeURIComponent(body());
+    }, true);
+    copy.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(body());
+        status.textContent = 'Copied. Paste into an email to hello@withszara.com and send it. Nothing has been sent yet.';
+      } catch {
+        status.textContent = 'Copy is unavailable in this browser. Select your message above and email it to hello@withszara.com.';
+      }
+    });
+  }
+})();
