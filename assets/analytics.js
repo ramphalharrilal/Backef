@@ -2,7 +2,7 @@
 (() => {
   const id = 'G-NVRCRP0TVX';
   const key = 'szara-analytics-choice-v1';
-  const pendingKey = 'szara-enquiry-return-v1';
+  const pendingKey = 'szara-enquiry-return-v2';
   const age = 180 * 86400000;
   let accepted = false, loaded = false;
   function read() {
@@ -61,7 +61,7 @@
   }
   panel.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>choose(b.dataset.choice)));
   preferences.addEventListener('click',()=>{panel.hidden=false;panel.querySelector('button').focus();});
-  for(const form of document.querySelectorAll('form.brief')) form.addEventListener('submit',()=>{
+  for(const form of document.querySelectorAll('form.brief')) form.addEventListener('szara:enquiry-accepted',()=>{
     if(accepted && form.checkValidity())try{sessionStorage.setItem(pendingKey,JSON.stringify({time:Date.now(),page:location.pathname}));}catch{}
   });
   window.addEventListener('storage',e=>{if(e.key===key)location.reload();});
