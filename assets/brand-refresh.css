@@ -260,3 +260,34 @@ input,textarea,select{
 .studio-stage .sticker{border-radius:2px;transform:none;filter:none}
 .services::after{display:none}
 .bs-board::before{display:none}
+
+
+/* Mobile review, 17 Oct: spacing, arrows, and service hierarchy. */
+.client-voices.quick-feedback .voice{
+  padding:28px 30px;
+  border:1px solid #5B5553;
+  background:#2B2829;
+  border-radius:2px;
+}
+.client-voices.quick-feedback .voice-text{
+  max-width:62ch;margin:0 0 20px;line-height:1.6;
+}
+.service .number{display:block}
+@media (max-width:720px){
+  .services{padding-top:55px;padding-bottom:52px}
+  .services .section-top{margin-bottom:30px}
+  .services .section-top h2{font-size:clamp(37px,10vw,46px);line-height:1.08}
+  .services .service-grid{gap:0}
+  .services .service{padding:26px 0 28px}
+  .services .service + .service{padding-top:27px}
+  .services .service .number{margin-bottom:14px;font-size:10px;letter-spacing:1.1px}
+  .services .service h3{font-size:clamp(37px,10vw,46px);line-height:1.04;letter-spacing:-.045em;margin:0 0 15px}
+  .services .service h3 span{display:block;font-size:13px;line-height:1.3;letter-spacing:0;margin-top:7px}
+  .services .service p{font-size:15px;line-height:1.58;max-width:38rem;margin:0 0 13px}
+  .services .service ul{font-size:14px;line-height:1.65;padding:0;margin:12px 0 0}
+  .services .service a{margin-top:12px;padding:10px 0;font-size:13px}
+  .services .service-offer{margin-top:9px;padding-top:24px;gap:19px}
+  .services .service-offer strong{font-size:19px}
+  .client-voices.quick-feedback .voice{padding:22px 22px}
+  .client-voices.quick-feedback .voice-text{font-size:17px;line-height:1.55}
+}
