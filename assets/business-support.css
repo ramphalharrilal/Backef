@@ -64,7 +64,7 @@
 .bs-approach-grid p{font-size:16px;line-height:1.8;color:var(--muted)}
 .bs-approach-grid .bs-checks{border-top:1px solid var(--line);margin:0;padding:0;list-style:none}
 .bs-approach-grid .bs-checks li{border-bottom:1px solid var(--line);padding:16px 0;font-size:15px}
-.bs-approach-grid .bs-checks li:before{content:"↗";color:var(--cobalt);margin-right:15px}
+.bs-approach-grid .bs-checks li:before{content:"↗︎";color:var(--cobalt);margin-right:15px}
 .bs-contact{background:var(--cobalt);color:#fffdf8;padding:90px 0}
 .bs-contact .bs-contact-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:7%;align-items:center}
 .bs-contact h2{font-size:clamp(45px,5vw,70px)}
