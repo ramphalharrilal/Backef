@@ -4,6 +4,8 @@ Static HTML/CSS/JavaScript business website for SZARA / withszara.com.
 
 - `/index.html`: BUILD / GROW / RUN services, selected real work and contact.
 - `/small-business-websites/index.html`: website-and-care offer, scope and FAQ.
+- `/business-support/index.html`: remote admin support services, monthly starting packages, sample workflows and consultation enquiry.
+- `/assets/business-support.css`: responsive page styling and homepage service teaser.
 - `/assets/style.css`: shared responsive design, including layered project previews.
 - `/assets/site.js`: client-side email brief preparation; no server submission.
 
