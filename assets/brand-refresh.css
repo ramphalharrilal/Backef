@@ -291,3 +291,6 @@ input,textarea,select{
   .client-voices.quick-feedback .voice{padding:22px 22px}
   .client-voices.quick-feedback .voice-text{font-size:17px;line-height:1.55}
 }
+
+/* Brand signature in the homepage hero: rose with accessible contrast on ivory. */
+.studio-hero .szara-headline em{color:#8B6268}
