@@ -247,3 +247,16 @@ input,textarea,select{
 @media(prefers-reduced-motion:reduce){
   .button,.work-window,.project-visual img,.case-image img{transition:none}
 }
+
+/* Finishing details: no dark-on-dark calls to action or leftover playful shapes. */
+.button.orange{background:var(--ink);border-color:var(--ink);color:#fff}
+.button.orange:hover{background:#373334;border-color:#373334;color:#fff}
+.services .button,.package .button,.client-voices .button,.service-offer .button{
+  background:var(--paper);border-color:var(--paper);color:var(--ink);
+}
+.services .button:hover,.package .button:hover,.client-voices .button:hover,.service-offer .button:hover{
+  background:#E6E0DA;border-color:#E6E0DA;color:var(--ink);
+}
+.studio-stage .sticker{border-radius:2px;transform:none;filter:none}
+.services::after{display:none}
+.bs-board::before{display:none}
