@@ -46,7 +46,9 @@
   const panel=document.createElement('section');panel.className='analytics-choice';panel.setAttribute('aria-label','Analytics preference');
   panel.innerHTML='<h2>Help us improve this website?</h2><p>With your permission, Google Analytics measures visits and completed enquiry journeys. Advertising features are off. You can change your choice anytime. <a href="/privacy/">Privacy details</a></p><div><button type="button" data-choice="accepted">Accept analytics</button><button type="button" data-choice="rejected">Reject analytics</button></div>';
   const preferences=document.createElement('button');preferences.type='button';preferences.className='analytics-preferences';preferences.textContent='Privacy choices';
-  document.body.append(panel,preferences);
+  document.body.append(panel);
+  const footerPreferences = document.querySelector('.footer .footer-bottom') || document.querySelector('.footer .wrap') || document.querySelector('footer') || document.body;
+  footerPreferences.append(preferences);
   function choose(choice) {
     const wasLoaded=loaded; accepted=choice==='accepted';
     try {localStorage.setItem(key,JSON.stringify({choice,time:Date.now()}));} catch {}

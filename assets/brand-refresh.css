@@ -294,3 +294,46 @@ input,textarea,select{
 
 /* Brand signature in the homepage hero: rose with accessible contrast on ivory. */
 .studio-hero .szara-headline em{color:#8B6268}
+
+
+/* Screenshot-driven mobile audit: project headings, review cards, contact and footer. */
+#more-work .section-top{margin-bottom:24px}
+#more-work .work-more{margin-top:0}
+#more-work .work-row:first-child{border-top:0}
+.review-destinations{grid-template-columns:minmax(0,1fr);min-width:0}
+.review-destinations article{min-width:0;border-color:var(--sz-rose-dark);padding-left:20px}
+.review-destinations article p{max-width:48ch}
+.review-destinations article a{overflow-wrap:anywhere;text-underline-offset:4px}
+.independent-reviews .eyebrow{color:#E6C7CB}
+.contact .brief .reply-time{font-size:12px;line-height:1.55;color:var(--muted);margin:-2px 0 18px}
+.contact .brief .enquiry-privacy{font-size:12px;line-height:1.65;color:var(--muted);margin-top:18px}
+.footer .analytics-preferences{
+  display:inline-flex;align-items:center;justify-content:center;
+  margin:0;padding:4px 0;border:0;border-bottom:1px solid #8D817F;
+  border-radius:0;box-shadow:none;background:transparent;color:#EDE5E0;
+  min-height:36px;font:500 12px 'DM Sans',Arial,sans-serif;
+}
+.footer .analytics-preferences:hover{color:#fff;border-color:#fff}
+.analytics-preferences:focus-visible{outline:2px solid #E6C7CB;outline-offset:3px}
+.analytics-choice{background:var(--paper);border:1px solid var(--line);border-radius:2px;color:var(--ink);box-shadow:0 12px 35px #0003}
+.analytics-choice a{color:var(--sz-rose-dark)}
+.analytics-choice button{background:var(--ink);border-color:var(--ink);border-radius:2px}
+@media(max-width:720px){
+  #more-work .section-top{margin-bottom:22px}
+  #more-work .work-row{padding:20px 0 22px}
+  #more-work .work-row h3{font-size:clamp(19px,5.3vw,23px);line-height:1.25}
+  .independent-reviews{margin-top:35px;padding-top:25px;gap:18px}
+  .independent-reviews h3{font-size:clamp(26px,7.1vw,34px)}
+  .review-destinations{grid-template-columns:minmax(0,1fr)}
+  .review-destinations article{padding-left:17px}
+  .review-destinations h4{font-size:22px}
+  .review-destinations article p,.review-destinations article a{font-size:14px;line-height:1.6}
+  .founder-grid{gap:22px}
+  .contact .contact-grid{align-items:start}
+  .contact .brief{width:100%;max-width:650px;padding:24px}
+  .contact .brief h3{font-size:clamp(25px,7vw,30px)}
+  .contact .brief>p{line-height:1.65}
+  .contact .brief .reply-time{font-size:12px;margin:0 0 14px}
+  .contact .brief .enquiry-privacy{font-size:12px;line-height:1.6}
+  .footer .analytics-preferences{min-height:36px;margin-top:2px}
+}
