@@ -37,7 +37,7 @@
     .wsz-root *{box-sizing:border-box}
     .wsz-spotlight{position:fixed;inset:0 auto auto 0;border:2px dashed var(--wsz-blue);background:rgba(76,145,255,.075);box-shadow:0 0 0 5px rgba(76,145,255,.06);pointer-events:none;z-index:2147481800;opacity:0;transition:opacity .22s,top .35s,left .35s,width .35s,height .35s;border-radius:3px}
     .wsz-spotlight.wsz-on{opacity:1;animation:wsz-pulse 1.1s ease infinite alternate}
-    .wsz-character{--wsz-scale:1;position:fixed;top:calc(100vh - 165px);left:36px;width:72px;height:100px;z-index:2147481900;pointer-events:none;transform:scale(var(--wsz-scale));transform-origin:bottom center;will-change:left,top;filter:drop-shadow(0 5px 8px rgba(24,22,33,.23))}
+    .wsz-character{--wsz-scale:1;position:fixed;top:calc(100vh - 165px);left:36px;width:72px;height:100px;z-index:2147481900;pointer-events:none;transform:scale(var(--wsz-scale));transform-origin:bottom center;will-change:left,top;visibility:visible;opacity:1;filter:drop-shadow(0 5px 8px rgba(24,22,33,.23))}
     .wsz-character.wsz-flip{transform:scaleX(-1) scale(var(--wsz-scale))}
     .wsz-shadow{position:absolute;left:19px;bottom:0;width:36px;height:7px;background:#17223935;border-radius:100%;filter:blur(2px)}
     .wsz-head{position:absolute;left:22px;top:9px;width:32px;height:33px;background:#eef9ff;border:3px solid #202e42;border-radius:43% 43% 45% 45%;z-index:4}
@@ -218,24 +218,61 @@
     light.style.cssText=`left:${Math.max(r.left-7,0)}px;top:${Math.max(r.top-6,0)}px;width:${Math.min(r.width+14,innerWidth)}px;height:${Math.min(r.height+12,innerHeight)}px;`;
     light.classList.add('wsz-on');
   }
+  // The bot never teleports or disappears between targets. Every journey is
+  // interpolated on screen with requestAnimationFrame and real walking cycles.
+  walker.style.left=at.x+'px';
+  walker.style.top=at.y+'px';
   async function walkTo(el, word, scroll=false){
-    if(!el||moving)return;
-    if(scroll&&!visible(el))el.scrollIntoView({behavior:reduceMotion?'auto':'smooth',block:'center'});
-    if(scroll)await sleep(reduceMotion?25:650);
+    if(!el||moving||document.visibilityState==='hidden')return;
     moving=true;active=el;
-    const dest=posOf(el);
-    walker.classList.toggle('wsz-flip',dest.x<at.x);
-    walker.classList.add('wsz-walking');walker.classList.remove('wsz-scanning');light.classList.remove('wsz-on');
-    say(word||'On my way…');setStatus('Walking to a page section…');
-    const d=Math.hypot(dest.x-at.x,dest.y-at.y); const ms=reduceMotion?0:clamp(d*4.3,450,2700);
-    walker.style.transition=`left ${ms}ms linear, top ${ms}ms linear`;
-    walker.style.left=dest.x+'px';walker.style.top=dest.y+'px';
-    at=dest;await sleep(ms+60);
-    walker.classList.remove('wsz-walking','wsz-flip');walker.classList.add('wsz-scanning');
-    glow(el);say('Scanning: '+(el.getAttribute('data-szara-spot')||el.innerText||'this section').trim().slice(0,58));
-    setStatus('Reading this section…');await sleep(reduceMotion?110:1500);
-    walker.classList.remove('wsz-scanning');light.classList.remove('wsz-on');
-    say('Ask me what I found!');moving=false;
+    try{
+      if(scroll && !visible(el)){
+        el.scrollIntoView({behavior:reduceMotion?'instant':'smooth',block:'center'});
+        await sleep(reduceMotion?50:760);
+      }
+      light.classList.remove('wsz-on');
+      say(word||'On my way…');setStatus('Walking to a page section…');
+      const origin={x:at.x,y:at.y};
+      const dest=posOf(el);
+      const dx=dest.x-origin.x, dy=dest.y-origin.y;
+      const distance=Math.hypot(dx,dy);
+      if(distance>8 && !reduceMotion){
+        walker.classList.remove('wsz-scanning');
+        walker.classList.toggle('wsz-flip',dx<0);
+        walker.classList.add('wsz-walking');
+        const duration=clamp(distance*5.6,900,4200);
+        await new Promise(resolve=>{
+          let startTime=null;
+          const step=now=>{
+            if(startTime===null)startTime=now;
+            const t=clamp((now-startTime)/duration,0,1);
+            const eased=t*t*(3-2*t);
+            // Adjust to page scrolling while keeping the character in view.
+            const target=posOf(el);
+            const arc=Math.min(20,distance*.06)*Math.sin(Math.PI*t);
+            at={
+              x:clamp(origin.x+(target.x-origin.x)*eased,12,innerWidth-85),
+              y:clamp(origin.y+(target.y-origin.y)*eased-arc,112,innerHeight-126)
+            };
+            walker.style.left=at.x.toFixed(1)+'px';
+            walker.style.top=at.y.toFixed(1)+'px';
+            if(t<1)requestAnimationFrame(step);else resolve();
+          };
+          requestAnimationFrame(step);
+        });
+      }else{
+        at=dest;walker.style.left=at.x+'px';walker.style.top=at.y+'px';
+      }
+      walker.classList.remove('wsz-walking','wsz-flip');
+      walker.classList.add('wsz-scanning');
+      glow(el);
+      say('Scanning: '+(el.getAttribute('data-szara-spot')||el.innerText||'this section').trim().slice(0,58));
+      setStatus('Reading this section…');
+      await sleep(reduceMotion?200:1100);
+      walker.classList.remove('wsz-scanning');
+      light.classList.remove('wsz-on');
+      say('Ask me what I found!');
+    }finally{moving=false;}
   }
   function extract(doc,url){
     const main=doc.querySelector('main')||doc.body;
@@ -340,19 +377,19 @@
     if(open){input.focus();if(transcript.children.length===0)appendMessage(`Hi! I'm ${cfg.name}. I can walk through this website, scan its sections and help you find answers. What are you looking for?`);}
   }
   launcher.addEventListener('click',()=>toggle(panel.hidden));
-  $('.wsz-close').addEventListener('click',()=>toggle(false));
+  $('.wsz-close').addEventListener('click',()=>{toggle(false);stopTalking()});
   $('.wsz-panel-title').textContent=cfg.name;
   launcher.setAttribute('aria-label','Open '+cfg.name+' assistant');
   $('.wsz-compose').addEventListener('submit',e=>{e.preventDefault();answer(input.value)});
   root.querySelectorAll('[data-ask]').forEach(el=>el.addEventListener('click',()=>answer(el.dataset.ask)));
-  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!panel.hidden){toggle(false);if(speechSupported)window.speechSynthesis.cancel()}});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!panel.hidden){toggle(false);stopTalking()}});
   window.addEventListener('resize',()=>{at={x:clamp(at.x,12,innerWidth-85),y:clamp(at.y,110,innerHeight-126)};walker.style.left=at.x+'px';walker.style.top=at.y+'px';if(active)glow(active)});
   async function explore(){
     await sleep(1100);
     while(loop){
       if(!inQuestion && !moving && document.visibilityState!=='hidden'){
         const opts=nodes.filter(visible);
-        if(opts.length){const target=opts[Math.floor(Math.random()*opts.length)];await walkTo(target,'Exploring your website…');}
+        if(opts.length){const different=opts.filter(n=>n!==active);const choices=different.length?different:opts;const target=choices[Math.floor(Math.random()*choices.length)];await walkTo(target,'Exploring your website…');}
       }
       await sleep(reduceMotion?5000:3900);
     }
