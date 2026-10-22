@@ -239,9 +239,12 @@
   function respondLocally(question){
     const tokens=(question.toLowerCase().match(/[a-z0-9]+/g)||[]).filter(w=>w.length>2&&!stop.has(w));
     if(/(hello|hi|hey)\b/i.test(question)&&tokens.length<2) return {answer:'Hello! I’m SZARVIS. I can explore this website and show you where to find information about our work. What would you like to know?',source:''};
-    if(/contact|email|reach|book|start a project|consultation|quote|pricing|price/i.test(question)){
+    if(/\b(price|prices|pricing|cost|monthly|package|subscription)\b|how much/i.test(question)){
+      return {answer:'Our published five-page Small Business Websites package is US$999 setup plus US$149 per month for SZARA Care, with an initial 12-month agreement. See the Website Pricing page for inclusions and terms. Other projects are quoted according to scope.',source:new URL('/small-business-websites/',location.origin).href};
+    }
+    if(/contact|email|reach|book|start a project|consultation|quote/i.test(question)){
       const c=documents.find(d=>/contact|get in touch|project|quote/i.test(d.title+' '+d.text));
-      return {answer: cfg.contactEmail ? `The best next step is to email With Szara at ${cfg.contactEmail} with details of your project.` : 'The best next step is to use the Contact section on With Szara’s website to describe your project. I can highlight where to get started.',source:c?.url||''};
+      return {answer: cfg.contactEmail ? `To get started, use the Start a project enquiry form on the website, or email ${cfg.contactEmail} with details of your project. We'll initially respond within two business days.` : 'The best next step is to use the Contact section on With Szara’s website to describe your project. I can highlight where to get started.',source:c?.url||''};
     }
     const scored=[];
     for(const doc of documents){
