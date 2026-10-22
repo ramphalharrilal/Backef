@@ -111,7 +111,7 @@
       <div class="wsz-transcript" aria-live="polite"></div>
       <div class="wsz-suggestions"><button type="button" class="wsz-chip" data-ask="What services do you offer?">Services</button><button type="button" class="wsz-chip" data-ask="Do you offer website maintenance?">Maintenance</button><button type="button" class="wsz-chip" data-ask="How do I start a project?">Start a project</button></div>
       <form class="wsz-compose"><input class="wsz-input" aria-label="Ask a question" placeholder="Ask me about With Szara…" maxlength="240" required><button class="wsz-send" type="submit">Ask →</button></form>
-      <div class="wsz-note">Answers are based on public website information. For an exact quote, please contact the SZARA team.</div>
+      <div class="wsz-note">Replies can be spoken aloud. Answers use public website information; AI chat requires the secure service to be active.</div>
     </section>`;
   document.body.appendChild(root);
   const $ = s => root.querySelector(s);
@@ -193,6 +193,7 @@
     try{r.start()}catch{micButton.disabled=false;setStatus('Voice input unavailable; use the keyboard.');}
   });
   let moving = false, active = null, hits = [], nodes = [], documents = [], inQuestion = false, loop = true;
+  const chatHistory=[];
   let at = { x: Math.min(30, innerWidth*.05), y: innerHeight - 165 };
   function setStatus(s){status.textContent=s;}
   function say(s){bubble.textContent=s;}
@@ -360,14 +361,22 @@
     let result;
     if(cfg.aiEndpoint){
       try{
-        const response=await fetch(cfg.aiEndpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question,site:location.origin,documents:documents.map(d=>({url:d.url,title:d.title,text:d.text.slice(0,6000)}))})});
+        const response=await fetch(cfg.aiEndpoint,{
+          method:'POST',headers:{'Content-Type':'application/json'},
+          signal:AbortSignal.timeout(11000),
+          body:JSON.stringify({question:question.trim().slice(0,420),site:location.origin,
+            history:chatHistory.slice(-6),
+            documents:documents.slice(0,7).map(d=>({url:d.url,title:d.title,text:d.text.slice(0,1250)}))})
+        });
         if(!response.ok)throw Error('Assistant unavailable');
         const data=await response.json();
         if(typeof data.answer!=='string')throw Error('Invalid assistant response');
         result={answer:data.answer,source:allowedLink(data.source||'')?data.source:''};
-      }catch{result={answer:'The AI connection is unavailable right now. Here is the best match I can find locally:\n\n'+respondLocally(question).answer,source:''};}
+      }catch{const offline=respondLocally(question);result={answer:'The AI conversation service is not connected yet, but I can search the website:\n\n'+offline.answer,source:offline.source};setStatus('Website search mode · AI service pending');}
     }else{result=respondLocally(question);}
     appendMessage(result.answer,false,result.source);
+    chatHistory.push({role:'user',content:question.trim().slice(0,420)},{role:'assistant',content:result.answer.slice(0,750)});
+    if(chatHistory.length>12)chatHistory.splice(0,chatHistory.length-12);
     speakReply(result.answer);
     setStatus(`Ready · ${documents.length} page${documents.length===1?'':'s'} indexed`);
     say('Found something for you!');inQuestion=false;
