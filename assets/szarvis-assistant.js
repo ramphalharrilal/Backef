@@ -195,6 +195,17 @@
   });
   let moving = false, active = null, hits = [], nodes = [], documents = [], inQuestion = false, loop = true;
   const chatHistory=[];
+  let aiAvailable=false;
+  const modeLabel=$('.wsz-panel-sub');
+  async function checkAI(){
+    if(!cfg.aiEndpoint)return;
+    try{
+      const res=await fetch(cfg.aiEndpoint,{method:'GET',signal:AbortSignal.timeout(4000),cache:'no-store'});
+      const state=res.ok?await res.json():null;
+      aiAvailable=state?.ready===true;
+    }catch{aiAvailable=false;}
+    modeLabel.textContent=aiAvailable?'AI CHAT · TAP 🔊 FOR VOICE':'SITE GUIDE · TAP 🔊 FOR VOICE';
+  }
   let at = { x: Math.min(30, innerWidth*.05), y: innerHeight - 165 };
   function setStatus(s){status.textContent=s;}
   function say(s){bubble.textContent=s;}
@@ -360,7 +371,7 @@
     const target=findWalkTarget(question);
     if(target && !moving){ await walkTo(target,'Let me find that…',true); }
     let result;
-    if(cfg.aiEndpoint){
+    if(cfg.aiEndpoint && aiAvailable){
       try{
         const response=await fetch(cfg.aiEndpoint,{
           method:'POST',headers:{'Content-Type':'application/json'},
@@ -373,7 +384,7 @@
         const data=await response.json();
         if(typeof data.answer!=='string')throw Error('Invalid assistant response');
         result={answer:data.answer,source:allowedLink(data.source||'')?data.source:''};
-      }catch{const offline=respondLocally(question);result={answer:'The AI conversation service is not connected yet, but I can search the website:\n\n'+offline.answer,source:offline.source};setStatus('Website search mode · AI service pending');}
+      }catch{aiAvailable=false;const offline=respondLocally(question);result={answer:'I could not reach the AI service. Here is what I found on the website:\n\n'+offline.answer,source:offline.source};modeLabel.textContent='SITE GUIDE · TAP 🔊 FOR VOICE';}
     }else{result=respondLocally(question);}
     appendMessage(result.answer,false,result.source);
     chatHistory.push({role:'user',content:question.trim().slice(0,420)},{role:'assistant',content:result.answer.slice(0,750)});
@@ -384,7 +395,7 @@
   }
   function toggle(open){
     panel.hidden=!open;launcher.setAttribute('aria-expanded',String(open));launcher.textContent=open?'Close assistant ✕':'●  Ask '+cfg.name+' ↗';
-    if(open){input.focus();if(transcript.children.length===0)appendMessage(`Hi! I'm ${cfg.name}. I can walk through this website, scan its sections and help you find answers. What are you looking for?`);}
+    if(open){checkAI();input.focus();if(transcript.children.length===0)appendMessage(`Hi! I'm ${cfg.name}. I can walk through this website, scan its sections and help you find answers. What are you looking for?`);}
   }
   // A tap on the character is a direct audio gesture: opens chat and starts voice.
   function talkToWalker(){
@@ -416,6 +427,7 @@
       await sleep(reduceMotion?5000:3900);
     }
   }
+  checkAI();
   crawl().then(()=>{if(cfg.autoExplore)explore()});
   window.WithSzaraWalker={open:()=>toggle(true),ask:answer,refresh:crawl,stop:()=>{loop=false;}};
 })();
