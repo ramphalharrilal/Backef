@@ -1,0 +1,20 @@
+name = "withszara-szarvis"
+main = "src/index.js"
+compatibility_date = "2026-10-22"
+workers_dev = true
+
+[ai]
+binding = "AI"
+
+# Approximate per-IP protection (6 AI responses per minute).
+[[ratelimits]]
+name = "AI_RATE_LIMIT"
+namespace_id = "31876"
+[ratelimits.simple]
+limit = 6
+period = 60
+
+# Once Cloudflare DNS for withszara.com is proxied and tested, uncomment:
+# [[routes]]
+# pattern = "withszara.com/api/szarvis*"
+# zone_name = "withszara.com"
