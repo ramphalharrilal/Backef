@@ -37,9 +37,9 @@
     .wsz-root *{box-sizing:border-box}
     .wsz-spotlight{position:fixed;inset:0 auto auto 0;border:2px dashed var(--wsz-blue);background:rgba(76,145,255,.075);box-shadow:0 0 0 5px rgba(76,145,255,.06);pointer-events:none;z-index:2147481800;opacity:0;transition:opacity .22s,top .35s,left .35s,width .35s,height .35s;border-radius:3px}
     .wsz-spotlight.wsz-on{opacity:1;animation:wsz-pulse 1.1s ease infinite alternate}
-    .wsz-character{--wsz-scale:1;position:fixed;top:calc(100vh - 165px);left:36px;width:72px;height:100px;z-index:2147481900;pointer-events:none;transform:scale(var(--wsz-scale));transform-origin:bottom center;will-change:left,top;visibility:visible;opacity:1;filter:drop-shadow(0 5px 8px rgba(24,22,33,.23))}
+    .wsz-character{--wsz-scale:1;position:fixed;cursor:pointer;top:calc(100vh - 165px);left:36px;width:72px;height:100px;z-index:2147481900;pointer-events:auto;transform:scale(var(--wsz-scale));transform-origin:bottom center;will-change:left,top;visibility:visible;opacity:1;filter:drop-shadow(0 5px 8px rgba(24,22,33,.23))}
     .wsz-character.wsz-flip{transform:scaleX(-1) scale(var(--wsz-scale))}
-    .wsz-shadow{position:absolute;left:19px;bottom:0;width:36px;height:7px;background:#17223935;border-radius:100%;filter:blur(2px)}
+    .wsz-character > *{pointer-events:none}.wsz-shadow{position:absolute;left:19px;bottom:0;width:36px;height:7px;background:#17223935;border-radius:100%;filter:blur(2px)}
     .wsz-head{position:absolute;left:22px;top:9px;width:32px;height:33px;background:#eef9ff;border:3px solid #202e42;border-radius:43% 43% 45% 45%;z-index:4}
     .wsz-ear{position:absolute;left:17px;top:21px;width:7px;height:11px;background:var(--wsz-pink);border:2px solid #26212e;border-radius:4px}
     .wsz-head:before,.wsz-head:after{content:"";position:absolute;top:13px;width:4px;height:6px;border-radius:5px;background:#67e6ff;box-shadow:0 0 6px #67e6ff}
@@ -84,7 +84,7 @@
     .wsz-close{margin-left:3px}
     .wsz-character.wsz-scanning:after{content:"";position:absolute;width:86px;height:2px;left:51px;top:55px;z-index:1;background:linear-gradient(90deg,#68e8f5,#68e8f500);box-shadow:0 0 10px #6be9ec;transform:rotate(-7deg);animation:wsz-scanray .35s ease infinite alternate;pointer-events:none}
     @keyframes wsz-scanray{from{transform:rotate(-22deg)}to{transform:rotate(23deg)}}
-    .wsz-root button:focus-visible,.wsz-root input:focus-visible{outline:3px solid var(--wsz-blue);outline-offset:2px}
+    .wsz-root button:focus-visible,.wsz-root input:focus-visible,.wsz-character:focus-visible{outline:3px solid var(--wsz-blue);outline-offset:2px}
     @keyframes wsz-leg-l{from{transform:rotate(35deg)}to{transform:rotate(-38deg)}}@keyframes wsz-leg-r{from{transform:rotate(-33deg)}to{transform:rotate(36deg)}}
     @keyframes wsz-arm-l{from{transform:rotate(-35deg)}to{transform:rotate(38deg)}}@keyframes wsz-arm-r{from{transform:rotate(35deg)}to{transform:rotate(-39deg)}}
     @keyframes wsz-nod{from{transform:rotate(-6deg)}to{transform:rotate(9deg)}}@keyframes wsz-pulse{from{box-shadow:0 0 0 2px #4c91ff12}to{box-shadow:0 0 0 10px #4c91ff12}}
@@ -99,8 +99,8 @@
   root.setAttribute('aria-label','With Szara walking website assistant');
   root.innerHTML = `
     <div class="wsz-spotlight" aria-hidden="true"></div>
-    <div class="wsz-character" aria-hidden="true">
-      <div class="wsz-char-bubble">SYSTEM ONLINE · SCANNING…</div>
+    <div class="wsz-character" role="button" tabindex="0" aria-label="Tap SZARVIS to talk">
+      <div class="wsz-char-bubble">TAP ME TO TALK 🔊</div>
       <div class="wsz-shadow"></div><div class="wsz-ear"></div><div class="wsz-hat"></div><div class="wsz-head"></div><div class="wsz-body"></div>
       <div class="wsz-arm l"></div><div class="wsz-arm r"></div><div class="wsz-leg l"><i class="wsz-foot"></i></div><div class="wsz-leg r"><i class="wsz-foot"></i></div><div class="wsz-lens"></div>
     </div>
@@ -126,7 +126,7 @@
   if(!Recognition){ micButton.disabled = true; micButton.title='Microphone speech recognition unavailable in this browser'; }
   // Voice is initiated by an actual user tap, as required on iOS and Android.
   // Small phrases and a fresh utterance queue avoid long-utterance bugs in mobile Safari.
-  let spokenQueue = [], speakingToken = 0, cachedVoice = null;
+  let spokenQueue = [], speakingToken = 0, cachedVoice = null, currentUtterance = null;
   function selectVoice(){
     if(!speechSupported)return null;
     const vs = window.speechSynthesis.getVoices();
@@ -138,7 +138,7 @@
   }
   if(speechSupported)window.speechSynthesis.addEventListener?.('voiceschanged',selectVoice);
   function stopTalking(){
-    spokenQueue=[];speakingToken++;
+    spokenQueue=[];currentUtterance=null;speakingToken++;
     walker.classList.remove('wsz-speaking');
     if(speechSupported)window.speechSynthesis.cancel();
   }
@@ -160,10 +160,11 @@
         walker.classList.remove('wsz-speaking');return;
       }
       const u = new SpeechSynthesisUtterance(spokenQueue.shift());
+      currentUtterance=u; // Prevent premature garbage collection of iOS utterances
       u.lang=cfg.voiceLocale;u.rate=cfg.speechRate;u.pitch=.95;u.volume=1;
       u.voice=selectVoice();
       u.onstart=()=>{walker.classList.add('wsz-speaking');setStatus('SZARVIS is speaking…');};
-      u.onend=()=>{if(token===speakingToken)next();};
+      u.onend=()=>{if(token===speakingToken){currentUtterance=null;next();}};
       u.onerror=()=>{walker.classList.remove('wsz-speaking');if(token===speakingToken)setStatus('Audio unavailable here. You can still read my reply.');};
       try{window.speechSynthesis.speak(u)}catch{walker.classList.remove('wsz-speaking');}
     }
@@ -385,6 +386,18 @@
     panel.hidden=!open;launcher.setAttribute('aria-expanded',String(open));launcher.textContent=open?'Close assistant ✕':'●  Ask '+cfg.name+' ↗';
     if(open){input.focus();if(transcript.children.length===0)appendMessage(`Hi! I'm ${cfg.name}. I can walk through this website, scan its sections and help you find answers. What are you looking for?`);}
   }
+  // A tap on the character is a direct audio gesture: opens chat and starts voice.
+  function talkToWalker(){
+    toggle(true);
+    if(speechSupported){
+      if(!voiceEnabled)voiceButton.click();
+      else speakReply('I am right here. Ask me about websites, our projects, or how to get started.');
+    }
+  }
+  walker.addEventListener('click',talkToWalker);
+  walker.addEventListener('keydown',e=>{
+    if(e.key==='Enter'||e.key===' '){e.preventDefault();talkToWalker();}
+  });
   launcher.addEventListener('click',()=>toggle(panel.hidden));
   $('.wsz-close').addEventListener('click',()=>{toggle(false);stopTalking()});
   $('.wsz-panel-title').textContent=cfg.name;
