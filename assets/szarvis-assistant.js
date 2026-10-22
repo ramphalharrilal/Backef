@@ -11,7 +11,7 @@
     name: 'SZARVIS',
     autoExplore: true,
     maxPages: 7,
-    aiEndpoint: '', // optional server-side endpoint (do not place API keys here)
+    aiEndpoint: '/api/szarvis', // Cloudflare Worker API route; falls back to on-page answers until activated
     contactEmail: 'hello@withszara.com',
     accent: '#c99da3',
     accent2: '#795961',
@@ -53,7 +53,7 @@
     .wsz-foot{position:absolute;bottom:-2px;left:-6px;width:13px;height:5px;background:#25212a;border-radius:8px}
     .wsz-character.wsz-walking .wsz-leg.l{animation:wsz-leg-l .30s ease-in-out infinite alternate}.wsz-character.wsz-walking .wsz-leg.r{animation:wsz-leg-r .30s ease-in-out infinite alternate}
     .wsz-character.wsz-walking .wsz-arm.l{animation:wsz-arm-l .30s ease-in-out infinite alternate}.wsz-character.wsz-walking .wsz-arm.r{animation:wsz-arm-r .30s ease-in-out infinite alternate}
-    .wsz-character.wsz-scanning .wsz-head{animation:wsz-nod .7s ease-in-out infinite alternate}
+    .wsz-character.wsz-scanning .wsz-head{animation:wsz-nod .7s ease-in-out infinite alternate}\n    .wsz-character.wsz-speaking .wsz-head{animation:wsz-nod .25s ease-in-out infinite alternate}\n    .wsz-character.wsz-speaking .wsz-head:after{background:#c99da3;box-shadow:0 0 9px #c99da3}
     .wsz-lens{position:absolute;top:50px;left:53px;width:15px;height:15px;border:3px solid var(--wsz-pink);border-radius:50%;z-index:6;background:#ffffffb5}
     .wsz-lens:after{content:"";width:12px;height:3px;background:#27212f;position:absolute;top:12px;left:10px;transform:rotate(48deg);border-radius:2px}
     .wsz-char-bubble{position:absolute;bottom:101px;left:6px;min-width:138px;max-width:218px;background:#fff;border:1px solid #e1dce2;padding:9px 12px;font-size:11px;font-weight:700;line-height:1.4;box-shadow:3px 4px 0 #29222a22;border-radius:3px;white-space:normal;pointer-events:none}
@@ -78,7 +78,7 @@
     .wsz-note{font-size:9px;color:#796f7e;padding:0 13px 9px;background:#fff}
     .wsz-link{margin-top:8px;display:inline-block;font-size:11px;color:#2365bc;font-weight:800;text-decoration:underline;text-underline-offset:2px}
     .wsz-controls{margin-left:auto;display:flex;align-items:center;gap:6px}
-    .wsz-control{border:1px solid #ffffff70;border-radius:3px;background:transparent;color:#f1faff;padding:6px 8px;cursor:pointer;font-size:11px;font-weight:700;min-width:35px}
+    .wsz-control{border:1px solid #ffffff70;border-radius:3px;background:transparent;color:#f1faff;padding:6px 8px;cursor:pointer;font-size:11px;font-weight:700;min-width:44px;min-height:42px}
     .wsz-control[aria-pressed="true"]{background:#154356;color:#a4faff;border-color:#68e7ed}
     .wsz-control:disabled{opacity:.4;cursor:not-allowed}
     .wsz-close{margin-left:3px}
@@ -106,7 +106,7 @@
     </div>
     <button class="wsz-floating" type="button" aria-expanded="false" aria-label="Open walking assistant"><span class="wsz-dot"></span> Ask SZARVIS <span aria-hidden="true">↗</span></button>
     <section class="wsz-panel" role="dialog" aria-label="SZARVIS website assistant" hidden>
-      <header class="wsz-panel-head"><span class="wsz-panel-icon">✳</span><div><div class="wsz-panel-title">SZARVIS</div><div class="wsz-panel-sub">VISUAL SITE EXPLORER · VOICE READY</div></div><div class="wsz-controls"><button class="wsz-control wsz-voice" type="button" aria-label="Enable spoken replies" title="Turn voice on" aria-pressed="false">🔇</button><button class="wsz-control wsz-mic" type="button" aria-label="Ask by voice" title="Ask by voice">🎙</button><button class="wsz-close" type="button" aria-label="Close assistant">×</button></div></header>
+      <header class="wsz-panel-head"><span class="wsz-panel-icon">✳</span><div><div class="wsz-panel-title">SZARVIS</div><div class="wsz-panel-sub">WALKING SITE GUIDE · TAP 🔊 TO HEAR ME</div></div><div class="wsz-controls"><button class="wsz-control wsz-voice" type="button" aria-label="Hear SZARVIS (tap to enable)" title="Hear SZARVIS (tap to enable)" aria-pressed="false">🔇</button><button class="wsz-control wsz-mic" type="button" aria-label="Ask by voice" title="Ask by voice">🎙</button><button class="wsz-close" type="button" aria-label="Close assistant">×</button></div></header>
       <div class="wsz-activity"><span class="wsz-dot"></span><span class="wsz-status">Getting oriented…</span></div>
       <div class="wsz-transcript" aria-live="polite"></div>
       <div class="wsz-suggestions"><button type="button" class="wsz-chip" data-ask="What services do you offer?">Services</button><button type="button" class="wsz-chip" data-ask="Do you offer website maintenance?">Maintenance</button><button type="button" class="wsz-chip" data-ask="How do I start a project?">Start a project</button></div>
@@ -124,23 +124,65 @@
   const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if(!speechSupported){ voiceButton.disabled = true; voiceButton.title='Speech playback unavailable in this browser'; }
   if(!Recognition){ micButton.disabled = true; micButton.title='Microphone speech recognition unavailable in this browser'; }
+  // Voice is initiated by an actual user tap, as required on iOS and Android.
+  // Small phrases and a fresh utterance queue avoid long-utterance bugs in mobile Safari.
+  let spokenQueue = [], speakingToken = 0, cachedVoice = null;
+  function selectVoice(){
+    if(!speechSupported)return null;
+    const vs = window.speechSynthesis.getVoices();
+    cachedVoice = vs.find(v => v.lang.toLowerCase()==='en-gb' &&
+      /daniel|george|oliver|arthur|serena|british/i.test(v.name)) ||
+      vs.find(v => v.lang.toLowerCase()==='en-gb') ||
+      vs.find(v => v.lang.toLowerCase().startsWith('en')) || null;
+    return cachedVoice;
+  }
+  if(speechSupported)window.speechSynthesis.addEventListener?.('voiceschanged',selectVoice);
+  function stopTalking(){
+    spokenQueue=[];speakingToken++;
+    walker.classList.remove('wsz-speaking');
+    if(speechSupported)window.speechSynthesis.cancel();
+  }
   function speakReply(t){
     if(!voiceEnabled || !speechSupported || document.visibilityState==='hidden')return;
-    window.speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(String(t).replace(/https?:\/\/\S+/g,'').replace(/\s+/g,' ').slice(0,550));
-    u.lang = cfg.voiceLocale; u.rate = cfg.speechRate; u.pitch = 0.89;
-    const voices = window.speechSynthesis.getVoices();
-    u.voice = voices.find(v=>v.lang==='en-GB' && /Daniel|George|Oliver|Arthur|British/i.test(v.name)) || voices.find(v=>v.lang==='en-GB') || voices.find(v=>v.lang.startsWith('en')) || null;
-    window.speechSynthesis.speak(u);
+    stopTalking();
+    const clean=String(t).replace(/https?:\/\/\S+/g,'').replace(/[\r\n]+/g,' ').replace(/\s+/g,' ').trim().slice(0,1100);
+    // Group words into approximately 120-character utterances; preserve word boundaries.
+    const words=clean.split(' '), parts=[];let piece='';
+    for(const word of words){
+      if((piece+' '+word).trim().length>135 && piece){parts.push(piece);piece=word;}
+      else piece=(piece+' '+word).trim();
+    }
+    if(piece)parts.push(piece);
+    spokenQueue=parts;
+    const token=++speakingToken;
+    function next(){
+      if(token!==speakingToken || !voiceEnabled || !spokenQueue.length){
+        walker.classList.remove('wsz-speaking');return;
+      }
+      const u = new SpeechSynthesisUtterance(spokenQueue.shift());
+      u.lang=cfg.voiceLocale;u.rate=cfg.speechRate;u.pitch=.95;u.volume=1;
+      u.voice=selectVoice();
+      u.onstart=()=>{walker.classList.add('wsz-speaking');setStatus('SZARVIS is speaking…');};
+      u.onend=()=>{if(token===speakingToken)next();};
+      u.onerror=()=>{walker.classList.remove('wsz-speaking');if(token===speakingToken)setStatus('Audio unavailable here. You can still read my reply.');};
+      try{window.speechSynthesis.speak(u)}catch{walker.classList.remove('wsz-speaking');}
+    }
+    next();
   }
   voiceButton.addEventListener('click',()=>{
-    voiceEnabled = !voiceEnabled;
+    voiceEnabled=!voiceEnabled;
     voiceButton.setAttribute('aria-pressed',String(voiceEnabled));
-    voiceButton.textContent = voiceEnabled ? '🔊' : '🔇';
-    voiceButton.title = voiceEnabled ? 'Mute spoken replies' : 'Enable spoken replies';
+    voiceButton.textContent=voiceEnabled?'🔊':'🔇';
+    voiceButton.title=voiceEnabled?'Mute SZARVIS':'Hear SZARVIS (tap to enable)';
     voiceButton.setAttribute('aria-label',voiceButton.title);
-    if(voiceEnabled) speakReply('Greetings. I am your With Szara website assistant. How may I help?');
-    else if(speechSupported) window.speechSynthesis.cancel();
+    if(voiceEnabled){
+      selectVoice();
+      setStatus('Voice enabled · tap any question to hear the answer');
+      speakReply('Hello there. I am SZARVIS, your With Szara assistant. How can I help you today?');
+    }else{stopTalking();setStatus('Voice muted · tap the speaker to hear replies');}
+  });
+  document.addEventListener('visibilitychange',()=>{
+    if(document.visibilityState==='hidden')stopTalking();
   });
   if(Recognition) micButton.addEventListener('click',()=>{
     const r = new Recognition(); r.lang = 'en-US'; r.interimResults = false; r.maxAlternatives = 1;
