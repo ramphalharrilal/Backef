@@ -22,3 +22,38 @@ body{overflow-wrap:break-word}
 @media(max-width:1000px){.szara-pathways-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.szara-pathway:last-child{grid-column:1/-1}}
 @media(max-width:720px){.studio-hero .szara-headline{font-size:clamp(36px,9vw,49px)!important;line-height:1.12!important}.studio-hero .hero-actions{align-items:stretch;flex-direction:column}.studio-hero .hero-actions a{width:100%;justify-content:center}.szara-pathways-grid{grid-template-columns:1fr}.szara-pathway:last-child{grid-column:auto}.szara-pathways{padding:44px 0}.szara-pathway{padding:24px}.szara-pathways .wrap{width:min(100% - 36px,1100px)}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.szara-pathway *{transition:none!important}}
+
+/* Mobile layout audit, 10 Nov: guard against crowded navigation and horizontal overflow. */
+@media(max-width:900px){
+ .nav{min-width:0;gap:12px}
+ .nav nav{min-width:0;gap:12px}
+ .nav nav .desktop-link{display:none}
+ .nav nav .button{padding:12px 14px;min-height:44px}
+ .studio-hero .hero-grid>*{min-width:0}
+ .studio-hero .intro{font-size:16px!important;line-height:1.7!important}
+}
+@media(max-width:720px){
+ .mobile-jumps{display:flex;gap:8px 16px;align-items:center;flex-wrap:wrap;padding:10px 20px 16px}
+ .mobile-jumps a{display:inline-block;min-height:38px;line-height:1.45;padding:8px 0;font-size:13px}
+ .studio-hero .szara-headline{font-size:clamp(34px,8.7vw,48px)!important;overflow-wrap:normal;hyphens:none;max-width:100%}
+ .studio-hero .intro{font-size:16px!important;line-height:1.7!important}
+ .studio-hero .hero-actions .button{min-height:48px}
+ .studio-hero .work-stage{max-width:100%;height:auto;aspect-ratio:1.18;margin:18px auto 12px}
+ .szara-pathways .szara-pathways-intro p{font-size:16px}
+ .szara-pathway h3{font-size:24px}
+ .szara-pathway p{font-size:16px}
+ .szara-pathway a{display:inline-flex;align-items:center;min-height:44px;line-height:1.5}
+ .contact .brief{box-shadow:none}
+ .featured-projects .case-copy h3{font-size:clamp(23px,6vw,28px)}
+ .footer-bottom{overflow-wrap:anywhere}
+}
+@media(max-width:380px){
+ .nav{min-height:70px}
+ .nav .brand{font-size:28px}
+ .nav nav .button{font-size:12px;padding:10px 11px;gap:6px}
+ .mobile-jumps{gap:6px 12px}
+ .studio-hero .szara-headline{font-size:clamp(32px,8.5vw,38px)!important}
+ .studio-hero .studio-topline .edition{display:none}
+ .szara-pathways .wrap{width:calc(100% - 32px)}
+ .szara-pathway{padding:20px}
+}
