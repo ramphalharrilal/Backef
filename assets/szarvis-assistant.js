@@ -9,7 +9,7 @@
 
   const cfg = Object.assign({
     name: 'SZARVIS',
-    autoExplore: true,
+    autoExplore: false,
     maxPages: 7,
     aiEndpoint: '/api/szarvis', // Cloudflare Worker API route; falls back to on-page answers until activated
     contactEmail: 'hello@withszara.com',
@@ -91,7 +91,7 @@
     @media(max-width:640px){.wsz-character{--wsz-scale:.82}.wsz-char-bubble{max-width:152px;font-size:10px}.wsz-floating{bottom:18px;right:15px}.wsz-panel{right:14px;bottom:75px;width:calc(100vw - 28px);height:min(510px,calc(100dvh - 98px))}}
     @media(prefers-reduced-motion:reduce){.wsz-character *,.wsz-spotlight{animation:none!important;transition:none!important}}
   `;
-  style.textContent += "\n@media(max-width:640px){.wsz-root .wsz-floating{max-width:calc(100vw - 30px)}.wsz-root .wsz-panel{height:min(495px,calc(100dvh - 105px))}.wsz-root .wsz-msg{max-width:95%}.wsz-root .wsz-char-bubble{max-width:138px}}";
+  style.textContent += "\n.wsz-character,.wsz-spotlight{display:none!important}.wsz-floating{bottom:16px;right:16px;border-radius:999px;padding:12px 16px;box-shadow:0 5px 20px #0002}.wsz-panel{bottom:76px;right:16px;border-radius:12px;box-shadow:0 14px 40px #0003}@media(max-width:640px){.wsz-root .wsz-floating{max-width:calc(100vw - 30px)}.wsz-root .wsz-panel{height:min(495px,calc(100dvh - 105px))}.wsz-root .wsz-msg{max-width:95%}.wsz-root .wsz-char-bubble{max-width:138px}}";
   document.head.appendChild(style);
 
   const root = document.createElement('div');
@@ -369,7 +369,7 @@
     if(inQuestion||!question.trim())return;
     inQuestion=true;appendMessage(question.trim(),true);input.value='';setStatus('Looking through website content…');
     const target=findWalkTarget(question);
-    if(target && !moving){ await walkTo(target,'Let me find that…',true); }
+    // Keep SZARVIS stationary: no page scrolling or character movement.
     let result;
     if(cfg.aiEndpoint && aiAvailable){
       try{
