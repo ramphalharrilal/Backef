@@ -91,7 +91,7 @@
     @media(max-width:640px){.wsz-character{--wsz-scale:.82}.wsz-char-bubble{max-width:152px;font-size:10px}.wsz-floating{bottom:18px;right:15px}.wsz-panel{right:14px;bottom:75px;width:calc(100vw - 28px);height:min(510px,calc(100dvh - 98px))}}
     @media(prefers-reduced-motion:reduce){.wsz-character *,.wsz-spotlight{animation:none!important;transition:none!important}}
   `;
-  style.textContent += "\n.wsz-character,.wsz-spotlight{display:none!important}.wsz-floating{bottom:16px;right:16px;border-radius:999px;padding:12px 16px;box-shadow:0 5px 20px #0002}.wsz-panel{bottom:76px;right:16px;border-radius:12px;box-shadow:0 14px 40px #0003}@media(max-width:640px){.wsz-root .wsz-floating{max-width:calc(100vw - 30px)}.wsz-root .wsz-panel{height:min(495px,calc(100dvh - 105px))}.wsz-root .wsz-msg{max-width:95%}.wsz-root .wsz-char-bubble{max-width:138px}}";
+  style.textContent += "\n.wsz-character,.wsz-spotlight{display:none!important}.wsz-floating{bottom:12px;right:12px;border-radius:999px;padding:10px 12px;box-shadow:0 4px 12px #0002;font-size:12px}.wsz-panel{bottom:76px;right:16px;border-radius:12px;box-shadow:0 14px 40px #0003}@media(max-width:640px){.wsz-root .wsz-floating{max-width:calc(100vw - 30px)}.wsz-root .wsz-panel{height:min(495px,calc(100dvh - 105px))}.wsz-root .wsz-msg{max-width:95%}.wsz-root .wsz-char-bubble{max-width:138px}}";
   document.head.appendChild(style);
 
   const root = document.createElement('div');
@@ -104,7 +104,7 @@
       <div class="wsz-shadow"></div><div class="wsz-ear"></div><div class="wsz-hat"></div><div class="wsz-head"></div><div class="wsz-body"></div>
       <div class="wsz-arm l"></div><div class="wsz-arm r"></div><div class="wsz-leg l"><i class="wsz-foot"></i></div><div class="wsz-leg r"><i class="wsz-foot"></i></div><div class="wsz-lens"></div>
     </div>
-    <button class="wsz-floating" type="button" aria-expanded="false" aria-label="Open walking assistant"><span class="wsz-dot"></span> Ask SZARVIS <span aria-hidden="true">↗</span></button>
+    <button class="wsz-floating" type="button" aria-expanded="false" aria-label="Chat with SZARVIS"><span class="wsz-dot"></span> Chat <span aria-hidden="true">↗</span></button>
     <section class="wsz-panel" role="dialog" aria-label="SZARVIS website assistant" hidden>
       <header class="wsz-panel-head"><span class="wsz-panel-icon">✳</span><div><div class="wsz-panel-title">SZARVIS</div><div class="wsz-panel-sub">WALKING SITE GUIDE · TAP 🔊 TO HEAR ME</div></div><div class="wsz-controls"><button class="wsz-control wsz-voice" type="button" aria-label="Hear SZARVIS (tap to enable)" title="Hear SZARVIS (tap to enable)" aria-pressed="false">🔇</button><button class="wsz-control wsz-mic" type="button" aria-label="Ask by voice" title="Ask by voice">🎙</button><button class="wsz-close" type="button" aria-label="Close assistant">×</button></div></header>
       <div class="wsz-activity"><span class="wsz-dot"></span><span class="wsz-status">Getting oriented…</span></div>
