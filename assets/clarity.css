@@ -57,3 +57,37 @@ body{overflow-wrap:break-word}
  .szara-pathways .wrap{width:calc(100% - 32px)}
  .szara-pathway{padding:20px}
 }
+
+/* Editorial refinement: fewer repeated cards, stronger project hierarchy, calmer mobile scale. */
+.szara-pathways-grid{gap:0;border-top:1px solid var(--sz-border)}
+.szara-pathway{background:transparent;border:0;border-bottom:1px solid var(--sz-border);border-radius:0;box-shadow:none;padding:27px 24px 28px}
+.szara-pathway:first-child{background:#fff;border-left:3px solid #8b6268}
+.szara-pathway h3{max-width:19ch}
+.szara-pathway p{max-width:42ch}
+#work .case-study:first-child .case-image{background:#e8e5df}
+#work .case-study:first-child .case-image img{width:100%;height:auto}
+#work .case-study:first-child .case-copy h3{letter-spacing:-.04em}
+@media(max-width:720px){
+ .studio-hero{padding-bottom:18px}
+ .studio-hero .intro{font-size:15px!important;line-height:1.58!important;max-width:38ch}
+ .studio-hero .hero-copy .micro{font-size:12px;line-height:1.5;margin-top:13px}
+ .studio-hero .hero-actions{gap:9px}
+ .studio-hero .hero-actions .button{min-height:48px}
+ .szara-pathways{padding:38px 0}
+ .szara-pathways h2{font-size:clamp(29px,7.6vw,37px);line-height:1.13}
+ .szara-pathways .szara-pathways-intro p{font-size:15px;line-height:1.55}
+ .szara-pathways-grid{display:block}
+ .szara-pathway{padding:20px 6px 22px}
+ .szara-pathway:first-child{padding-left:16px}
+ .szara-pathway h3{font-size:22px;line-height:1.18;margin:8px 0}
+ .szara-pathway p{font-size:15px;line-height:1.55;margin-bottom:8px}
+ .szara-pathway a{font-size:14px}
+ #work .section-top h2{font-size:clamp(34px,9vw,44px);line-height:1.08}
+ #work .section-top>p{font-size:15px;line-height:1.6}
+ #work .case-studies{gap:25px}
+ #work .case-study{gap:18px;padding-bottom:25px}
+ #work .case-copy h3{font-size:clamp(23px,6vw,29px)}
+ .founder .founder-grid h2,.contact .contact-grid h2{font-size:clamp(36px,9vw,46px);line-height:1.1}
+ .founder .founder-grid p,.contact .contact-grid p{line-height:1.58}
+ .contact .brief{padding:22px}
+}
