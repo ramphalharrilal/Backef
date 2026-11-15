@@ -153,3 +153,35 @@ body{overflow-wrap:break-word}
  .footer-bottom{font-size:12px!important;line-height:1.7}
  .wsz-root .wsz-floating{width:40px!important;height:40px!important;min-width:40px!important;min-height:40px!important;right:10px!important;bottom:84px!important}
 }
+
+/* SZARA studio navigation: expressive reveal, calm motion, no generic dropdown grid. */
+@media(max-width:720px){
+ .mobile-menu{background:#faf9f6;border-top:1px solid #dedad5;isolation:isolate}
+ .mobile-menu>summary{padding:10px 22px;min-height:50px;transition:background .2s ease,color .2s ease}
+ .mobile-menu>summary:hover{background:#f0eae7}
+ .mobile-menu .menu-label{font-size:13px;font-weight:750;letter-spacing:.035em}
+ .mobile-menu .menu-label-accent{font-family:Georgia,serif;font-style:italic;font-weight:400;color:#8b6268;letter-spacing:-.02em;margin-left:3px}
+ .mobile-menu[open]{background:#211f20;color:#faf9f6}
+ .mobile-menu[open]>summary{background:#211f20;color:#faf9f6;border-bottom:1px solid #484044}
+ .mobile-menu[open] .menu-label-accent{color:#e6c7cb}
+ .mobile-menu[open] .menu-bars i{background:#faf9f6}
+ .mobile-menu-links{display:flex;flex-direction:column;gap:0;padding:22px 24px 28px;box-shadow:0 18px 32px #0002}
+ .mobile-menu-intro{font-size:10px;letter-spacing:.2em;font-weight:750;color:#d3afb6;margin:0 0 10px}
+ .mobile-menu-links>a:not(.mobile-menu-contact){font-family:Georgia,'Times New Roman',serif;font-size:clamp(25px,7.1vw,34px);font-weight:400;letter-spacing:-.035em;line-height:1.2;min-height:63px;padding:12px 0;border-top:0;border-bottom:1px solid #51494b;color:#faf9f6;display:flex;justify-content:space-between}
+ .mobile-menu-links>a:not(.mobile-menu-contact)::after{content:'↗';font-family:Arial,sans-serif;font-size:19px;font-weight:400;color:#d3afb6;align-self:center}
+ .mobile-menu-links>a:not(.mobile-menu-contact):hover,.mobile-menu-links>a:not(.mobile-menu-contact):focus-visible{color:#e6c7cb}
+ .mobile-menu-contact{margin-top:23px;display:flex;flex-direction:column;align-items:flex-start;gap:5px;padding:0;border:0!important;min-height:auto!important;font-size:13px!important;color:#d8cfd0!important;font-family:Arial,sans-serif}
+ .mobile-menu-contact b{font-size:17px;font-weight:650;color:#fff}
+ .mobile-menu-contact b span{color:#e6c7cb}
+ .mobile-menu-links a:focus-visible{outline:2px solid #e6c7cb;outline-offset:3px}
+}
+@media(max-width:720px) and (prefers-reduced-motion:no-preference){
+ .mobile-menu[open] .mobile-menu-links{animation:sz-menu-reveal .32s cubic-bezier(.2,.75,.2,1) both}
+ .mobile-menu[open] .mobile-menu-links>a:not(.mobile-menu-contact){animation:sz-menu-link .34s ease both}
+ .mobile-menu[open] .mobile-menu-links>a:nth-of-type(2){animation-delay:45ms}
+ .mobile-menu[open] .mobile-menu-links>a:nth-of-type(3){animation-delay:85ms}
+ .mobile-menu[open] .mobile-menu-links>a:nth-of-type(4){animation-delay:125ms}
+ .mobile-menu .menu-bars i{transition:transform .22s ease,background .22s ease}
+}
+@keyframes sz-menu-reveal{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes sz-menu-link{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
