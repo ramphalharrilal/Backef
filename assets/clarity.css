@@ -91,3 +91,65 @@ body{overflow-wrap:break-word}
  .founder .founder-grid p,.contact .contact-grid p{line-height:1.58}
  .contact .brief{padding:22px}
 }
+
+/* Screenshot-led final mobile art direction: compact navigation and editorial rhythm. */
+.mobile-menu{display:none}
+@media(max-width:720px){
+ header{position:relative}
+ .nav{min-height:74px!important;padding-top:10px;padding-bottom:10px;gap:12px}
+ .nav .brand{font-size:clamp(29px,8vw,38px);line-height:1}
+ .nav nav .button{min-height:44px;padding:10px 12px;font-size:13px;white-space:nowrap}
+ .nav nav .button span{display:none}
+ .mobile-jumps{display:none!important}
+ .mobile-menu{display:block;position:relative;border-top:1px solid #dedad5;background:#faf9f6}
+ .mobile-menu>summary{list-style:none;display:flex;justify-content:space-between;align-items:center;min-height:43px;padding:7px 22px;cursor:pointer;font-size:13px;font-weight:700;letter-spacing:.02em}
+ .mobile-menu>summary::-webkit-details-marker{display:none}
+ .mobile-menu>summary::marker{content:""}
+ .menu-bars{display:grid;gap:4px;width:18px}
+ .menu-bars i{height:2px;background:#211f20;width:18px;display:block}
+ .mobile-menu[open] .menu-bars i:first-child{transform:translateY(3px) rotate(45deg)}
+ .mobile-menu[open] .menu-bars i:last-child{transform:translateY(-3px) rotate(-45deg)}
+ .mobile-menu-links{display:grid;grid-template-columns:1fr 1fr;gap:0 16px;padding:0 22px 13px}
+ .mobile-menu-links a{display:flex;align-items:center;min-height:46px;padding:9px 0;border-top:1px solid #e3ded9;color:#211f20;text-decoration:none;font-size:14px;font-weight:650}
+ .mobile-menu-links a:focus-visible,.mobile-menu>summary:focus-visible{outline:2px solid #795961;outline-offset:2px}
+ .studio-hero{padding-top:36px!important}
+ .studio-hero .intro{font-size:15px!important;line-height:1.58!important}
+ .studio-hero .work-stage{margin-top:14px}
+ .szara-pathways{padding:34px 0!important}
+ .szara-pathways-grid{margin-top:15px}
+ .szara-pathway{padding-top:18px!important;padding-bottom:19px!important}
+ #work{padding-top:48px!important;padding-bottom:48px!important}
+ #work .section-top{margin-bottom:20px!important}
+ #work .section-top h2{font-size:clamp(33px,8.5vw,43px)!important}
+ #work .section-top>p{margin-top:12px}
+ #work .case-studies{gap:30px!important}
+ #work .case-study{display:flex;flex-direction:column;gap:12px!important;padding-bottom:25px!important;margin:0!important}
+ #work .case-image{margin:0!important}
+ #work .case-copy{margin:0!important;padding:0!important}
+ #work .case-copy .eyebrow{font-size:11px;letter-spacing:.09em}
+ #work .case-copy h3{font-size:clamp(22px,5.9vw,28px)!important;line-height:1.2;margin:9px 0 10px}
+ #work .case-copy .case-client{font-size:15px!important;line-height:1.45;margin:0 0 9px}
+ #work .case-copy>p:not(.eyebrow):not(.case-client){font-size:15px!important;line-height:1.55;margin:0}
+ .client-voices.quick-feedback{padding-top:43px!important;padding-bottom:43px!important}
+ .client-voices.quick-feedback .voice-text{font-size:17px!important;line-height:1.52!important}
+ .founder{padding-top:48px!important;padding-bottom:48px!important}
+ .founder .founder-grid{gap:20px!important}
+ .founder .founder-grid h2{font-size:clamp(35px,9vw,45px)!important}
+ .founder .founder-grid .founder-intro{font-size:clamp(19px,5vw,22px)!important;line-height:1.45!important;margin:0 0 15px}
+ .founder .founder-grid p:not(.eyebrow):not(.founder-intro){font-size:15px!important;line-height:1.65!important;margin-bottom:14px}
+ .founder .founder-grid a{font-size:15px}
+ .contact{padding-top:48px!important;padding-bottom:48px!important}
+ .contact .contact-grid{gap:25px!important}
+ .contact .contact-grid h2{font-size:clamp(35px,9vw,45px)!important}
+ .contact .contact-grid>div>p:not(.eyebrow){font-size:15px!important;line-height:1.6!important}
+ .contact .next-steps{font-size:14px!important;line-height:1.55!important;padding-left:22px}
+ .contact .next-steps li{margin-bottom:10px}
+ .contact .contact-links{gap:10px}
+ .contact .contact-links a{font-size:15px!important}
+ .contact .brief{padding:22px!important}
+ .contact .brief h3{font-size:clamp(24px,6.5vw,29px)!important;line-height:1.2}
+ .contact .brief>p{font-size:14px;line-height:1.6}
+ .footer{padding-top:35px!important}
+ .footer-bottom{font-size:12px!important;line-height:1.7}
+ .wsz-root .wsz-floating{width:40px!important;height:40px!important;min-width:40px!important;min-height:40px!important;right:10px!important;bottom:84px!important}
+}
