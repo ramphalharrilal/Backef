@@ -1,0 +1,71 @@
+/* SZARA Notes: simple editorial pages, not an SEO keyword landing-page template. */
+.sz-advice{background:#f7f5f1;color:#282426;font-family:"DM Sans",Arial,sans-serif}
+.sz-advice *{box-sizing:border-box}
+.sz-advice .sz-guide-wrap{width:min(1080px,calc(100% - 56px));margin-inline:auto}
+.sz-advice a{color:inherit;text-underline-offset:4px}
+.sz-advice a:focus-visible{outline:2px solid #82616c;outline-offset:4px}
+.sz-advice .advice-header{background:#f7f5f1;border-bottom:1px solid #ded8d3;position:relative;z-index:10}
+.sz-advice .advice-nav{min-height:86px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.sz-advice .advice-brand{font-family:Manrope,"Helvetica Neue",Arial,sans-serif;font-weight:800;font-size:31px;letter-spacing:-.07em;line-height:1;color:#292627;text-decoration:none}
+.sz-advice .advice-brand span{color:#956c76}
+.sz-advice .advice-links{display:flex;align-items:center;flex-wrap:wrap;gap:clamp(12px,2.4vw,28px)}
+.sz-advice .advice-links a{font-size:13px;font-weight:650;text-decoration:none;color:#504b4a}
+.sz-advice .advice-links a[aria-current="page"],.sz-advice .advice-links a:hover{color:#956c76}
+.sz-advice .advice-links .advice-talk{border:1px solid #373032;border-radius:3px;color:#2c2729;padding:9px 12px}
+.sz-advice .advice-hero{padding:clamp(54px,7vw,94px) 0 clamp(38px,5vw,66px);border-bottom:1px solid #ddd7d1}
+.sz-advice .advice-eyebrow{font-size:11px;letter-spacing:.16em;font-weight:700;text-transform:uppercase;color:#86636d;margin:0 0 18px}
+.sz-advice .advice-hero h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(46px,7vw,78px);font-weight:400;letter-spacing:-.055em;line-height:1.04;max-width:860px;margin:0 0 23px}
+.sz-advice .advice-hero h1 em{font-style:italic;font-family:Georgia,serif;letter-spacing:-.05em;font-weight:400;color:#8d6d72}
+.sz-advice .advice-intro{font-size:clamp(17px,1.8vw,20px);max-width:730px;line-height:1.65;color:#625b59;margin:0}
+.sz-advice .advice-list{padding:40px 0 85px}
+.sz-advice .advice-list-item{display:grid;grid-template-columns:minmax(0,1fr) 110px;gap:32px;border-bottom:1px solid #dcd6d0;padding:29px 0;text-decoration:none;align-items:center}
+.sz-advice .advice-list-item:first-child{border-top:1px solid #dcd6d0}
+.sz-advice .advice-list-item h2{font-family:Georgia,serif;font-weight:400;font-size:clamp(27px,3.2vw,40px);letter-spacing:-.045em;line-height:1.14;margin:0 0 9px}
+.sz-advice .advice-list-item p{margin:0;color:#655d5a;line-height:1.6;font-size:15px;max-width:680px}
+.sz-advice .advice-list-item .advice-read{justify-self:end;color:#694b54;font-size:13px;font-weight:700;white-space:nowrap}
+.sz-advice .advice-list-item:hover h2{text-decoration:underline;text-decoration-color:#aa878e;text-underline-offset:7px;text-decoration-thickness:1px}
+.sz-advice .advice-article{padding:22px 0 95px}
+.sz-advice .advice-back{display:inline-block;font-weight:650;font-size:13px;color:#71535c;text-decoration:none;padding:13px 0}
+.sz-advice .advice-article-head{padding:38px 0 48px;border-bottom:1px solid #ded8d3}
+.sz-advice .advice-article h1{max-width:920px;font-family:Georgia,serif;font-size:clamp(40px,6vw,66px);font-weight:400;line-height:1.07;letter-spacing:-.055em;margin:0 0 21px}
+.sz-advice .advice-article-head p:last-child{color:#665e5c;font-size:18px;max-width:770px;line-height:1.65;margin:0}
+.sz-advice .advice-prose{max-width:760px;padding:34px 0 15px;font-size:17px;line-height:1.78;color:#3d3838}
+.sz-advice .advice-prose h2{font-family:Georgia,serif;font-size:clamp(28px,3.5vw,37px);font-weight:400;line-height:1.21;letter-spacing:-.03em;color:#282426;margin:36px 0 12px}
+.sz-advice .advice-prose h3{font-size:18px;letter-spacing:-.025em;margin:24px 0 8px}
+.sz-advice .advice-prose p{margin:0 0 20px}
+.sz-advice .advice-prose ul,.sz-advice .advice-prose ol{margin:0 0 25px;padding-left:23px}
+.sz-advice .advice-prose li{margin-bottom:11px;padding-left:3px}
+.sz-advice .advice-prose a{color:#74505a}
+.sz-advice .advice-prose strong{font-weight:750;color:#292626}
+.sz-advice .advice-note{background:#eee8e4;border-left:3px solid #a9838d;padding:18px 22px;margin:27px 0;font-size:16px}
+.sz-advice .advice-prose .advice-note p{margin:0}
+.sz-advice .advice-next{border-top:1px solid #ded8d3;padding-top:26px;max-width:760px}
+.sz-advice .advice-next p{font-size:14px;color:#625b59;margin:0 0 12px;line-height:1.7}
+.sz-advice .advice-next a{font-weight:700;color:#624650;font-size:15px}
+.sz-advice .advice-prompt{background:#282326;color:#f8f5f1;padding:54px 0}
+.sz-advice .advice-prompt .sz-guide-wrap{display:flex;align-items:end;justify-content:space-between;gap:28px}
+.sz-advice .advice-prompt h2{font-family:Georgia,serif;font-size:clamp(31px,4.2vw,46px);font-weight:400;letter-spacing:-.045em;margin:0 0 12px}
+.sz-advice .advice-prompt p{margin:0;color:#dad2ce;max-width:540px;line-height:1.7}
+.sz-advice .advice-prompt a{display:inline-block;padding:13px 20px;border:1px solid #eee8e3;color:#fff;text-decoration:none;font-size:14px;font-weight:650;white-space:nowrap;border-radius:3px}
+.sz-advice .advice-prompt a:hover{background:#f8f5f1;color:#282326}
+.sz-advice .advice-footer{padding:24px 0 38px;border-top:1px solid #ded8d3;font-size:13px;color:#6b625f}
+.sz-advice .advice-footer .sz-guide-wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.sz-advice .advice-footer a{color:#6b4b54}
+@media(max-width:720px){
+ .sz-advice .sz-guide-wrap{width:calc(100% - 38px)}
+ .sz-advice .advice-nav{min-height:72px;gap:14px}
+ .sz-advice .advice-brand{font-size:26px}
+ .sz-advice .advice-links{gap:12px}
+ .sz-advice .advice-links a{font-size:12px}
+ .sz-advice .advice-links .advice-talk{padding:7px 9px}
+ .sz-advice .advice-hero{padding:55px 0 39px}
+ .sz-advice .advice-list{padding:24px 0 62px}
+ .sz-advice .advice-list-item{grid-template-columns:1fr;gap:8px;padding:25px 0}
+ .sz-advice .advice-list-item .advice-read{justify-self:start}
+ .sz-advice .advice-article{padding-bottom:65px}
+ .sz-advice .advice-article-head{padding:24px 0 30px}
+ .sz-advice .advice-prose{font-size:16px;line-height:1.75;padding-top:24px}
+ .sz-advice .advice-prompt .sz-guide-wrap{display:block}
+ .sz-advice .advice-prompt a{margin-top:23px}
+}
+@media(max-width:390px){.sz-advice .advice-nav{flex-wrap:wrap;padding:14px 0}.sz-advice .advice-links{width:100%;justify-content:space-between}}
