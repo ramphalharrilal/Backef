@@ -215,8 +215,24 @@ body{overflow-wrap:break-word}
 @keyframes sz-glass-menu{from{opacity:0;transform:translateY(-9px)}to{opacity:1;transform:translateY(0)}}
 @keyframes sz-glass-tile{from{opacity:0;transform:translateY(-11px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
 
-/* Helpful service links beneath the homepage options: crawlable and unobtrusive. */
-.szara-pathways .szara-services-more{margin:22px 0 0;padding:18px 0 0;border-top:1px solid rgba(42,74,70,.15);font-size:14px;line-height:1.75;color:#415956;max-width:1080px}
-.szara-pathways .szara-services-more a{color:#214f4d;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}
-.szara-pathways .szara-services-more a:hover{color:#795961}
-@media(max-width:720px){.szara-pathways .szara-services-more{margin-top:18px;font-size:13px;line-height:1.8}}
+/* A quiet group of useful service links, separated from the three primary cards. */
+.szara-pathways .szara-service-extras{max-width:1080px;margin:28px 0 0;padding:24px 0 0;border-top:1px solid rgba(42,74,70,.17)}
+.szara-pathways .szara-service-extras>p{margin:0 0 12px;color:#324a47;font-size:15px;font-weight:700;line-height:1.45}
+.szara-pathways .szara-service-extras ul{list-style:none;display:flex;align-items:center;gap:10px 24px;flex-wrap:wrap;padding:0;margin:0}
+.szara-pathways .szara-service-extras li{margin:0;padding:0}
+.szara-pathways .szara-service-extras a{display:inline-block;padding:5px 0;color:#214f4d;font-size:14px;font-weight:600;line-height:1.45;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}
+.szara-pathways .szara-service-extras a:hover{color:#795961}
+/* At laptop widths, keep navigation on one clean line without losing Website Advice. */
+@media(min-width:721px) and (max-width:1150px){
+ .nav nav .desktop-link[href="#service-options"],.nav nav .desktop-link[href="remote-tech-support/"]{display:none}
+ .nav nav .desktop-link[href="/advice/"]{display:inline-block}
+ .nav nav{gap:clamp(12px,2vw,23px)}
+ .nav nav>a{white-space:nowrap}
+}
+@media(max-width:720px){
+ .szara-pathways .szara-service-extras{margin-top:22px;padding-top:20px}
+ .szara-pathways .szara-service-extras>p{font-size:15px}
+ .szara-pathways .szara-service-extras ul{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 14px}
+ .szara-pathways .szara-service-extras a{font-size:14px}
+}
+@media(max-width:380px){.szara-pathways .szara-service-extras ul{grid-template-columns:1fr}}
