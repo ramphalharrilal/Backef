@@ -16,7 +16,7 @@
     closeTimer = setTimeout(() => {
       menu.open = false;
       menu.classList.remove('is-closing');
-    }, 445);
+    }, 500);
   }
   summary.addEventListener('click', (event) => {
     if (menu.open) {
