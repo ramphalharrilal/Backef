@@ -236,3 +236,21 @@ body{overflow-wrap:break-word}
  .szara-pathways .szara-service-extras a{font-size:14px}
 }
 @media(max-width:380px){.szara-pathways .szara-service-extras ul{grid-template-columns:1fr}}
+
+/* Homepage accent restraint: keep the rose square for section signposts,
+   not for the hero label, case-study metadata, biography, or contact prompt. */
+#main .studio-hero .studio-topline .eyebrow::before,
+#main #work .case-copy .eyebrow::before,
+#main #about .eyebrow::before,
+#main #contact .eyebrow::before{content:none!important;display:none!important}
+#main #service-options .szara-pathways-intro>.eyebrow::before,
+#main #work .section-top .eyebrow::before,
+#main #client-feedback>.wrap>.eyebrow::before{
+  content:""!important;
+  display:inline-block!important;
+  width:5px;
+  height:5px;
+  background:#C99DA3!important;
+  border-radius:0!important;
+  transform:none!important;
+}
