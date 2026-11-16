@@ -27,9 +27,9 @@
 .portfolio-page .port-project .port-cta:hover{color:#946570}
 .portfolio-page .port-quiet{padding:48px 0 80px;background:#f0ece8;border-top:1px solid #ddd6d0}
 .portfolio-page .port-mini-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:25px}
-.portfolio-page .port-mini{background:#faf9f6;border:1px solid #ded7d2;padding:23px 20px;min-height:226px;display:flex;flex-direction:column;align-items:flex-start}
+.portfolio-page .port-mini{background:#faf9f6;border:1px solid #ded7d2;padding:28px 24px;min-height:182px;display:flex;flex-direction:column;align-items:flex-start}
 .portfolio-page .port-mini .port-icon{display:grid;place-items:center;width:39px;height:39px;border-radius:12px;background:#e8e0df;color:#7e5661;font-size:15px;font-weight:700;letter-spacing:-.02em}
-.portfolio-page .port-mini h3{font-size:21px;line-height:1.17;letter-spacing:-.03em;margin:23px 0 8px;font-weight:650}
+.portfolio-page .port-mini h3{font-size:21px;line-height:1.17;letter-spacing:-.03em;margin:0 0 10px;font-weight:650}
 .portfolio-page .port-mini p{font-size:13px;line-height:1.65;color:#645c59;margin:0}
 .portfolio-page .port-cta-section{background:#252123;color:#fff;padding:clamp(56px,7vw,95px) 0}
 .portfolio-page .port-cta-inner{display:flex;align-items:center;justify-content:space-between;gap:32px}
@@ -42,6 +42,6 @@
 .portfolio-page .footer{background:#faf9f6}
 @media(min-width:900px){.portfolio-page .port-project:first-child .port-thumb,.portfolio-page .port-project:nth-child(2) .port-thumb{aspect-ratio:1.5}}
 @media(max-width:880px){.portfolio-page .port-mini-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.portfolio-page .port-cta-inner{align-items:start;flex-direction:column}}
-@media(max-width:720px){.portfolio-page .port-top{padding:52px 0 42px}.portfolio-page .port-top h1{font-size:clamp(52px,12.5vw,78px)}.portfolio-page .port-hero-bottom{align-items:start;flex-direction:column;gap:14px}.portfolio-page .port-index{font-size:12px}.portfolio-page .port-titlebar{display:block}.portfolio-page .port-titlebar p{margin-top:14px}.portfolio-page .port-grid{grid-template-columns:1fr;gap:40px}.portfolio-page .port-thumb{aspect-ratio:1.5}.portfolio-page .port-section{padding:52px 0}.portfolio-page .port-mini-grid{grid-template-columns:1fr 1fr;gap:10px}.portfolio-page .port-mini{min-height:220px;padding:19px 14px}.portfolio-page .port-mini h3{font-size:19px}.portfolio-page .port-mini p{font-size:12px}.portfolio-page .port-cta-section{padding:58px 0}.portfolio-page .port-endnote{margin-top:25px}}
+@media(max-width:720px){.portfolio-page .port-top{padding:52px 0 42px}.portfolio-page .port-top h1{font-size:clamp(52px,12.5vw,78px)}.portfolio-page .port-hero-bottom{align-items:start;flex-direction:column;gap:14px}.portfolio-page .port-index{font-size:12px}.portfolio-page .port-titlebar{display:block}.portfolio-page .port-titlebar p{margin-top:14px}.portfolio-page .port-grid{grid-template-columns:1fr;gap:40px}.portfolio-page .port-thumb{aspect-ratio:1.5}.portfolio-page .port-section{padding:52px 0}.portfolio-page .port-mini-grid{grid-template-columns:1fr 1fr;gap:10px}.portfolio-page .port-mini{min-height:174px;padding:22px 18px}.portfolio-page .port-mini h3{font-size:19px}.portfolio-page .port-mini p{font-size:12px}.portfolio-page .port-cta-section{padding:58px 0}.portfolio-page .port-endnote{margin-top:25px}}
 @media(max-width:390px){.portfolio-page .port-mini-grid{grid-template-columns:1fr}.portfolio-page .port-mini{min-height:auto}}
 @media(prefers-reduced-motion:reduce){.portfolio-page .port-thumb img{transition:none}}
