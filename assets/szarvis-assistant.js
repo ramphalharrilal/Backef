@@ -107,12 +107,12 @@
     </div>
     <button class="wsz-floating" type="button" aria-expanded="false" aria-label="Chat with SZARVIS"><span class="wsz-chat-icon" aria-hidden="true"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H5l1.8-3.1A7.5 7.5 0 1 1 20 11.5Z"/><path d="M9 11.5h.01M12.5 11.5h.01M16 11.5h.01"/></svg></span></button>
     <section class="wsz-panel" role="dialog" aria-label="SZARVIS website assistant" hidden>
-      <header class="wsz-panel-head"><span class="wsz-panel-icon">✳</span><div><div class="wsz-panel-title">SZARVIS</div><div class="wsz-panel-sub">WALKING SITE GUIDE · TAP 🔊 TO HEAR ME</div></div><div class="wsz-controls"><button class="wsz-control wsz-voice" type="button" aria-label="Hear SZARVIS (tap to enable)" title="Hear SZARVIS (tap to enable)" aria-pressed="false">🔇</button><button class="wsz-control wsz-mic" type="button" aria-label="Ask by voice" title="Ask by voice">🎙</button><button class="wsz-close" type="button" aria-label="Close assistant">×</button></div></header>
+      <header class="wsz-panel-head"><span class="wsz-panel-icon">✳</span><div><div class="wsz-panel-title">SZARVIS</div><div class="wsz-panel-sub">SZARA SITE GUIDE · TAP 🔊 TO HEAR ME</div></div><div class="wsz-controls"><button class="wsz-control wsz-voice" type="button" aria-label="Hear SZARVIS (tap to enable)" title="Hear SZARVIS (tap to enable)" aria-pressed="false">🔇</button><button class="wsz-control wsz-mic" type="button" aria-label="Ask by voice" title="Ask by voice">🎙</button><button class="wsz-close" type="button" aria-label="Close assistant">×</button></div></header>
       <div class="wsz-activity"><span class="wsz-dot"></span><span class="wsz-status">Getting oriented…</span></div>
       <div class="wsz-transcript" aria-live="polite"></div>
       <div class="wsz-suggestions"><button type="button" class="wsz-chip" data-ask="What services do you offer?">Services</button><button type="button" class="wsz-chip" data-ask="Do you offer website maintenance?">Maintenance</button><button type="button" class="wsz-chip" data-ask="How do I start a project?">Start a project</button></div>
       <form class="wsz-compose"><input class="wsz-input" aria-label="Ask a question" placeholder="Ask me about With Szara…" maxlength="240" required><button class="wsz-send" type="submit">Ask →</button></form>
-      <div class="wsz-note">Replies can be spoken aloud. Answers use public website information; AI chat requires the secure service to be active.</div>
+      <div class="wsz-note">Automated site guide. For a quote or project-specific advice, contact Harry directly.</div>
     </section>`;
   document.body.appendChild(root);
   const $ = s => root.querySelector(s);
@@ -205,7 +205,7 @@
       const state=res.ok?await res.json():null;
       aiAvailable=state?.ready===true;
     }catch{aiAvailable=false;}
-    modeLabel.textContent=aiAvailable?'AI CHAT · TAP 🔊 FOR VOICE':'SITE GUIDE · TAP 🔊 FOR VOICE';
+    modeLabel.textContent='SITE GUIDE · TAP 🔊 FOR VOICE';
   }
   let at = { x: Math.min(30, innerWidth*.05), y: innerHeight - 165 };
   function setStatus(s){status.textContent=s;}
@@ -333,7 +333,16 @@
     const tokens=(question.toLowerCase().match(/[a-z0-9]+/g)||[]).filter(w=>w.length>2&&!stop.has(w));
     if(/(hello|hi|hey)\b/i.test(question)&&tokens.length<2) return {answer:'Hello! I’m SZARVIS. I can explore this website and show you where to find information about our work. What would you like to know?',source:''};
     if(/\b(price|prices|pricing|cost|monthly|package|subscription)\b|how much/i.test(question)){
-      return {answer:'Our published five-page Small Business Websites package is US$999 setup plus US$149 per month for SZARA Care, with an initial 12-month agreement. See the Website Pricing page for inclusions and terms. Other projects are quoted according to scope.',source:new URL('/small-business-websites/',location.origin).href};
+      if(/tech support|computer|remote|troubleshoot|quick fix|consultation/i.test(question)){
+        return {answer:'Remote tech support starts with a free 10-minute phone consultation. A 30-minute Quick Fix is US$35, or up to 60 minutes is US$59. Extra time needs your approval. Tell Harry the problem first, so he can confirm whether remote support is suitable.',source:new URL('/remote-tech-support/',location.origin).href};
+      }
+      if(/business support|admin|virtual|inbox|follow.up|tracker|spreadsheet/i.test(question)){
+        return {answer:'Monthly business support starts at US$250 for up to 8 hours. There are also US$450 and US$700 plans for more ongoing support. The exact responsibilities and working arrangements are agreed before starting.',source:new URL('/business-support/',location.origin).href};
+      }
+      if(/care|maintenan|hosting|updates/i.test(question)){
+        return {answer:'Optional SZARA Care starts at US$79 per month for basic website oversight. Plans with content updates start at US$149 per month. Hosting and domains are quoted separately unless a written proposal includes them.',source:new URL('/website-maintenance/',location.origin).href};
+      }
+      return {answer:'A one-page Starter website begins at US$999. A business website with up to five pages starts at US$1,799. Ongoing SZARA Care is optional for new customers, with plans from US$79 per month. Larger projects and added features are quoted separately.',source:new URL('/small-business-websites/',location.origin).href};
     }
     if(/contact|email|reach|book|start a project|consultation|quote/i.test(question)){
       const c=documents.find(d=>/contact|get in touch|project|quote/i.test(d.title+' '+d.text));
