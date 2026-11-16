@@ -1,0 +1,26 @@
+/* Keep remote tech support aligned with the main SZARA palette. */
+body{background:#faf9f6;color:#211f20}
+.support-nav{border-bottom:1px solid #ddd6d1;padding:22px 0}
+.support-brand{font-family:Manrope,'Helvetica Neue',Arial,sans-serif;color:#211f20!important;letter-spacing:-.07em;font-weight:800}
+.support-nav nav{display:flex;align-items:center;justify-content:end;gap:22px}
+.support-nav nav a{font-size:14px;text-decoration:none;font-weight:650}
+.support-nav nav a:hover{text-decoration:underline;text-underline-offset:5px}
+.support-tag{color:#855e67}
+.support-hero{padding:clamp(50px,7vw,86px) 0 clamp(45px,6vw,70px)}
+.support-hero h1{font-family:Georgia,serif;font-weight:400;line-height:1.04;letter-spacing:-.055em}
+.support-hero p{color:#57504d}
+.support-section{border-top:1px solid #ded8d2}
+.support-section h2{font-family:Georgia,serif;font-weight:400;letter-spacing:-.045em;line-height:1.12}
+.support-btn{background:#211f20;color:#fff!important;border-radius:3px;box-shadow:none}
+.support-btn:hover{background:#41393c}
+.support-secondary{color:#62474f}
+.support-card{background:#fffdfb;border:1px solid #ddd7d2;border-radius:6px;box-shadow:none}
+.support-price{color:#211f20}
+.support-muted{color:#625c59}
+.support-note{background:#f0ebe7;border:1px solid #e1d8d2;border-radius:6px}
+.support-wrap .brief{background:#fffdfb;border:1px solid #dcd5cf;border-radius:6px}
+.support-wrap .brief input,.support-wrap .brief textarea{border:1px solid #aea7a1;color:#252121;border-radius:4px}
+.support-wrap a:focus-visible,.support-wrap button:focus-visible,.support-wrap input:focus-visible,.support-wrap textarea:focus-visible{outline:2px solid #855e67;outline-offset:3px}
+.support-footer{border-top:1px solid #ded8d2;color:#655d5a}
+@media(max-width:760px){.support-nav{gap:14px}.support-nav nav{gap:14px}.support-nav nav a{font-size:12px}.support-brand{font-size:27px}.support-hero h1{font-size:clamp(39px,9vw,55px)}.support-card{padding:22px}.support-nav{padding:18px 0}}
+@media(max-width:390px){.support-nav nav{gap:10px}.support-nav nav a{font-size:11px}}
