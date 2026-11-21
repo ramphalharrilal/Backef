@@ -320,3 +320,8 @@ body.szara-relaunch .sz-tile-kmca { grid-column:1 / -1; }
 body.szara-relaunch .sz-tile-kmca img { aspect-ratio:auto; }
 .sz-more-projects { display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:2rem; }
 @media(max-width:720px){.sz-more-projects { grid-template-columns:1fr;gap:.75rem; }}
+
+body.szara-relaunch #client-feedback.sz-blue-quote,
+body.szara-relaunch #client-feedback.sz-blue-quote a { color:#fff; }
+body.szara-relaunch #client-feedback .sz-client-quote blockquote { color:#fff; }
+body.szara-relaunch[data-houston-time="night"] .sz-panorama .sz-houston-clouds { opacity:0; }

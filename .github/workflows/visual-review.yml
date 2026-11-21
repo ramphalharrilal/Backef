@@ -54,6 +54,7 @@ jobs:
               await page.waitForTimeout(7000);
               const consent=page.locator('.analytics-choice [data-choice="rejected"]');
               if(await consent.isVisible()) await consent.click();
+              assert.ok(await page.evaluate(()=>scrollY<10),'Privacy choice moved the viewport');
               const sky=page.locator('[data-sz-scene-toggle]');
               assert.equal(await sky.inputValue(),'auto');
               await sky.selectOption('day');
@@ -73,12 +74,12 @@ jobs:
               });
               await page.waitForTimeout(1900);
               await page.screenshot({path:'visual-review/'+label+'-hero.png',fullPage:false,animations:'disabled'});
-              const locations=await page.evaluate(()=>Object.fromEntries(['service-options','work','client-feedback','contact'].map(id=>{
+              const locations=await page.evaluate(()=>Object.fromEntries(['service-options','client-feedback','work','houston-studio','contact'].map(id=>{
                 const el=document.getElementById(id);
                 return [id,el?Math.max(0,Math.round(el.getBoundingClientRect().top+window.scrollY-150)):0];
               })));
               for(const [section,scroll] of Object.entries(locations)){
-                await page.evaluate(y=>window.scrollTo(0,y),scroll);
+                await page.evaluate(y=>window.scrollTo({top:y,behavior:'instant'}),scroll);
                 await page.waitForTimeout(1100);
                 await page.screenshot({path:'visual-review/'+label+'-'+section+'.png',fullPage:false,animations:'disabled'});
               }
@@ -90,6 +91,11 @@ jobs:
                 await page.screenshot({path:'visual-review/'+label+'-alternate-sky.png',fullPage:false,animations:'disabled'});
               }
               await sky.selectOption('auto');
+              const forwards=await page.locator('[data-sz-mission="launch"]').getAttribute('data-progress');
+              await page.evaluate(()=>window.scrollTo({top:200,behavior:'instant'}));
+              await page.waitForFunction(previous=>document.querySelector('[data-sz-mission="launch"]').dataset.progress!==previous, forwards);
+              const reviewColor=await page.locator('.sz-client-quote blockquote').evaluate(el=>getComputedStyle(el).color);
+              assert.equal(reviewColor,'rgb(255, 255, 255)');
               if(w<=720){
                 const menu=page.locator('details.mobile-menu');
                 await menu.locator('summary').focus();

@@ -49,10 +49,13 @@
   document.body.append(panel);
   const footerPreferences = document.querySelector('.footer .footer-bottom') || document.querySelector('.footer .wrap') || document.querySelector('footer') || document.body;
   footerPreferences.append(preferences);
+  let openedFromFooter=false;
   function choose(choice) {
     const wasLoaded=loaded; accepted=choice==='accepted';
     try {localStorage.setItem(key,JSON.stringify({choice,time:Date.now()}));} catch {}
-    panel.hidden=true;preferences.focus();
+    panel.hidden=true;
+    if(openedFromFooter) preferences.focus({preventScroll:true});
+    openedFromFooter=false;
     if(accepted) start();
     else {
       window['ga-disable-'+id]=true;clearCookies();
@@ -62,7 +65,7 @@
     }
   }
   panel.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>choose(b.dataset.choice)));
-  preferences.addEventListener('click',()=>{panel.hidden=false;panel.querySelector('button').focus();});
+  preferences.addEventListener('click',()=>{openedFromFooter=true;panel.hidden=false;panel.querySelector('button').focus({preventScroll:true});});
   for(const form of document.querySelectorAll('form.brief')) form.addEventListener('szara:enquiry-accepted',()=>{
     if(accepted && form.checkValidity())try{sessionStorage.setItem(pendingKey,JSON.stringify({time:Date.now(),page:location.pathname}));}catch{}
   });
