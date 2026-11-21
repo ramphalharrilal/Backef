@@ -125,6 +125,16 @@ jobs:
               await page.route('https://formspree.io/f/xvkgydqn', route=>route.fulfill({
                 status:200,contentType:'application/json',headers:{'Access-Control-Allow-Origin':'*'},body:'{"ok":true}'
               }));
+              let attempts=0;
+              // A non-API response must keep the enquiry editable for a retry.
+              const endpoint='https://formspree.io/f/xvkgydqn';
+              await page.route(endpoint, async route=>{
+                if (++attempts===1) return route.fulfill({status:200,contentType:'text/html',body:'unexpected response'});
+                await route.fallback();
+              });
+              await form.locator('[type="submit"]').click();
+              await page.waitForFunction(()=>document.querySelector('.form-status')?.textContent.includes('try again'));
+              assert.equal(await form.locator('[name="message"]').inputValue(),'Testing the preview contact form.');
               await form.locator('[type="submit"]').click();
               await page.waitForURL('**/thank-you/',{timeout:12000}).catch(error=>{console.error('Form result',page.url(),errs); throw error});
               report.screens.push({label,...top});

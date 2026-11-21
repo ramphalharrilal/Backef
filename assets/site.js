@@ -56,7 +56,11 @@
           body: new FormData(form),
           headers: { Accept: 'application/json' }
         });
-        if (!response.ok) throw new Error('Enquiry rejected');
+        if (!response.ok || !response.headers.get('Content-Type')?.includes('application/json')) {
+          throw new Error('Enquiry rejected');
+        }
+        const result = await response.json();
+        if (result.errors?.length) throw new Error('Enquiry rejected');
         form.dispatchEvent(new Event('szara:enquiry-accepted'));
         location.assign('/thank-you/');
       } catch {
