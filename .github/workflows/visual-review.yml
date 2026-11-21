@@ -1,0 +1,97 @@
+name: Review SZARA visual layout
+on:
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'assets/**'
+      - '.github/workflows/visual-review.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser tools
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Screenshot desktop and mobile, check page behavior
+        shell: bash
+        run: |
+          mkdir -p visual-review
+          python3 -m http.server 8765 --bind 127.0.0.1 >/tmp/szara-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" || true' EXIT
+          sleep 2
+          node <<'NODE'
+          const fs = require('fs');
+          const { chromium } = require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const report={screens:[],failures:[],warnings:[]};
+            for(const [label,w,h] of [['desktop',1440,900],['tablet',768,1024],['mobile',390,844],['small',320,720]]){
+              const page=await browser.newPage({viewport:{width:w,height:h},deviceScaleFactor:1});
+              const errs=[];
+              page.on('pageerror',e=>errs.push(String(e)));
+              page.on('console',m=>{if(m.type()==='error') errs.push('Console: '+m.text())});
+              await page.goto('http://127.0.0.1:8765/',{waitUntil:'domcontentloaded'});
+              await page.waitForTimeout(7000);
+              const top=await page.evaluate(()=>{
+                const hero=document.querySelector('.sz-panorama');
+                return {title:document.title,h1:document.querySelectorAll('h1').length,
+                  scrollWidth:document.documentElement.scrollWidth,
+                  viewport:innerWidth,
+                  heroHeight:hero?.getBoundingClientRect().height,
+                  heroBackgrounds:[...document.querySelectorAll('.sz-panorama .sz-photo-day,.sz-panorama .sz-photo-night')].map(im=>({src:im.currentSrc,ok:im.complete&&im.naturalWidth>0,w:im.naturalWidth})),
+                  stylesheets:[...document.styleSheets].map(s=>s.href).filter(Boolean),
+                  nav:document.querySelector('.sz-studio-header')?.getBoundingClientRect().height,
+                  form:!!document.querySelector('form#szara-enquiry'),
+                  journeyCount:document.querySelectorAll('[data-sz-mission]').length,
+                  scene:document.body.dataset.houstonTime
+                };
+              });
+              await page.screenshot({path:'visual-review/'+label+'-hero.png',fullPage:false,animations:'disabled'});
+              const locations=await page.evaluate(()=>Object.fromEntries(['service-options','work','client-feedback','contact'].map(id=>{
+                const el=document.getElementById(id);
+                return [id,el?Math.max(0,Math.round(el.getBoundingClientRect().top+window.scrollY-150)):0];
+              })));
+              for(const [section,scroll] of Object.entries(locations)){
+                await page.evaluate(y=>window.scrollTo(0,y),scroll);
+                await page.waitForTimeout(1100);
+                await page.screenshot({path:'visual-review/'+label+'-'+section+'.png',fullPage:false,animations:'disabled'});
+              }
+              if(label==='desktop'||label==='mobile'){
+                await page.evaluate(()=>window.scrollTo(0,0));
+                await page.click('[data-sz-scene-toggle]');
+                await page.waitForTimeout(2000);
+                await page.screenshot({path:'visual-review/'+label+'-alternate-sky.png',fullPage:false,animations:'disabled'});
+              }
+              report.screens.push({label,...top});
+              if(top.scrollWidth>w+2)report.failures.push(label+': horizontal overflow '+top.scrollWidth+' > '+w);
+              if(!top.form)report.failures.push(label+': contact form missing');
+              if(top.h1!==1)report.failures.push(label+': H1 count '+top.h1);
+              if(top.journeyCount!==3)report.failures.push(label+': journey scenes '+top.journeyCount);
+              if(top.heroBackgrounds.some(x=>!x.ok))report.failures.push(label+': missing hero image '+JSON.stringify(top.heroBackgrounds));
+              if(errs.length)report.warnings.push({label,errs:errs.slice(0,15)});
+              await page.close();
+            }
+            await browser.close();
+            fs.writeFileSync('visual-review/results.json',JSON.stringify(report,null,2));
+            console.log(JSON.stringify(report,null,2));
+            if(report.failures.length)process.exitCode=1;
+          })().catch(e=>{console.error(e);process.exit(1)});
+          NODE
+      - name: Upload screenshot evidence even on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: szara-visual-review
+          path: visual-review/
+          retention-days: 7
