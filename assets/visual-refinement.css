@@ -143,6 +143,8 @@ body.szara-relaunch .analytics-choice button[data-choice="rejected"]{
 }
 body.szara-relaunch .analytics-choice button[data-choice="rejected"]:hover{background:#e5eff3}
 body.szara-relaunch .analytics-choice a{color:#296a80}
+body.szara-relaunch .sz-switch-icon{width:16px;height:16px;fill:none;stroke:#e7f4f7;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+body.szara-relaunch .sz-scene-switch:hover .sz-switch-icon{stroke:#fff}
 @media(max-width:1000px){
  body.szara-relaunch .sz-panorama .sz-panorama-copy{right:8%;width:48%}
  body.szara-relaunch .sz-panorama .sz-mission-scene{width:44%;opacity:.36}
