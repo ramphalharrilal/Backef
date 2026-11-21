@@ -28,7 +28,7 @@
   function positionShip(item, position) {
     const {path, progressPath, ship, distance} = item;
     // Leave the ship visible at the beginning and end of each chapter.
-    const fraction = .12 + clamp(position, 0, 1) * .75;
+    const fraction = .26 + clamp(position, 0, 1) * .57;
     const length = fraction * distance;
     const here = path.getPointAtLength(length);
     const before = path.getPointAtLength(clamp(length - 2, 0, distance));
