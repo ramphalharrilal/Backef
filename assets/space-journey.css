@@ -1,0 +1,117 @@
+/* SZARA space signature: original iconography, scroll-driven motion.
+   Visual metaphor for Houston's aerospace heritage, not NASA affiliation. */
+body.szara-relaunch .sz-mission-scene{
+ position:absolute;inset:5% 0 auto;z-index:4;height:clamp(180px,25vw,290px);
+ overflow:visible;pointer-events:none;opacity:.9;
+}
+body.szara-relaunch .sz-mission-map{position:absolute;inset:0;display:block;width:100%;height:100%;overflow:visible}
+body.szara-relaunch .sz-mission-track{
+ fill:none;stroke:#f1faff;stroke-width:1.3;stroke-linecap:round;
+ stroke-dasharray:2 10;opacity:.38;
+}
+body.szara-relaunch .sz-mission-progress{
+ fill:none;stroke:#d6f4fc;stroke-width:1.8;stroke-linecap:round;
+ opacity:.75;filter:drop-shadow(0 0 3px #d5f3f9a1);
+}
+body.szara-relaunch .sz-mission-ship{
+ position:absolute;left:8%;top:66%;width:clamp(47px,6.3vw,75px);
+ transform:translate(-50%,-50%);transform-origin:center center;
+ filter:drop-shadow(0 2px 5px #001d2d80);will-change:left,top,transform;
+}
+body.szara-relaunch .sz-mission-ship svg{display:block;width:100%;height:auto}
+body.szara-relaunch .sz-ship-core{fill:#eaf5f6;stroke:#86cadb;stroke-width:2}
+body.szara-relaunch .sz-ship-panel{fill:#245a78;stroke:#c5edf4;stroke-width:2.5}
+body.szara-relaunch .sz-ship-grid{fill:none;stroke:#9ed1df;stroke-width:1.1}
+body.szara-relaunch .sz-ship-antenna{fill:none;stroke:#f3f9f9;stroke-width:2.5;stroke-linecap:round}
+body.szara-relaunch .sz-ship-mark{fill:none;stroke:#225b73;stroke-width:2.3;stroke-linecap:round;stroke-linejoin:round}
+body.szara-relaunch .sz-mission-cue{
+ position:absolute;right:5%;bottom:-18px;font:700 9px Arial,sans-serif;
+ letter-spacing:.19em;color:#dceff5;text-shadow:0 1px 5px #0b2d40b2;
+}
+body.szara-relaunch .sz-panorama .sz-mission-scene{inset:8% 0 auto}
+body.szara-relaunch .sz-panorama .sz-panorama-copy{z-index:6}
+body.szara-relaunch .sz-panorama .sz-houston-clouds{
+ position:absolute;z-index:3;inset:0;pointer-events:none;opacity:.43;
+ mix-blend-mode:screen;overflow:hidden;transition:opacity 1.2s;
+}
+body.szara-relaunch .sz-houston-clouds span{
+ position:absolute;display:block;border-radius:60% 65% 55% 70%;
+ background:linear-gradient(90deg,transparent,#f7fcff91 22%,#f3fbff85 50%,transparent 90%);
+ filter:blur(22px);width:31vw;height:5.2vw;min-height:30px;
+ left:-35%;top:13%;
+}
+body.szara-relaunch .sz-houston-clouds span:nth-child(2){
+ width:25vw;top:31%;left:44%;height:3.8vw;opacity:.45;
+}
+body.szara-relaunch .sz-houston-clouds span:nth-child(3){
+ top:7%;left:62%;width:17vw;height:3.5vw;opacity:.35;
+}
+body.szara-relaunch[data-houston-time="night"] .sz-houston-clouds{opacity:0}
+body.szara-relaunch .sz-panorama .sz-night-constellation.sz-sky-s{
+ position:absolute;left:4%;top:10%;width:min(30vw,360px);z-index:3;
+ filter:drop-shadow(0 0 5px #d7f6ff77);
+}
+body.szara-relaunch .sz-sky-s .sz-stars-s-path{
+ stroke-dasharray:4 7;stroke-width:1.3;opacity:.82;
+}
+body.szara-relaunch .sz-sky-s circle{
+ fill:#e6f7ff;filter:drop-shadow(0 0 4px #def5ff);
+}
+body.szara-relaunch .sz-sky-s span{
+ color:#e0f3f8;letter-spacing:.17em;font-size:8px;opacity:.7;
+}
+body.szara-relaunch .sz-panorama-interlude .sz-mission-scene{
+ inset:1% 0 auto;height:clamp(175px,25vw,260px);opacity:.74;z-index:3;
+}
+body.szara-relaunch .sz-panorama-interlude>.wrap{z-index:5}
+body.szara-relaunch .sz-blue-quote .sz-mission-scene{
+ inset:0 0 auto;height:82%;opacity:.27;z-index:2;
+}
+body.szara-relaunch .sz-blue-quote .sz-mission-ship{
+ width:clamp(38px,4.4vw,58px);
+}
+body.szara-relaunch .sz-blue-quote .wrap{z-index:5}
+body.szara-relaunch .sz-mission-scene:has(.sz-mission-progress) .sz-mission-progress{
+ transition:opacity .3s ease;
+}
+@media(prefers-reduced-motion:no-preference){
+ body.szara-relaunch[data-houston-time="day"] .sz-houston-clouds span:first-child{
+  animation:sz-cloud-drift 53s linear infinite alternate;
+ }
+ body.szara-relaunch[data-houston-time="day"] .sz-houston-clouds span:nth-child(2){
+  animation:sz-cloud-drift 75s linear infinite alternate-reverse;
+ }
+ body.szara-relaunch[data-houston-time="day"] .sz-houston-clouds span:nth-child(3){
+  animation:sz-cloud-drift 62s linear infinite alternate;
+ }
+ @keyframes sz-cloud-drift{
+  from{transform:translate3d(-3vw,0,0)}
+  to{transform:translate3d(55vw,1vw,0)}
+ }
+}
+@media(max-width:900px){
+ body.szara-relaunch .sz-panorama .sz-mission-scene{top:3%;height:215px}
+ body.szara-relaunch .sz-mission-cue{bottom:-3px;font-size:8px}
+}
+@media(max-width:720px){
+ body.szara-relaunch .sz-panorama .sz-mission-scene{
+  top:6%;height:145px;z-index:4;opacity:.63;
+ }
+ body.szara-relaunch .sz-mission-ship{width:43px}
+ body.szara-relaunch .sz-mission-cue{font-size:7px;bottom:3px;right:6%}
+ body.szara-relaunch .sz-panorama .sz-night-constellation.sz-sky-s{
+  top:10%;left:-2%;width:205px;opacity:.48;
+ }
+ body.szara-relaunch .sz-sky-s span{display:none}
+ body.szara-relaunch .sz-houston-clouds{opacity:.24}
+ body.szara-relaunch .sz-blue-quote .sz-mission-scene{top:1%;height:55%;opacity:.20}
+ body.szara-relaunch .sz-panorama-interlude .sz-mission-scene{top:0;height:150px;opacity:.58}
+ body.szara-relaunch .sz-panorama-interlude .sz-mission-cue{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+ body.szara-relaunch .sz-houston-clouds span{animation:none!important;transform:none!important}
+ body.szara-relaunch .sz-mission-ship{
+  left:82%;top:25%;transform:translate(-50%,-50%)!important;will-change:auto;
+ }
+ body.szara-relaunch .sz-mission-progress{display:none}
+}
