@@ -1,0 +1,136 @@
+/* Recorded L.A. Design Studio reference: cinematic layered agency presentation.
+   Original SZARA content, imagery and interactions. This sheet is homepage-scoped. */
+body.szara-relaunch{background:#fff;color:#203d4b}
+body.szara-relaunch .sz-top-strip{height:28px;background:#eff3f4;color:#527683;font-size:9px;letter-spacing:.17em}
+body.szara-relaunch .sz-top-strip>.wrap{height:100%;display:flex;align-items:center;justify-content:space-between;gap:16px}
+body.szara-relaunch .sz-top-strip span:last-child{display:flex;gap:23px}
+body.szara-relaunch .sz-top-strip a{color:#4a7180;text-decoration:none}
+body.szara-relaunch header.sz-studio-header{position:sticky!important;top:0;z-index:1900;background:#fffffffa!important;border-bottom:1px solid #e2ebed;box-shadow:0 1px 10px #153c4c0d}
+body.szara-relaunch .sz-studio-nav{min-height:116px;display:flex;justify-content:space-between;align-items:center;gap:35px}
+body.szara-relaunch .sz-studio-nav .sz-brand{min-width:162px;display:flex;flex-direction:column;align-items:flex-start;line-height:.9;color:#36697d!important;font:400 35px/1.02 Georgia,serif;letter-spacing:-.06em;text-decoration:none}
+body.szara-relaunch .sz-studio-nav .sz-brand>span{display:none}
+body.szara-relaunch .sz-studio-nav .sz-brand small{font:400 8px/1.3 Arial,sans-serif;letter-spacing:.28em;color:#9bb4bd;margin:0 0 6px}
+body.szara-relaunch .sz-studio-nav .sz-brand .sz-brand-sub{font-size:9px;letter-spacing:.13em;margin:5px 0 0;color:#7599a7}
+body.szara-relaunch .sz-icon-navigation{display:flex;align-items:center;justify-content:flex-end;flex:1;gap:clamp(11px,2.8vw,45px)}
+body.szara-relaunch .sz-icon-navigation a{min-width:87px;display:flex;flex-direction:column;align-items:center;gap:13px;text-decoration:none;font:500 10px/1.35 Arial,sans-serif;letter-spacing:.07em;color:#3d6e7c;white-space:nowrap;transition:color .2s,transform .2s}
+body.szara-relaunch .sz-icon-navigation a:hover{color:#164d68;transform:translateY(-2px)}
+body.szara-relaunch .sz-icon-navigation svg{width:30px;height:30px;fill:none;stroke:#47879e;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+body.szara-relaunch .sz-desktop-contact{font:700 10px Arial,sans-serif;letter-spacing:.08em;text-decoration:none;color:white;background:#2b7d98;padding:15px 17px;white-space:nowrap}
+body.szara-relaunch .sz-contact-tab{position:fixed;z-index:1850;right:0;top:41%;writing-mode:vertical-rl;background:#438fa9;color:#fff;font:600 11px Arial,sans-serif;letter-spacing:.08em;padding:18px 10px;text-decoration:none;box-shadow:0 7px 22px #1f5c7724}
+body.szara-relaunch .sz-panorama{position:relative;isolation:isolate;display:grid;place-items:center;min-height:560px;height:clamp(560px,65vw,690px);background:#204252;color:#fff;overflow:hidden;text-align:center}
+body.szara-relaunch .sz-panorama .sz-parallax-image{position:absolute;z-index:0;inset:-24% 0;pointer-events:none;overflow:hidden}
+body.szara-relaunch .sz-panorama .sz-parallax-image img{width:100%;height:100%;display:block;object-fit:cover;object-position:center 44%;transform:translate3d(0,0,0) scale(1.035);will-change:transform}
+body.szara-relaunch .sz-panorama-glaze{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,#07253653,#0b354a99),linear-gradient(90deg,#12374e83,transparent 80%)}
+body.szara-relaunch .sz-panorama-copy{position:relative;z-index:3;padding:70px 30px 85px;max-width:1000px;text-shadow:0 2px 12px #09253245}
+body.szara-relaunch .sz-hero-kicker{font:700 10px Arial,sans-serif;letter-spacing:.27em;color:#e2f1f5;margin:0 0 28px}
+body.szara-relaunch .sz-panorama h1{font:400 clamp(57px,7.4vw,106px)/1.04 Georgia,serif;letter-spacing:-.045em;color:#fff;margin:0 0 23px;text-wrap:balance}
+body.szara-relaunch .sz-panorama h1 strong{font-weight:400;font-style:italic;color:#e7f3f6}
+body.szara-relaunch .sz-panorama-copy>p:not(.sz-hero-kicker){font:400 clamp(16px,1.5vw,19px)/1.7 Georgia,serif;color:#e9f1f4}
+body.szara-relaunch .sz-hero-discover{display:inline-flex;align-items:center;gap:24px;margin-top:28px;border:1px solid #ffffffae;padding:15px 22px;font:700 10px Arial,sans-serif;letter-spacing:.12em;color:#fff;text-decoration:none;transition:background .2s}
+body.szara-relaunch .sz-hero-discover:hover{background:#ffffff35}
+body.szara-relaunch .sz-photo-place{position:absolute;z-index:2;bottom:26px;left:5%;right:5%;display:flex;justify-content:space-between;color:#e4f3f6;font:700 10px Arial,sans-serif;letter-spacing:.15em}
+body.szara-relaunch .sz-sky-drift{position:absolute;top:13%;right:11%;z-index:2;pointer-events:none;opacity:.55;animation:sz-air-drift 13s ease-in-out infinite alternate}
+body.szara-relaunch .sz-flight-shape{display:block;width:95px;height:17px;background:#e8f0f3;border-radius:45% 30% 30% 50%;transform:skewX(-19deg);box-shadow:0 8px 18px #0004}
+body.szara-relaunch .sz-flight-shape i{display:block;position:relative;top:6px;left:44px;width:60px;height:9px;background:#d2e9ee;transform:skewX(-30deg) rotate(-10deg)}
+body.szara-relaunch .sz-flight-caption{display:block;margin-top:15px;font:700 9px Arial,sans-serif;letter-spacing:.16em;color:white}
+@keyframes sz-air-drift{from{transform:translate(-16px,-4px)}to{transform:translate(26px,13px)}}
+body.szara-relaunch .sz-expertise{padding:100px 0 102px;background:#fff}
+body.szara-relaunch .sz-section-lede{text-align:center;max-width:780px;margin:0 auto 62px}
+body.szara-relaunch .sz-rule-label{font:800 10px/1.4 Arial,sans-serif;letter-spacing:.25em;text-transform:uppercase;color:#5b97a7}
+body.szara-relaunch .sz-section-lede h2{font:400 clamp(34px,4.6vw,58px)/1.18 Georgia,serif;color:#355967;margin:18px 0}
+body.szara-relaunch .sz-section-lede h2 em{color:#41839a}
+body.szara-relaunch .sz-section-lede>p:last-child{font:400 15px/1.7 Arial,sans-serif;color:#7c8c91}
+body.szara-relaunch .sz-expertise-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:46px;row-gap:54px}
+body.szara-relaunch .sz-expertise-item{display:grid;grid-template-columns:46px minmax(0,1fr);gap:16px;padding-bottom:28px;border-bottom:1px solid #dde7e9}
+body.szara-relaunch .sz-expertise-icon{display:block;font-size:37px;line-height:1;color:#4e96af;font-weight:400}
+body.szara-relaunch .sz-expertise-item h3{font:400 21px/1.3 Arial,sans-serif;letter-spacing:.01em;color:#3b4a52;margin:0 0 19px}
+body.szara-relaunch .sz-expertise-item p{font:400 15px/1.8 Arial,sans-serif;color:#738287;margin:0}
+body.szara-relaunch .sz-expertise-item p strong{color:#334751}
+body.szara-relaunch .sz-expertise-item a{display:inline-block;color:#40859a;font:750 10px Arial,sans-serif;letter-spacing:.14em;text-decoration:none;margin-top:15px}
+body.szara-relaunch .sz-mini-extras{text-align:center;font-size:13px;color:#79888c;margin:30px auto 0}
+body.szara-relaunch .sz-mini-extras a{color:#467f8f}
+body.szara-relaunch .sz-blue-quote{position:relative;isolation:isolate;overflow:hidden;min-height:410px;background:#39849f;color:#fff;display:flex;align-items:center;justify-content:center;padding:92px 0}
+body.szara-relaunch .sz-blue-quote-photo{position:absolute;inset:-30% 0;z-index:0;overflow:hidden;pointer-events:none}
+body.szara-relaunch .sz-blue-quote-photo img{width:100%;height:100%;object-fit:cover;object-position:center center;display:block;transform:translate3d(0,0,0) scale(1.02);will-change:transform}
+body.szara-relaunch .sz-blue-quote-wash{position:absolute;inset:0;z-index:1;background:rgba(43,131,160,.79);pointer-events:none}
+body.szara-relaunch .sz-blue-quote .wrap{position:relative;z-index:2;text-align:center;max-width:1020px}
+body.szara-relaunch .sz-quote-mark{width:70px;height:70px;border-radius:50%;background:#fff;color:#4089a2;margin:-50px auto 34px;font:400 66px/1.25 Georgia,serif}
+body.szara-relaunch .sz-blue-quote h2{font:400 clamp(29px,3.55vw,46px)/1.43 Georgia,serif;letter-spacing:-.025em;color:#fff;margin:0}
+body.szara-relaunch .sz-blue-quote p{font:500 11px/1.8 Arial,sans-serif;letter-spacing:.13em;color:#e3f2f5;margin:26px 0 0}
+body.szara-relaunch .sz-work-gallery{background:#fff;padding:85px 0 100px}
+body.szara-relaunch .sz-portfolio-heading{text-align:center;margin-bottom:55px}
+body.szara-relaunch .sz-portfolio-heading h2{font:400 clamp(38px,4.4vw,59px)/1.15 Georgia,serif;margin:18px 0;color:#345566}
+body.szara-relaunch .sz-portfolio-heading h2 em{color:#44889e}
+body.szara-relaunch .sz-portfolio-heading p{font-size:15px;color:#7d8e92}
+body.szara-relaunch .sz-portfolio-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}
+body.szara-relaunch .sz-portfolio-tile{position:relative;display:flex;flex-direction:column;justify-content:flex-end;min-height:305px;overflow:hidden;background:#e3edf0;text-decoration:none;color:#fff;isolation:isolate}
+body.szara-relaunch .sz-portfolio-tile img{position:absolute;z-index:-2;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1);transition:transform .75s cubic-bezier(.2,.7,.2,1)}
+body.szara-relaunch .sz-portfolio-tile:hover img{transform:scale(1.07)}
+body.szara-relaunch .sz-portfolio-tile:has(img)::before{content:"";z-index:-1;position:absolute;inset:0;background:linear-gradient(0deg,#082937d6,transparent 67%)}
+body.szara-relaunch .sz-tile-caption{display:flex;flex-direction:column;gap:8px;padding:19px}
+body.szara-relaunch .sz-tile-caption small,body.szara-relaunch .sz-tile-label{font:800 10px/1.4 Arial,sans-serif;letter-spacing:.13em;color:#e1f0f5}
+body.szara-relaunch .sz-tile-caption strong{font:400 23px/1.18 Georgia,serif;color:#fff}
+body.szara-relaunch .sz-tile-caption>span{font-size:12px;color:#e6eff1}
+body.szara-relaunch .sz-tile-type{background:#337f99;padding:26px;align-items:flex-start;justify-content:space-between}
+body.szara-relaunch .sz-tile-type .sz-work-label{font:800 11px/1.6 Arial,sans-serif;letter-spacing:.2em}
+body.szara-relaunch .sz-tile-type>span:nth-child(2){font:400 33px/1.2 Georgia,serif}
+body.szara-relaunch .sz-tile-type b{font:750 11px Arial,sans-serif;letter-spacing:.13em}
+body.szara-relaunch .sz-tile-tyme{background:linear-gradient(140deg,#526b80,#163e56);padding:28px;justify-content:space-between}
+body.szara-relaunch .sz-tile-truluv{background:linear-gradient(140deg,#6a8798,#285166);padding:28px;justify-content:space-between}
+body.szara-relaunch .sz-tile-tyme strong,body.szara-relaunch .sz-tile-truluv strong{font:400 37px/1.1 Georgia,serif}
+body.szara-relaunch .sz-tile-action{font:750 11px Arial,sans-serif;letter-spacing:.13em}
+body.szara-relaunch .sz-gallery-bottom{text-align:center;margin-top:50px}
+body.szara-relaunch .sz-gallery-bottom a{font-size:11px;font-weight:800;letter-spacing:.12em;color:#408198;text-decoration:none;border-bottom:1px solid #408198;padding:0 0 8px}
+body.szara-relaunch .sz-panorama-interlude{position:relative;isolation:isolate;overflow:hidden;min-height:480px;display:flex;align-items:center;justify-content:center;color:white;text-align:center;background:#1a3e52}
+body.szara-relaunch .sz-panorama-interlude .sz-interlude-image{position:absolute;z-index:0;inset:-25% 0;pointer-events:none}
+body.szara-relaunch .sz-panorama-interlude .sz-interlude-image img{width:100%;height:100%;object-fit:cover;display:block;transform:translate3d(0,0,0) scale(1.035);filter:brightness(.5) saturate(.75);will-change:transform}
+body.szara-relaunch .sz-panorama-interlude::after{content:"";position:absolute;inset:0;background:rgba(17,55,75,.5);z-index:1}
+body.szara-relaunch .sz-panorama-interlude>.wrap{position:relative;z-index:2}
+body.szara-relaunch .sz-panorama-interlude span{font:800 10px Arial,sans-serif;letter-spacing:.23em}
+body.szara-relaunch .sz-panorama-interlude h2{font:400 clamp(42px,5vw,74px)/1.18 Georgia,serif;margin:25px 0 33px;color:#fff}
+body.szara-relaunch .sz-panorama-interlude h2 em{color:#d6edf2}
+body.szara-relaunch .sz-panorama-interlude a{font:750 11px Arial,sans-serif;letter-spacing:.12em;color:white;border:1px solid white;text-decoration:none;padding:15px 20px}
+body.szara-relaunch .sz-reveal{opacity:1}
+@media(prefers-reduced-motion:no-preference){
+body.szara-relaunch.sz-agency-animated .sz-reveal{opacity:0;transform:translateY(36px);transition:opacity .85s ease,transform .85s cubic-bezier(.2,.7,.2,1);transition-delay:var(--sz-reveal-delay,0ms)}
+body.szara-relaunch.sz-agency-animated .sz-reveal.sz-seen{opacity:1;transform:translateY(0)}
+}
+@media(max-width:1000px){body.szara-relaunch .sz-studio-nav{gap:15px}body.szara-relaunch .sz-icon-navigation{gap:10px}body.szara-relaunch .sz-desktop-contact{display:none}body.szara-relaunch .sz-expertise-grid{column-gap:20px}}
+@media(max-width:720px){
+ body.szara-relaunch .wrap{width:calc(100% - 36px)}
+ body.szara-relaunch .sz-top-strip{height:22px}body.szara-relaunch .sz-top-strip>.wrap{justify-content:center}body.szara-relaunch .sz-top-strip span:last-child{display:none}
+ body.szara-relaunch .sz-studio-nav{min-height:77px}
+ body.szara-relaunch .sz-studio-nav .sz-brand{min-width:0;font-size:28px}
+ body.szara-relaunch .sz-icon-navigation{display:none}
+ body.szara-relaunch .sz-contact-tab{top:49%;font-size:10px;padding:12px 7px}
+ body.szara-relaunch .sz-panorama{height:auto;min-height:615px}
+ body.szara-relaunch .sz-panorama-copy{padding:85px 25px 105px}
+ body.szara-relaunch .sz-panorama h1{font-size:clamp(51px,11vw,72px)}
+ body.szara-relaunch .sz-panorama-copy>p:not(.sz-hero-kicker){font-size:15px}
+ body.szara-relaunch .sz-hero-kicker{font-size:9px;letter-spacing:.12em}
+ body.szara-relaunch .sz-photo-place{font-size:8px;left:22px;right:22px}
+ body.szara-relaunch .sz-sky-drift{display:none}
+ body.szara-relaunch .sz-expertise{padding:65px 0}
+ body.szara-relaunch .sz-section-lede{margin-bottom:38px}
+ body.szara-relaunch .sz-section-lede h2{font-size:clamp(36px,9vw,49px)}
+ body.szara-relaunch .sz-expertise-grid{grid-template-columns:1fr;gap:26px}
+ body.szara-relaunch .sz-expertise-item{padding-bottom:25px;grid-template-columns:40px minmax(0,1fr);gap:14px}
+ body.szara-relaunch .sz-expertise-item h3{font-size:20px;margin-bottom:10px}
+ body.szara-relaunch .sz-blue-quote{min-height:370px;padding:82px 0}
+ body.szara-relaunch .sz-blue-quote h2{font-size:clamp(29px,7vw,38px)}
+ body.szara-relaunch .sz-blue-quote p{font-size:10px;letter-spacing:.08em}
+ body.szara-relaunch .sz-quote-mark{width:50px;height:50px;font-size:50px;margin:-32px auto 25px}
+ body.szara-relaunch .sz-work-gallery{padding:65px 0}
+ body.szara-relaunch .sz-portfolio-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ body.szara-relaunch .sz-portfolio-tile{min-height:235px}
+ body.szara-relaunch .sz-tile-caption{padding:13px}
+ body.szara-relaunch .sz-tile-caption strong{font-size:18px}
+ body.szara-relaunch .sz-tile-type{padding:14px}
+ body.szara-relaunch .sz-tile-type>span:nth-child(2){font-size:25px}
+ body.szara-relaunch .sz-tile-tyme,body.szara-relaunch .sz-tile-truluv{padding:14px}
+ body.szara-relaunch .sz-tile-tyme strong,body.szara-relaunch .sz-tile-truluv strong{font-size:26px}
+ body.szara-relaunch .sz-panorama-interlude{min-height:380px}
+ body.szara-relaunch .sz-panorama-interlude h2{font-size:clamp(39px,9vw,54px)}
+}
+@media(max-width:420px){body.szara-relaunch .sz-portfolio-grid{grid-template-columns:1fr}body.szara-relaunch .sz-portfolio-tile{min-height:260px}}
+@media(prefers-reduced-motion:reduce){body.szara-relaunch .sz-parallax-image img,body.szara-relaunch .sz-blue-quote-photo img{will-change:auto;transform:none!important}body.szara-relaunch .sz-reveal{opacity:1!important;transform:none!important}}

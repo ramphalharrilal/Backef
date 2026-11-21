@@ -44,15 +44,18 @@
     document.head.append(tag);
   }
   const panel=document.createElement('section');panel.className='analytics-choice';panel.setAttribute('aria-label','Analytics preference');
-  panel.innerHTML='<h2>Help us improve this website?</h2><p>With your permission, Google Analytics measures visits and completed enquiry journeys. Advertising features are off. You can change your choice anytime. <a href="/privacy/">Privacy details</a></p><div><button type="button" data-choice="accepted">Accept analytics</button><button type="button" data-choice="rejected">Reject analytics</button></div>';
+  panel.innerHTML='<h2>Privacy and analytics</h2><p>May we use Google Analytics to understand visits and contact enquiries? Advertising tracking stays off. <a href="/privacy/">Privacy details</a></p><div><button type="button" data-choice="accepted">Accept analytics</button><button type="button" data-choice="rejected">Reject analytics</button></div>';
   const preferences=document.createElement('button');preferences.type='button';preferences.className='analytics-preferences';preferences.textContent='Privacy choices';
   document.body.append(panel);
   const footerPreferences = document.querySelector('.footer .footer-bottom') || document.querySelector('.footer .wrap') || document.querySelector('footer') || document.body;
   footerPreferences.append(preferences);
+  let openedFromFooter=false;
   function choose(choice) {
     const wasLoaded=loaded; accepted=choice==='accepted';
     try {localStorage.setItem(key,JSON.stringify({choice,time:Date.now()}));} catch {}
-    panel.hidden=true;preferences.focus();
+    panel.hidden=true;
+    if(openedFromFooter) preferences.focus({preventScroll:true});
+    openedFromFooter=false;
     if(accepted) start();
     else {
       window['ga-disable-'+id]=true;clearCookies();
@@ -62,7 +65,7 @@
     }
   }
   panel.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>choose(b.dataset.choice)));
-  preferences.addEventListener('click',()=>{panel.hidden=false;panel.querySelector('button').focus();});
+  preferences.addEventListener('click',()=>{openedFromFooter=true;panel.hidden=false;panel.querySelector('button').focus({preventScroll:true});});
   for(const form of document.querySelectorAll('form.brief')) form.addEventListener('szara:enquiry-accepted',()=>{
     if(accepted && form.checkValidity())try{sessionStorage.setItem(pendingKey,JSON.stringify({time:Date.now(),page:location.pathname}));}catch{}
   });

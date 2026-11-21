@@ -1,0 +1,195 @@
+name: Review SZARA visual layout
+on:
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'assets/**'
+      - '.github/workflows/visual-review.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser tools
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Screenshot desktop and mobile, check page behavior
+        shell: bash
+        run: |
+          mkdir -p visual-review
+          python3 -m http.server 8765 --bind 127.0.0.1 >/tmp/szara-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" || true' EXIT
+          sleep 2
+          cp szarvis-worker/src/index.js /tmp/szara-worker.mjs
+          node <<'NODE'
+          const fs = require('fs');
+          const { chromium } = require('playwright');
+          (async()=>{
+            const assert=require('node:assert/strict');
+            const worker=(await import('file:///tmp/szara-worker.mjs')).default;
+            const browser=await chromium.launch({headless:true});
+            const report={screens:[],failures:[],warnings:[]};
+            for(const [label,w,h] of [['desktop',1440,900],['tablet',768,1024],['mobile',390,844],['small',320,720]]){
+              const page=await browser.newPage({viewport:{width:w,height:h},deviceScaleFactor:1});
+              const errs=[];
+              page.on('pageerror',e=>errs.push(String(e)));
+              page.on('console',m=>{if(m.type()==='error') errs.push('Console: '+m.text())});
+              page.on('response',r=>{if(r.status()>=400) errs.push(r.status()+' '+r.url())});
+              page.on('requestfailed',r=>{if(r.failure()?.errorText!=='net::ERR_ABORTED') errs.push(r.failure()?.errorText+' '+r.url())});
+              await page.route('**/api/szarvis', async route=>{
+                const response=await worker.fetch(new Request(route.request().url()), {});
+                await route.fulfill({status:response.status,contentType:'application/json',body:await response.text()});
+              });
+              await page.goto('http://127.0.0.1:8765/',{waitUntil:'domcontentloaded'});
+              await page.waitForTimeout(7000);
+              const consent=page.locator('.analytics-choice [data-choice="rejected"]');
+              if(await consent.isVisible()) await consent.click();
+              assert.ok(await page.evaluate(()=>scrollY<10),'Privacy choice moved the viewport');
+              const sky=page.locator('[data-sz-scene-toggle]');
+              assert.equal(await sky.inputValue(),'auto');
+              await sky.selectOption('day');
+              const top=await page.evaluate(()=>{
+                const hero=document.querySelector('.sz-panorama');
+                return {title:document.title,h1:document.querySelectorAll('h1').length,
+                  scrollWidth:document.documentElement.scrollWidth,
+                  viewport:innerWidth,
+                  heroHeight:hero?.getBoundingClientRect().height,
+                  heroBackgrounds:[...document.querySelectorAll('.sz-panorama .sz-photo-day,.sz-panorama .sz-photo-night')].map(im=>({src:im.currentSrc,ok:im.complete&&im.naturalWidth>0,w:im.naturalWidth})),
+                  stylesheets:[...document.styleSheets].map(s=>s.href).filter(Boolean),
+                  nav:document.querySelector('.sz-studio-header')?.getBoundingClientRect().height,
+                  form:!!document.querySelector('form#szara-enquiry'),
+                  journeyCount:document.querySelectorAll('[data-sz-mission]').length,
+                  scene:document.body.dataset.houstonTime
+                };
+              });
+              await page.waitForTimeout(1900);
+              await page.screenshot({path:'visual-review/'+label+'-hero.png',fullPage:false,animations:'disabled'});
+              const locations=await page.evaluate(()=>Object.fromEntries(['service-options','client-feedback','work','houston-studio','contact'].map(id=>{
+                const el=document.getElementById(id);
+                return [id,el?Math.max(0,Math.round(el.getBoundingClientRect().top+window.scrollY-150)):0];
+              })));
+              for(const [section,scroll] of Object.entries(locations)){
+                await page.evaluate(y=>window.scrollTo({top:y,behavior:'instant'}),scroll);
+                await page.waitForTimeout(1100);
+                await page.screenshot({path:'visual-review/'+label+'-'+section+'.png',fullPage:false,animations:'disabled'});
+              }
+              if(label==='desktop'||label==='mobile'){
+                await page.evaluate(()=>window.scrollTo(0,0));
+                await sky.selectOption('night');
+                assert.equal(await page.locator('body').getAttribute('data-houston-time'),'night');
+                await page.waitForTimeout(2000);
+                await page.screenshot({path:'visual-review/'+label+'-alternate-sky.png',fullPage:false,animations:'disabled'});
+              }
+              await sky.selectOption('auto');
+              const forwards=await page.locator('[data-sz-mission="launch"]').getAttribute('data-progress');
+              await page.evaluate(()=>window.scrollTo({top:200,behavior:'instant'}));
+              await page.waitForFunction(previous=>document.querySelector('[data-sz-mission="launch"]').dataset.progress!==previous, forwards);
+              const reviewColor=await page.locator('.sz-client-quote blockquote').evaluate(el=>getComputedStyle(el).color);
+              assert.equal(reviewColor,'rgb(255, 255, 255)');
+              if(w<=720){
+                const menu=page.locator('details.mobile-menu');
+                await menu.locator('summary').focus();
+                await page.keyboard.press('Enter');
+                assert.ok(await menu.getAttribute('open')!==null);
+                await menu.getByText('Services',{exact:true}).click();
+                await page.waitForURL('**/#service-options');
+              }
+              const broken=await page.locator('a[href^="#"]').evaluateAll(links=>links.filter(a=>!document.getElementById(a.hash.slice(1))).map(a=>a.hash));
+              assert.deepEqual(broken,[]);
+              const assets=await page.locator('main img').evaluateAll(imgs=>imgs.filter(im=>!im.complete||!im.naturalWidth).map(im=>im.src));
+              assert.deepEqual(assets,[]);
+              const form=page.locator('#szara-enquiry');
+              assert.equal(await form.evaluate(f=>f.checkValidity()),false);
+              await form.locator('[name="name"]').fill('Preview QA');
+              await form.locator('[name="email"]').fill('preview@example.com');
+              await form.locator('[name="message"]').fill('Testing the preview contact form.');
+              assert.equal(await form.evaluate(f=>f.checkValidity()),true);
+              await page.locator('.wsz-floating').click();
+              await page.locator('.wsz-input').fill('How can I contact Harry?');
+              await page.locator('.wsz-input').press('Enter');
+              await page.waitForFunction(()=>document.querySelectorAll('.wsz-transcript > *').length>=3,{},{timeout:10000});
+              await page.emulateMedia({reducedMotion:'reduce'});
+              await page.waitForFunction(()=>getComputedStyle(document.querySelector('.sz-photo-day')).transform==='none');
+              await page.getByRole('button',{name:'Privacy choices',exact:true}).click();
+              await consent.click();
+              await page.route('https://formspree.io/f/xvkgydqn', route=>route.fulfill({
+                status:200,contentType:'application/json',headers:{'Access-Control-Allow-Origin':'*'},body:'{"ok":true}'
+              }));
+              let attempts=0;
+              // A non-API response must keep the enquiry editable for a retry.
+              const endpoint='https://formspree.io/f/xvkgydqn';
+              await page.route(endpoint, async route=>{
+                if (++attempts===1) return route.fulfill({status:200,contentType:'text/html',body:'unexpected response'});
+                await route.fallback();
+              });
+              await form.locator('[type="submit"]').click();
+              await page.waitForFunction(()=>document.querySelector('.form-status')?.textContent.includes('try again'));
+              assert.equal(await form.locator('[name="message"]').inputValue(),'Testing the preview contact form.');
+              await form.locator('[type="submit"]').click();
+              await page.waitForURL('**/thank-you/',{timeout:12000}).catch(error=>{console.error('Form result',page.url(),errs); throw error});
+              report.screens.push({label,...top});
+              if(top.scrollWidth>w+2)report.failures.push(label+': horizontal overflow '+top.scrollWidth+' > '+w);
+              if(!top.form)report.failures.push(label+': contact form missing');
+              if(top.h1!==1)report.failures.push(label+': H1 count '+top.h1);
+              if(top.journeyCount!==3)report.failures.push(label+': journey scenes '+top.journeyCount);
+              if(top.heroBackgrounds.some(x=>!x.ok))report.failures.push(label+': missing hero image '+JSON.stringify(top.heroBackgrounds));
+              if(errs.length)report.failures.push({label,errs:errs.slice(0,15)});
+              await page.close();
+            }
+            await browser.close();
+            fs.writeFileSync('visual-review/results.json',JSON.stringify(report,null,2));
+            console.log(JSON.stringify(report,null,2));
+            if(report.failures.length)process.exitCode=1;
+          })().catch(e=>{console.error(e);process.exit(1)});
+          NODE
+      - name: Assemble visual review
+        if: always()
+        run: |
+          python3 -m venv "$RUNNER_TEMP/szara-images"
+          "$RUNNER_TEMP/szara-images/bin/pip" install Pillow --quiet
+          "$RUNNER_TEMP/szara-images/bin/python" - <<'PY'
+          from PIL import Image, ImageOps, ImageDraw
+          from pathlib import Path
+          import base64, io
+          root = Path('visual-review')
+          for label in ('desktop','mobile'):
+              tiles=[]
+              for scene in ('hero','alternate-sky','client-feedback','work'):
+                  file=root / f'{label}-{scene}.png'
+                  if file.exists():
+                      im=Image.open(file).convert('RGB')
+                      im.thumbnail((480,400))
+                      tiles.append((scene,im))
+              if not tiles: continue
+              width=max(im.width for _,im in tiles)
+              height=max(im.height for _,im in tiles)
+              board=Image.new('RGB',(width*2,(height+24)*2),'white')
+              captions=ImageDraw.Draw(board)
+              for i,(name,im) in enumerate(tiles):
+                  x,y=(i%2)*width,(i//2)*(height+24)
+                  board.paste(im,(x,y))
+                  captions.text((x+7,y+height+3),name,fill='black')
+              board.save(root / f'{label}-review.jpg',quality=86)
+              board.thumbnail((680,660))
+              buffer=io.BytesIO()
+              board.save(buffer,format='JPEG',quality=65)
+              data=base64.b64encode(buffer.getvalue()).decode()
+              print(f'BOARD-{label} '+data)
+          PY
+      - name: Upload screenshot evidence even on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: szara-visual-review
+          path: visual-review/
+          retention-days: 7
