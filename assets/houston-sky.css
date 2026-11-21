@@ -1,0 +1,89 @@
+/* SZARA Houston day/night experience — original art direction.
+   Photos: TaurusAuriga + Bobby L. Warren, CC BY-SA 3.0, attribution in footer.
+   Layered over studio-reference styling. No NASA trademarks or implied affiliation. */
+body.szara-relaunch .sz-panorama{min-height:660px;background:#24475a;overflow:hidden}
+body.szara-relaunch .sz-panorama .sz-houston-photo-pair,
+body.szara-relaunch .sz-panorama-interlude .sz-houston-photo-pair{inset:-19% 0;overflow:hidden}
+body.szara-relaunch .sz-houston-photo-pair img.sz-photo-day,
+body.szara-relaunch .sz-houston-photo-pair img.sz-photo-night{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;transform:translate3d(0,0,0) scale(1.035);transition:opacity 1.8s ease;will-change:transform;pointer-events:none}
+body.szara-relaunch .sz-houston-photo-pair .sz-photo-day{opacity:1;z-index:1;object-position:center 49%}
+body.szara-relaunch .sz-houston-photo-pair .sz-photo-night{opacity:0;z-index:2;object-position:center 45%}
+body.szara-relaunch[data-houston-time="night"] .sz-houston-photo-pair .sz-photo-day{opacity:0}
+body.szara-relaunch[data-houston-time="night"] .sz-houston-photo-pair .sz-photo-night{opacity:1}
+body.szara-relaunch .sz-panorama .sz-panorama-glaze{background:linear-gradient(180deg,rgba(7,31,44,.24) 0%,rgba(8,32,45,.44) 58%,rgba(5,21,33,.8) 100%),linear-gradient(90deg,rgba(7,32,45,.56),rgba(7,31,45,.24) 70%);transition:background-color 1.8s ease}
+body.szara-relaunch[data-houston-time="night"] .sz-panorama .sz-panorama-glaze{background:linear-gradient(180deg,rgba(7,20,34,.1),rgba(7,19,33,.40) 58%,rgba(5,14,28,.80)),linear-gradient(90deg,rgba(5,20,33,.54),rgba(5,21,32,.16) 75%)}
+body.szara-relaunch .sz-panorama .sz-panorama-copy{z-index:5;position:relative;max-width:1020px;padding-top:45px;padding-bottom:155px}
+body.szara-relaunch .sz-panorama .sz-panorama-copy h1{font-size:clamp(58px,6.8vw,100px);line-height:1.04;text-shadow:0 2px 18px rgba(2,23,37,.35)}
+body.szara-relaunch .sz-panorama .sz-panorama-copy>p:not(.sz-hero-kicker){text-shadow:0 2px 16px rgba(2,23,37,.43)}
+body.szara-relaunch .sz-panorama .sz-founder-note{margin:22px 0 0!important;color:#dcebf0!important;font:750 9px/1.7 Arial,sans-serif!important;letter-spacing:.16em}
+body.szara-relaunch .sz-panorama .sz-panorama-copy .sz-founder-note{font-size:9px!important}
+body.szara-relaunch .sz-panorama .sz-night-constellation{position:absolute;left:7%;top:8%;z-index:3;width:min(28vw,380px);opacity:0;transition:opacity 2s ease;pointer-events:none}
+body.szara-relaunch .sz-night-constellation svg{width:100%;height:auto;overflow:visible}
+body.szara-relaunch .sz-night-constellation path{fill:none;stroke:rgba(228,246,255,.48);stroke-width:.7;stroke-dasharray:3 6}
+body.szara-relaunch .sz-night-constellation circle{fill:#effaff;filter:drop-shadow(0 0 3px #fff7)}
+body.szara-relaunch .sz-night-constellation span{display:block;margin-left:2px;color:#d5eef1;font:700 9px Arial,sans-serif;letter-spacing:.20em}
+body.szara-relaunch[data-houston-time="night"] .sz-night-constellation{opacity:.74}
+body.szara-relaunch .sz-orbital-signature{position:absolute;right:7%;top:9%;width:clamp(180px,23vw,320px);z-index:4;opacity:.77;pointer-events:none}
+body.szara-relaunch .sz-orbital-signature svg{width:100%;overflow:visible;filter:drop-shadow(0 0 4px #15334336)}
+body.szara-relaunch .sz-orbit-path{fill:none;stroke:#d1e4ef;stroke-width:1.2;stroke-dasharray:2 8;opacity:.75}
+body.szara-relaunch .sz-satellite-body{fill:#e6f3f5;stroke:#d7e7eb;stroke-width:1.5}
+body.szara-relaunch .sz-satellite-panels{fill:none;stroke:#e7f1f4;stroke-width:1.3}
+body.szara-relaunch .sz-satellite-letter{fill:none;stroke:#39798a;stroke-width:1.5}
+body.szara-relaunch .sz-satellite-trail{fill:none;stroke:#e8f7f8;stroke-width:1;stroke-dasharray:2 3}
+body.szara-relaunch .sz-orbital-signature>span{display:block;text-align:center;font:750 9px Arial,sans-serif;letter-spacing:.19em;color:#dff0f2}
+body.szara-relaunch[data-houston-time="night"] .sz-orbital-signature{opacity:.95}
+body.szara-relaunch .sz-hero-work-peek{position:absolute;z-index:6;right:4.3%;bottom:90px;width:clamp(180px,17vw,240px);display:block;overflow:hidden;text-decoration:none;background:#f6f8f8;box-shadow:0 14px 45px #091d29a3;transform:rotate(2deg);transition:transform .36s cubic-bezier(.2,.7,.2,1),box-shadow .36s}
+body.szara-relaunch .sz-hero-work-peek:hover{transform:rotate(0deg) translateY(-7px);box-shadow:0 19px 49px #091d29b8}
+body.szara-relaunch .sz-peek-browser{display:flex;align-items:center;justify-content:space-between;padding:7px 9px;font:750 8px Arial,sans-serif;letter-spacing:.06em;color:#5a7c85;background:#eaf1f2}
+body.szara-relaunch .sz-peek-browser i{font-style:normal;letter-spacing:1px;color:#8caaaf}
+body.szara-relaunch .sz-hero-work-peek img{display:block;width:100%;height:auto;aspect-ratio:2.22;object-fit:cover;object-position:top}
+body.szara-relaunch .sz-peek-caption{display:flex;justify-content:space-between;align-items:center;background:#f9fbfb;color:#2d6072;font:750 8px Arial,sans-serif;letter-spacing:.13em;padding:9px 11px}
+body.szara-relaunch .sz-peek-caption b{font-size:14px}
+body.szara-relaunch .sz-hero-bottom-rail{position:absolute;bottom:24px;left:4%;right:4%;z-index:8;display:flex;align-items:end;justify-content:space-between;gap:15px}
+body.szara-relaunch .sz-hero-bottom-rail .sz-photo-place{position:static;display:flex;flex-direction:column;align-items:start;gap:5px;color:#ddecf0;letter-spacing:.17em}
+body.szara-relaunch .sz-hero-bottom-rail .sz-photo-place>span{opacity:.75}
+body.szara-relaunch .sz-scene-switch{display:flex;gap:9px;align-items:center;border:1px solid #edf6f68a;background:rgba(11,45,60,.22);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);padding:11px 13px;color:white;cursor:pointer;font:750 9px Arial,sans-serif;letter-spacing:.15em;transition:background .25s}
+body.szara-relaunch .sz-scene-switch:hover{background:#113749a1}
+body.szara-relaunch .sz-scene-switch:focus-visible{outline:3px solid #c4e8f1;outline-offset:4px}
+body.szara-relaunch .sz-switch-sun{font-size:18px;line-height:.8;font-weight:400}
+body.szara-relaunch .sz-panorama-interlude .sz-houston-photo-pair img{filter:brightness(.68) saturate(.76)}
+body.szara-relaunch .sz-panorama-interlude .sz-houston-photo-pair .sz-photo-day{object-position:center 55%}
+body.szara-relaunch .sz-panorama-interlude .sz-houston-photo-pair .sz-photo-night{object-position:center 50%}
+@media(prefers-reduced-motion:no-preference){
+  body.szara-relaunch .sz-orbital-signature .sz-satellite-motion{animation:szara-satellite-float 13s ease-in-out infinite alternate;transform-origin:center}
+  body.szara-relaunch[data-houston-time="night"] .sz-night-constellation path{animation:szara-orbit-dots 24s linear infinite}
+  @keyframes szara-satellite-float{from{transform:translate(-19px,7px) rotate(-4deg)}to{transform:translate(28px,-6px) rotate(3deg)}}
+  @keyframes szara-orbit-dots{to{stroke-dashoffset:-45}}
+}
+@media(max-width:1100px){
+body.szara-relaunch .sz-hero-work-peek{right:2.8%;bottom:96px;width:195px}
+body.szara-relaunch .sz-panorama .sz-panorama-copy{padding-bottom:165px}
+body.szara-relaunch .sz-orbital-signature{right:3%;top:5%;width:200px}
+}
+@media(max-width:720px){
+ body.szara-relaunch .sz-panorama{min-height:740px}
+ body.szara-relaunch .sz-panorama .sz-houston-photo-pair{inset:-12% -8%}
+ body.szara-relaunch .sz-panorama .sz-panorama-copy{padding:64px 21px 180px}
+ body.szara-relaunch .sz-panorama .sz-panorama-copy h1{font-size:clamp(49px,10.4vw,71px);margin-bottom:18px}
+ body.szara-relaunch .sz-founder-note{font-size:8px!important;max-width:285px;margin:18px auto 0!important}
+ body.szara-relaunch .sz-night-constellation{left:-6%;top:8%;width:60vw}
+ body.szara-relaunch .sz-orbital-signature{right:-1%;top:7%;width:160px;opacity:.50}
+ body.szara-relaunch .sz-orbital-signature>span{display:none}
+ body.szara-relaunch .sz-hero-work-peek{right:22px;bottom:87px;width:150px;transform:rotate(3deg)}
+ body.szara-relaunch .sz-peek-browser{font-size:6px}
+ body.szara-relaunch .sz-peek-caption{font-size:7px}
+ body.szara-relaunch .sz-hero-bottom-rail{bottom:17px;left:20px;right:20px}
+ body.szara-relaunch .sz-hero-bottom-rail .sz-photo-place{font-size:8px}
+ body.szara-relaunch .sz-scene-switch{font-size:8px;padding:9px 8px}
+ body.szara-relaunch .sz-switch-sun{font-size:14px}
+}
+@media(max-width:400px){
+ body.szara-relaunch .sz-panorama{min-height:800px}
+ body.szara-relaunch .sz-hero-work-peek{bottom:91px;width:141px}
+ body.szara-relaunch .sz-panorama .sz-panorama-copy{padding-top:90px}
+ body.szara-relaunch .sz-hero-bottom-rail .sz-photo-place>span{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+ body.szara-relaunch .sz-houston-photo-pair img{transition:none!important;transform:none!important;will-change:auto!important}
+ body.szara-relaunch .sz-orbital-signature .sz-satellite-motion,body.szara-relaunch .sz-night-constellation path{animation:none!important}
+}
