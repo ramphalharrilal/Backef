@@ -120,7 +120,7 @@ jobs:
                 status:200,contentType:'application/json',headers:{'Access-Control-Allow-Origin':'*'},body:'{"ok":true}'
               }));
               await form.locator('[type="submit"]').click();
-              await page.waitForURL('**/thank-you/',{timeout:12000});
+              await page.waitForURL('**/thank-you/',{timeout:12000}).catch(error=>{console.error('Form result',page.url(),errs); throw error});
               report.screens.push({label,...top});
               if(top.scrollWidth>w+2)report.failures.push(label+': horizontal overflow '+top.scrollWidth+' > '+w);
               if(!top.form)report.failures.push(label+': contact form missing');
@@ -139,7 +139,9 @@ jobs:
       - name: Assemble visual review
         if: always()
         run: |
-          python3 - <<'PY'
+          python3 -m venv "$RUNNER_TEMP/szara-images"
+          "$RUNNER_TEMP/szara-images/bin/pip" install Pillow --quiet
+          "$RUNNER_TEMP/szara-images/bin/python" - <<'PY'
           from PIL import Image, ImageOps, ImageDraw
           from pathlib import Path
           import base64, io

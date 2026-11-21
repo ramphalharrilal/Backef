@@ -43,6 +43,29 @@
   const failure=()=>{
     status.textContent='We could not confirm your submission. Your message is still here. Please try again or copy it and email hello@withszara.com.';
   };
+  if (form.hasAttribute('data-native-ajax')) {
+    const submit = form.querySelector('[type="submit"]');
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
+      if (submit.disabled) return;
+      submit.disabled = true;
+      status.textContent = 'Sending your enquiry…';
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { Accept: 'application/json' }
+        });
+        if (!response.ok) throw new Error('Enquiry rejected');
+        form.dispatchEvent(new Event('szara:enquiry-accepted'));
+        location.assign('/thank-you/');
+      } catch {
+        failure();
+        submit.disabled = false;
+      }
+    });
+    return;
+  }
   window.formspree=window.formspree || function(){(window.formspree.q=window.formspree.q||[]).push(arguments);};
   window.formspree('initForm',{
     formElement:'#szara-enquiry',formId:'xvkgydqn',
