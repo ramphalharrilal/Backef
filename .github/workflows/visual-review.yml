@@ -30,10 +30,13 @@ jobs:
           SERVER_PID=$!
           trap 'kill "$SERVER_PID" || true' EXIT
           sleep 2
+          cp szarvis-worker/src/index.js /tmp/szara-worker.mjs
           node <<'NODE'
           const fs = require('fs');
           const { chromium } = require('playwright');
           (async()=>{
+            const assert=require('node:assert/strict');
+            const worker=(await import('file:///tmp/szara-worker.mjs')).default;
             const browser=await chromium.launch({headless:true});
             const report={screens:[],failures:[],warnings:[]};
             for(const [label,w,h] of [['desktop',1440,900],['tablet',768,1024],['mobile',390,844],['small',320,720]]){
@@ -41,8 +44,19 @@ jobs:
               const errs=[];
               page.on('pageerror',e=>errs.push(String(e)));
               page.on('console',m=>{if(m.type()==='error') errs.push('Console: '+m.text())});
+              page.on('response',r=>{if(r.status()>=400) errs.push(r.status()+' '+r.url())});
+              page.on('requestfailed',r=>{if(r.failure()?.errorText!=='net::ERR_ABORTED') errs.push(r.failure()?.errorText+' '+r.url())});
+              await page.route('**/api/szarvis', async route=>{
+                const response=await worker.fetch(new Request(route.request().url()), {});
+                await route.fulfill({status:response.status,contentType:'application/json',body:await response.text()});
+              });
               await page.goto('http://127.0.0.1:8765/',{waitUntil:'domcontentloaded'});
               await page.waitForTimeout(7000);
+              const consent=page.locator('.analytics-choice [data-choice="rejected"]');
+              if(await consent.isVisible()) await consent.click();
+              const sky=page.locator('[data-sz-scene-toggle]');
+              assert.equal(await sky.inputValue(),'auto');
+              await sky.selectOption('day');
               const top=await page.evaluate(()=>{
                 const hero=document.querySelector('.sz-panorama');
                 return {title:document.title,h1:document.querySelectorAll('h1').length,
@@ -57,6 +71,7 @@ jobs:
                   scene:document.body.dataset.houstonTime
                 };
               });
+              await page.waitForTimeout(1900);
               await page.screenshot({path:'visual-review/'+label+'-hero.png',fullPage:false,animations:'disabled'});
               const locations=await page.evaluate(()=>Object.fromEntries(['service-options','work','client-feedback','contact'].map(id=>{
                 const el=document.getElementById(id);
@@ -69,17 +84,50 @@ jobs:
               }
               if(label==='desktop'||label==='mobile'){
                 await page.evaluate(()=>window.scrollTo(0,0));
-                await page.click('[data-sz-scene-toggle]');
+                await sky.selectOption('night');
+                assert.equal(await page.locator('body').getAttribute('data-houston-time'),'night');
                 await page.waitForTimeout(2000);
                 await page.screenshot({path:'visual-review/'+label+'-alternate-sky.png',fullPage:false,animations:'disabled'});
               }
+              await sky.selectOption('auto');
+              if(w<=720){
+                const menu=page.locator('details.mobile-menu');
+                await menu.locator('summary').focus();
+                await page.keyboard.press('Enter');
+                assert.ok(await menu.getAttribute('open')!==null);
+                await menu.getByText('Services',{exact:true}).click();
+                await page.waitForURL('**/#service-options');
+              }
+              const broken=await page.locator('a[href^="#"]').evaluateAll(links=>links.filter(a=>!document.getElementById(a.hash.slice(1))).map(a=>a.hash));
+              assert.deepEqual(broken,[]);
+              const assets=await page.locator('main img').evaluateAll(imgs=>imgs.filter(im=>!im.complete||!im.naturalWidth).map(im=>im.src));
+              assert.deepEqual(assets,[]);
+              const form=page.locator('#szara-enquiry');
+              assert.equal(await form.evaluate(f=>f.checkValidity()),false);
+              await form.locator('[name="name"]').fill('Preview QA');
+              await form.locator('[name="email"]').fill('preview@example.com');
+              await form.locator('[name="message"]').fill('Testing the preview contact form.');
+              assert.equal(await form.evaluate(f=>f.checkValidity()),true);
+              await page.locator('.wsz-floating').click();
+              await page.locator('.wsz-input').fill('How can I contact Harry?');
+              await page.locator('.wsz-input').press('Enter');
+              await page.waitForFunction(()=>document.querySelectorAll('.wsz-transcript > *').length>=3,{},{timeout:10000});
+              await page.emulateMedia({reducedMotion:'reduce'});
+              await page.waitForFunction(()=>getComputedStyle(document.querySelector('.sz-photo-day')).transform==='none');
+              await page.getByRole('button',{name:'Privacy choices',exact:true}).click();
+              await consent.click();
+              await page.route('https://formspree.io/f/xvkgydqn', route=>route.fulfill({
+                status:200,contentType:'application/json',headers:{'Access-Control-Allow-Origin':'*'},body:'{"ok":true}'
+              }));
+              await form.locator('[type="submit"]').click();
+              await page.waitForURL('**/thank-you/',{timeout:12000});
               report.screens.push({label,...top});
               if(top.scrollWidth>w+2)report.failures.push(label+': horizontal overflow '+top.scrollWidth+' > '+w);
               if(!top.form)report.failures.push(label+': contact form missing');
               if(top.h1!==1)report.failures.push(label+': H1 count '+top.h1);
               if(top.journeyCount!==3)report.failures.push(label+': journey scenes '+top.journeyCount);
               if(top.heroBackgrounds.some(x=>!x.ok))report.failures.push(label+': missing hero image '+JSON.stringify(top.heroBackgrounds));
-              if(errs.length)report.warnings.push({label,errs:errs.slice(0,15)});
+              if(errs.length)report.failures.push({label,errs:errs.slice(0,15)});
               await page.close();
             }
             await browser.close();
@@ -88,6 +136,38 @@ jobs:
             if(report.failures.length)process.exitCode=1;
           })().catch(e=>{console.error(e);process.exit(1)});
           NODE
+      - name: Assemble visual review
+        if: always()
+        run: |
+          python3 - <<'PY'
+          from PIL import Image, ImageOps, ImageDraw
+          from pathlib import Path
+          import base64, io
+          root = Path('visual-review')
+          for label in ('desktop','mobile'):
+              tiles=[]
+              for scene in ('hero','alternate-sky','client-feedback','work'):
+                  file=root / f'{label}-{scene}.png'
+                  if file.exists():
+                      im=Image.open(file).convert('RGB')
+                      im.thumbnail((480,400))
+                      tiles.append((scene,im))
+              if not tiles: continue
+              width=max(im.width for _,im in tiles)
+              height=max(im.height for _,im in tiles)
+              board=Image.new('RGB',(width*2,(height+24)*2),'white')
+              captions=ImageDraw.Draw(board)
+              for i,(name,im) in enumerate(tiles):
+                  x,y=(i%2)*width,(i//2)*(height+24)
+                  board.paste(im,(x,y))
+                  captions.text((x+7,y+height+3),name,fill='black')
+              board.save(root / f'{label}-review.jpg',quality=86)
+              board.thumbnail((680,660))
+              buffer=io.BytesIO()
+              board.save(buffer,format='JPEG',quality=65)
+              data=base64.b64encode(buffer.getvalue()).decode()
+              print(f'BOARD-{label} '+data)
+          PY
       - name: Upload screenshot evidence even on failure
         if: always()
         uses: actions/upload-artifact@v4

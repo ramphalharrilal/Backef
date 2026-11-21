@@ -239,91 +239,84 @@ body.szara-relaunch .sz-scene-switch:hover .sz-switch-icon{stroke:#fff}
 }
 
 
-/* Cinematic sky composition: preserve a large sky field above real Houston
-   photography, avoiding illegible white type over skyscraper windows. */
-body.szara-relaunch .sz-panorama{
- background:linear-gradient(180deg,#c9d9e3 0%,#bdcfdb 43%,#607e91 100%);
- transition:background 1.8s ease;
+
+/* Keep the skyline continuous. The lower edge carries type, leaving the sky open. */
+body.szara-relaunch .sz-panorama {
+  height: clamp(32rem, 70svh, 44rem);
+  min-height: 0;
+  background: #253946;
 }
-body.szara-relaunch[data-houston-time="night"] .sz-panorama{
- background:linear-gradient(180deg,#191b31 0%,#30354e 43%,#1c2f42 100%);
+body.szara-relaunch .sz-panorama .sz-houston-photo-pair { inset: -6% 0; }
+body.szara-relaunch .sz-panorama .sz-parallax-image img { object-position: 50% 52%; }
+body.szara-relaunch .sz-panorama .sz-panorama-glaze,
+body.szara-relaunch[data-houston-time="night"] .sz-panorama .sz-panorama-glaze {
+  background: linear-gradient(0deg, rgba(5,20,27,.92), rgba(5,20,27,.71) 19%, transparent 61%);
 }
-body.szara-relaunch .sz-panorama .sz-houston-photo-pair{
- inset:0!important;overflow:hidden;
+body.szara-relaunch .sz-panorama .sz-panorama-copy {
+  top: auto; bottom: 8%; left: max(6%, calc((100% - 70rem) / 2))!important; right: auto!important;
+  width: min(32rem, 87%); text-align: left; text-shadow: none;
 }
-body.szara-relaunch .sz-panorama .sz-houston-photo-pair img.sz-photo-day,
-body.szara-relaunch .sz-panorama .sz-houston-photo-pair img.sz-photo-night{
- top:auto!important;bottom:0!important;left:0!important;right:0!important;
- height:76%!important;width:100%!important;
- -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 23%,#000 100%);
- mask-image:linear-gradient(180deg,transparent 0%,#000 23%,#000 100%);
- object-position:center 31%; 
+body.szara-relaunch .sz-panorama .sz-panorama-copy h1 {
+  font-size: clamp(2rem, 3.6vw, 3.4rem)!important;
+  line-height: 1.03!important; text-align: left; text-shadow: none; text-wrap: balance;
 }
-body.szara-relaunch .sz-panorama .sz-panorama-glaze{
- background:linear-gradient(180deg,rgba(247,253,255,.05),transparent 42%,rgba(18,45,58,.24) 100%)!important;
+body.szara-relaunch .sz-panorama .sz-hero-kicker { font: 600 .81rem/1.3 Arial,sans-serif; letter-spacing: .12em; }
+body.szara-relaunch .sz-panorama .sz-panorama-copy>p:not(.sz-hero-kicker):not(.sz-founder-note) {
+  max-width: 25rem; margin: 0 0 1rem; font-size: 1rem; line-height: 1.48;
 }
-body.szara-relaunch[data-houston-time="night"] .sz-panorama .sz-panorama-glaze{
- background:linear-gradient(180deg,rgba(8,15,27,.08),transparent 42%,rgba(4,16,26,.36) 100%)!important;
+body.szara-relaunch .sz-panorama .sz-hero-discover,
+body.szara-relaunch .sz-panorama-interlude a {
+  padding: .78rem 1.16rem; font: 600 .9rem/1.4 Arial,sans-serif; letter-spacing: .015em;
+  border-radius: 0; background: #f6f8f6; border: 1px solid #f6f8f6; color: #183540;
+  transition: background .18s ease, color .18s ease;
 }
-body.szara-relaunch[data-houston-time="day"] .sz-panorama .sz-panorama-copy .sz-hero-kicker{
- color:#22495c!important;text-shadow:none!important;
+body.szara-relaunch .sz-panorama .sz-hero-discover:hover,
+body.szara-relaunch .sz-panorama-interlude a:hover { background: #163541; color: #fff; }
+body.szara-relaunch .sz-panorama .sz-hero-bottom-rail { left: auto; right: 5%; bottom: 8%; }
+body.szara-relaunch .sz-panorama .sz-photo-place { display:none; }
+.sz-sky-control { display:flex; align-items:center; gap:.7rem; padding:0 .65rem; color:white; background:#142d38eb; font: .85rem/1.4 Arial,sans-serif; }
+.sz-sky-control select { font:inherit; color:inherit; background:#142d38; border:0; padding:.65rem .2rem; min-height:44px; }
+body.szara-relaunch .sz-panorama .sz-mission-scene { top:9%; opacity:.86; }
+body.szara-relaunch .sz-mission-progress,body.szara-relaunch .sz-mission-track { opacity:0!important; }
+body.szara-relaunch .sz-panorama .sz-sky-s { opacity:0; }
+body.szara-relaunch[data-houston-time="night"] .sz-panorama .sz-sky-s { opacity:.65; }
+body.szara-relaunch .sz-service-icon, body.szara-relaunch .sz-icon-navigation svg { stroke-width:1.65; }
+body.szara-relaunch .sz-expertise-item p { font-size:1rem!important; color:#485e66; }
+body.szara-relaunch .sz-expertise-item a { font-size:.8rem; color:#24596a; }
+body.szara-relaunch .sz-blue-quote-wash { background:rgba(11,58,77,.81); }
+body.szara-relaunch .sz-blue-quote .wrap { max-width:55rem; }
+body.szara-relaunch .sz-blue-quote .sz-review-label { margin:0 0 1.5rem; font-size:.8rem; letter-spacing:.13em; text-transform:uppercase; }
+.sz-client-quote { margin:0; }
+.sz-client-quote blockquote { margin:0 auto; padding:0; border:0; font:400 clamp(1.65rem,3.2vw,2.85rem)/1.24 Georgia,serif; text-wrap:balance; }
+.sz-client-quote figcaption { margin:1.6rem 0 0; font:500 .95rem/1.55 Arial,sans-serif; }
+.sz-client-quote a { display:block; width:fit-content; margin:.4rem auto 0; color:white; text-underline-offset:.24em; }
+.sz-blue-quote .sr-only { position:absolute; width:1px;height:1px;overflow:hidden;clip-path:inset(50%); }
+body.szara-relaunch .sz-portfolio-heading { text-align:left; margin-bottom:2rem; }
+body.szara-relaunch .sz-portfolio-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:2rem; }
+body.szara-relaunch .sz-portfolio-tile:has(img) { display:block; min-height:0; background:white; color:#193a47; }
+body.szara-relaunch .sz-portfolio-tile:has(img)::before { content:none; }
+body.szara-relaunch .sz-portfolio-tile img { position:static; width:100%; height:auto; aspect-ratio:2.15; object-position:top; transform:none; }
+body.szara-relaunch .sz-portfolio-tile:hover img { transform:none; }
+body.szara-relaunch .sz-tile-caption { padding:1rem 0 .8rem; border-bottom:1px solid #c6d2d4; }
+body.szara-relaunch .sz-tile-caption strong { color:#173c4a; font-size:1.55rem; }
+body.szara-relaunch .sz-tile-caption small,body.szara-relaunch .sz-tile-caption>span { color:#4c6168; }
+body.szara-relaunch .sz-tile-caption>span { font-size:.94rem; }
+body.szara-relaunch .sz-tile-truluv,body.szara-relaunch .sz-tile-tyme { min-height:9rem; justify-content:center; gap:.5rem; background:#edf2f1; color:#24434d; }
+body.szara-relaunch .sz-tile-truluv .sz-tile-label,body.szara-relaunch .sz-tile-tyme .sz-tile-label { color:#48616a; }
+body.szara-relaunch .sz-portfolio-tile:focus-visible,body.szara-relaunch :is(a,button,select,summary):focus-visible { outline:3px solid #b96220; outline-offset:3px; }
+body.szara-relaunch [id] { scroll-margin-top:7rem; }
+@media(max-width:720px) {
+  body.szara-relaunch .sz-panorama { min-height:34rem; height:min(76svh,42rem); }
+  body.szara-relaunch .sz-panorama .sz-hero-bottom-rail { top:1rem; bottom:auto; right:1rem; }
+  body.szara-relaunch .sz-panorama .sz-panorama-copy { left:6%!important; bottom:6%; }
+  body.szara-relaunch .sz-panorama .sz-mission-scene { top:15%; }
+  body.szara-relaunch .sz-portfolio-grid { grid-template-columns:1fr; gap:1.45rem; }
+  body.szara-relaunch .sz-panorama .sz-parallax-image img { object-position:52% center; }
 }
-body.szara-relaunch[data-houston-time="day"] .sz-panorama .sz-panorama-copy h1{
- color:#173b4c!important;text-shadow:none!important;
+@media(prefers-reduced-motion:reduce) {
+  body.szara-relaunch *,body.szara-relaunch *::before,body.szara-relaunch *::after { scroll-behavior:auto!important; animation-duration:.01ms!important; transition-duration:.01ms!important; }
 }
-body.szara-relaunch[data-houston-time="day"] .sz-panorama .sz-panorama-copy h1 strong{
- color:#285d74!important;
-}
-body.szara-relaunch[data-houston-time="day"] .sz-panorama .sz-panorama-copy>p:not(.sz-hero-kicker):not(.sz-founder-note){
- color:#285365!important;text-shadow:none!important;
-}
-body.szara-relaunch[data-houston-time="day"] .sz-panorama .sz-panorama-copy .sz-founder-note{
- color:#376b7c!important;
-}
-body.szara-relaunch[data-houston-time="day"] .sz-panorama .sz-hero-discover{
- color:#245b71!important;border-color:#39758a!important;
- background:rgba(255,255,255,.25)!important;
-}
-body.szara-relaunch[data-houston-time="day"] .sz-panorama .sz-hero-discover:hover{
- background:#245b71!important;color:#fff!important;
-}
-body.szara-relaunch .sz-panorama .sz-panorama-copy{
- top:10%!important;
-}
-body.szara-relaunch .sz-panorama .sz-mission-scene{
- top:4%!important;
-}
-body.szara-relaunch .sz-panorama .sz-sky-s{top:9%!important}
-@media(max-width:720px){
- body.szara-relaunch .sz-panorama{
-  min-height:650px;
- }
- body.szara-relaunch .sz-panorama .sz-houston-photo-pair img.sz-photo-day,
- body.szara-relaunch .sz-panorama .sz-houston-photo-pair img.sz-photo-night{
-  height:71%!important;object-position:center 38%;
-  -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 20%,#000 100%);
-  mask-image:linear-gradient(180deg,transparent 0%,#000 20%,#000 100%);
- }
- body.szara-relaunch .sz-panorama .sz-panorama-copy{
-  top:12%!important;
- }
- body.szara-relaunch .sz-panorama .sz-panorama-copy>p:not(.sz-hero-kicker):not(.sz-founder-note),
- body.szara-relaunch .sz-panorama .sz-panorama-copy .sz-founder-note{
-  display:none!important;
- }
- body.szara-relaunch .sz-panorama .sz-hero-bottom-rail{
-  top:14px;bottom:auto;right:15px;left:auto;
- }
- body.szara-relaunch .sz-scene-switch{
-  padding:8px 10px;min-height:34px;background:#19475c73;
- }
- body.szara-relaunch[data-houston-time="day"] .sz-scene-switch{
-  background:#ffffffe8;border-color:#4c7f92;color:#20485c;
- }
- body.szara-relaunch[data-houston-time="day"] .sz-switch-icon{
-  stroke:#20485c;
- }
- body.szara-relaunch .sz-panorama .sz-mission-scene{
-  top:7%!important;left:2%;width:54%;opacity:.35;
- }
-}
+body.szara-relaunch .sz-tile-kmca { grid-column:1 / -1; }
+body.szara-relaunch .sz-tile-kmca img { aspect-ratio:auto; }
+.sz-more-projects { display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:2rem; }
+@media(max-width:720px){.sz-more-projects { grid-template-columns:1fr;gap:.75rem; }}

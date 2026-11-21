@@ -46,7 +46,8 @@
       // Counteract a fraction of the section's scroll: the background travels
       // more slowly than foreground text, matching the recorded blue panel.
       const fraction = section.classList.contains('sz-blue-quote') ? .26 : .18;
-      const offset = Math.max(-98, Math.min(98, centerDistance * fraction));
+      const travel = section.classList.contains('sz-panorama') ? rect.height * .05 : Math.min(98, rect.height * .16);
+      const offset = Math.max(-travel, Math.min(travel, centerDistance * fraction));
       image.style.transform = 'translate3d(0,' + offset.toFixed(1) + 'px,0) scale(1.035)';
     }
   }

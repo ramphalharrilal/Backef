@@ -7,7 +7,6 @@
   const root = document.body;
   const hero = document.querySelector('[data-houston-scene="hero"]');
   const toggle = hero && hero.querySelector('[data-sz-scene-toggle]');
-  const label = hero && hero.querySelector('[data-sz-scene-label]');
   if (!root || !hero) return;
 
   const rad = Math.PI / 180;
@@ -47,39 +46,13 @@
     return sunAltitudeDegrees(date) > -0.833 ? 'day' : 'night';
   }
 
-  let previewMode = null;
-  function setScene(scene) {
-    root.setAttribute('data-houston-time', scene);
-    if (toggle) {
-      const other = scene === 'day' ? 'night' : 'day';
-      toggle.setAttribute('aria-label', 'Preview Houston in the ' + other);
-      toggle.setAttribute('title', 'Preview Houston in the ' + other);
-      toggle.setAttribute('aria-pressed', String(previewMode !== null));
-    }
-    if (label) {
-      label.textContent = scene === 'day'
-        ? 'HOUSTON BY DAY'
-        : 'HOUSTON AFTER DARK';
-    }
+  function applyLighting() {
+    const selected = toggle?.value || 'auto';
+    root.dataset.houstonTime = selected === 'auto' ? currentHoustonScene() : selected;
   }
 
-  // Immediately reflect current Houston sunlight; the developer/tester can
-  // preview the other scene without changing their computer clock.
-  setScene(currentHoustonScene());
-  if (toggle) {
-    toggle.addEventListener('click', () => {
-      const shown = root.getAttribute('data-houston-time');
-      previewMode = shown === 'day' ? 'night' : 'day';
-      setScene(previewMode);
-    });
-  }
-  // Refresh automatically near sunrise and sunset while the tab is open.
-  setInterval(() => {
-    if (previewMode === null) setScene(currentHoustonScene());
-  }, 60000);
-
-  // In page back/forward cache restores, clear any stale mode if automatic.
-  addEventListener('pageshow', event => {
-    if (event.persisted && previewMode === null) setScene(currentHoustonScene());
-  });
+  toggle?.addEventListener('change', applyLighting);
+  addEventListener('pageshow', applyLighting);
+  setInterval(applyLighting, 60000);
+  applyLighting();
 })();

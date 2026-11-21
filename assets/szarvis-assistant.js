@@ -437,7 +437,6 @@
       await sleep(reduceMotion?5000:3900);
     }
   }
-  checkAI();
   crawl().then(()=>{if(cfg.autoExplore)explore()});
   window.WithSzaraWalker={open:()=>toggle(true),ask:answer,refresh:crawl,stop:()=>{loop=false;}};
 })();
