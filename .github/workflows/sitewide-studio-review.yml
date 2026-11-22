@@ -83,7 +83,7 @@ jobs:
                     h1Text:h1?.innerText.trim().slice(0,120) ?? '',
                     h1Font:h1?getComputedStyle(h1).fontFamily:null,
                     h1Visible:rect?rect.width>0&&rect.height>0:false,
-                    studioCSS:[...document.styleSheets].some(s=>s.href?.includes('sitewide-studio.css')),
+                    studioCSS:[...document.styleSheets].some(s=>s.href?.includes(card?'card-experience.css':'sitewide-studio.css')),
                     header:!!header,headerContact:[...(header?.querySelectorAll('a.szx-contact')||[])].some(a=>{const u=new URL(a.href);return u.pathname==='/'&&u.hash==='#contact'}),
                     footerSocial:!!social,
                     social:found(/trustpilot\.com\/review\/withszara\.com/)&&found(/facebook\.com\/share\/1Hdv1mRW9S/)&&found(/tiktok\.com\/@with_szara/),
@@ -100,7 +100,7 @@ jobs:
                 if(check.h1Count!==1)report.failures.push(prefix+'H1 count '+check.h1Count);
                 if(!check.h1Visible)report.failures.push(prefix+'H1 hidden');
                 if(check.documentWidth>w+2)report.failures.push(prefix+'horizontal overflow '+check.documentWidth);
-                if(!check.studioCSS)report.failures.push(prefix+'missing shared CSS');
+                if(!check.studioCSS)report.failures.push(prefix+'missing expected SZARA stylesheet');
                 if(!check.home&&!check.card&&(!check.header||!check.headerContact))report.failures.push(prefix+'missing shared navigation');
                 if(!check.card&&!check.footerSocial)report.failures.push(prefix+'missing social footer');
                 if(!check.social)report.failures.push(prefix+'missing social profiles');
