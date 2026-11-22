@@ -12,6 +12,7 @@
   ));
   const reveals = Array.from(document.querySelectorAll('.sz-reveal'));
   const header = document.querySelector('.sz-studio-header');
+  const orbitalStation = document.querySelector('.sz-panorama-interlude .sz-orbit-station');
   if (!motion.matches && 'IntersectionObserver' in window) {
     const observer = new IntersectionObserver(entries => {
       for (const entry of entries) {
@@ -36,6 +37,15 @@
       for (const image of parallax) image.style.transform = '';
       root.classList.remove('sz-agency-animated');
       return;
+    }
+    if (orbitalStation) {
+      const scene = orbitalStation.closest('.sz-panorama-interlude');
+      const rect = scene.getBoundingClientRect();
+      if (rect.bottom > -100 && rect.top < viewport + 100) {
+        const distance = viewport / 2 - (rect.top + rect.height / 2);
+        const shift = Math.max(-18, Math.min(18, distance * .085));
+        orbitalStation.style.setProperty('--sz-station-shift', shift.toFixed(1) + 'px');
+      }
     }
     for (const image of parallax) {
       const section = image.closest('.sz-panorama, .sz-blue-quote, .sz-panorama-interlude');
