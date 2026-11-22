@@ -76,6 +76,11 @@ jobs:
               });
               await page.waitForTimeout(1900);
               await page.screenshot({path:'visual-review/'+label+'-hero.png',fullPage:false,animations:'disabled'});
+              const station=page.locator('#houston-studio .sz-orbit-station svg');
+              assert.equal(await station.count(),1,'Orbital station illustration should exist');
+              const stationWidth=await station.evaluate(el=>el.getBoundingClientRect().width);
+              assert.ok(stationWidth>=100 && stationWidth<=340,
+                label+': orbital station width '+stationWidth+' outside responsive bounds');
               const locations=await page.evaluate(()=>Object.fromEntries(['service-options','client-feedback','work','houston-studio','contact'].map(id=>{
                 const el=document.getElementById(id);
                 return [id,el?Math.max(0,Math.round(el.getBoundingClientRect().top+window.scrollY-150)):0];
