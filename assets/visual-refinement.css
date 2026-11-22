@@ -275,7 +275,7 @@ body.szara-relaunch .sz-panorama-interlude a:hover { background: #163541; color:
 body.szara-relaunch .sz-panorama .sz-hero-bottom-rail { left: auto; right: 5%; bottom: 8%; }
 body.szara-relaunch .sz-panorama .sz-photo-place { display:none; }
 body.szara-relaunch .sz-panorama .sz-mission-scene { top:9%; opacity:.86; }
-body.szara-relaunch .sz-mission-progress,body.szara-relaunch .sz-mission-track { opacity:0!important; }
+/* Scroll progress and flight path restored in SZARA motion correction below. */
 body.szara-relaunch .sz-panorama .sz-sky-s { opacity:0; }
 body.szara-relaunch[data-houston-time="night"] .sz-panorama .sz-sky-s { opacity:.65; }
 body.szara-relaunch .sz-service-icon, body.szara-relaunch .sz-icon-navigation svg { stroke-width:1.65; }
@@ -319,3 +319,144 @@ body.szara-relaunch #client-feedback.sz-blue-quote,
 body.szara-relaunch #client-feedback.sz-blue-quote a { color:#fff; }
 body.szara-relaunch #client-feedback .sz-client-quote blockquote { color:#fff; }
 body.szara-relaunch[data-houston-time="night"] .sz-panorama .sz-houston-clouds { opacity:0; }
+
+/* 2026-11-22: restore the SZARA satellite and the two photographic scroll chapters.
+   Keep the artwork in front of the sky, behind text, and avoid the ISS silhouette. */
+body.szara-relaunch .sz-panorama .sz-mission-scene{
+  top:4%;left:3%;width:68%;height:clamp(170px,20vw,230px);opacity:1;z-index:5;
+}
+body.szara-relaunch .sz-panorama .sz-mission-ship{
+  width:clamp(60px,6.5vw,82px);
+  filter:drop-shadow(0 3px 8px rgba(0,21,37,.9)) drop-shadow(0 0 5px rgba(216,247,255,.35));
+}
+body.szara-relaunch .sz-mission-track{
+  opacity:.25!important;stroke:#e2f7fa;
+}
+body.szara-relaunch .sz-mission-progress{
+  opacity:.60!important;stroke:#d5f5fa;
+}
+body.szara-relaunch .sz-blue-quote .sz-mission-track,
+body.szara-relaunch .sz-blue-quote .sz-mission-progress{
+  opacity:.2!important;
+}
+body.szara-relaunch .sz-blue-quote-wash{
+  background:linear-gradient(112deg,rgba(8,42,61,.70),rgba(7,55,75,.53));
+}
+body.szara-relaunch .sz-blue-quote .sz-client-quote blockquote{
+  text-shadow:0 2px 12px rgba(0,23,34,.6);
+}
+body.szara-relaunch .sz-panorama-interlude .sz-houston-photo-pair img{
+  filter:brightness(.93) saturate(.93);
+}
+body.szara-relaunch .sz-panorama-interlude::after{
+  background:linear-gradient(110deg,rgba(12,41,57,.44),rgba(12,44,61,.31));
+}
+@media(max-width:720px){
+  body.szara-relaunch .sz-panorama .sz-mission-scene{
+    left:0;top:5%;width:100%;height:126px;opacity:1;z-index:5;
+  }
+  body.szara-relaunch .sz-panorama .sz-mission-ship{width:51px}
+  body.szara-relaunch .sz-panorama .sz-mission-track{opacity:.20!important}
+  body.szara-relaunch .sz-panorama .sz-mission-progress{opacity:.46!important}
+  body.szara-relaunch .sz-blue-quote-wash{
+    background:linear-gradient(180deg,rgba(8,42,61,.70),rgba(7,55,75,.59));
+  }
+}
+
+/* Original orbital station complements the branded satellite in the lower
+   photographic chapter; an illustration, not a claim of space-agency ties. */
+body.szara-relaunch .sz-panorama-interlude .sz-orbit-station{
+  position:absolute;right:3.5%;top:8%;width:clamp(165px,25vw,325px);
+  height:auto;z-index:4;pointer-events:none;opacity:.93;
+  transform:translate3d(0,var(--sz-station-shift,0px),0);
+  filter:drop-shadow(0 3px 9px rgba(0,24,39,.85));
+}
+body.szara-relaunch .sz-orbit-station svg{
+  display:block;width:100%;height:auto;overflow:visible;
+}
+@media(prefers-reduced-motion:no-preference){
+  body.szara-relaunch .sz-orbit-station-drift{
+    transform-origin:50% 50%;
+    animation:sz-orbital-station-drift 16s ease-in-out infinite alternate;
+  }
+  @keyframes sz-orbital-station-drift{
+    from{transform:translate3d(-8px,3px,0) rotate(-2deg)}
+    to{transform:translate3d(9px,-5px,0) rotate(2deg)}
+  }
+}
+@media(max-width:720px){
+  body.szara-relaunch .sz-panorama-interlude .sz-orbit-station{
+    width:clamp(120px,34vw,170px);top:7%;right:1%;opacity:.86;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  body.szara-relaunch .sz-panorama-interlude .sz-orbit-station{
+    transform:none!important;filter:drop-shadow(0 3px 6px rgba(0,24,39,.6));
+  }
+}
+
+/* A compact, time-calculated planisphere. It represents directions in the
+   celestial sphere, not stars optically registered onto the Houston photo. */
+body.szara-relaunch .sz-houston-live-sky{
+  position:absolute;left:clamp(24px,4.5vw,65px);bottom:18px;z-index:6;
+  width:clamp(177px,18vw,225px);pointer-events:none;color:#eef9fc;
+  text-align:center;opacity:0;visibility:hidden;display:none;
+  transition:opacity .9s ease;
+  filter:drop-shadow(0 4px 11px rgba(0,17,34,.67));
+}
+body.szara-relaunch[data-houston-time="night"] .sz-houston-live-sky[data-ready="true"]{
+  display:block;opacity:1;visibility:visible;
+}
+body.szara-relaunch .sz-houston-live-sky svg{
+  display:block;width:100%;height:auto;max-height:220px;overflow:visible;
+}
+body.szara-relaunch .sz-live-sky-heading{
+  font:700 9px/1.4 Arial,sans-serif;letter-spacing:.20em;
+  text-shadow:0 1px 6px #0c2b43;margin:0 0 2px;
+}
+body.szara-relaunch .sz-live-sky-heading span{
+  font-size:7px;letter-spacing:.10em;opacity:.72;margin-left:5px;
+}
+body.szara-relaunch .sz-live-sky-footer{
+  display:flex;flex-direction:column;gap:2px;margin-top:-2px;
+  font:650 8px/1.5 Arial,sans-serif;letter-spacing:.04em;
+  text-shadow:0 1px 6px #0b2b42;
+}
+body.szara-relaunch .sz-live-sky-footer span:last-child{
+  color:#d1e8f2;font-weight:400;font-size:8px;
+}
+/* The previous S-shaped decorative "constellation" was not calculated
+   from star positions and should not compete with the real sky chart. */
+body.szara-relaunch .sz-panorama .sz-night-constellation.sz-sky-s{display:none}
+@media(max-width:720px){
+  /* More breathing room above the Houston buildings without stretching them:
+     the night photograph sits lower and feathers into an ink-blue sky. */
+  body.szara-relaunch .sz-panorama{height:min(80svh,700px);min-height:620px}
+  body.szara-relaunch .sz-panorama .sz-houston-photo-pair{
+    background:linear-gradient(180deg,#102844 0%,#173554 54%,#28495b 100%);
+  }
+  body.szara-relaunch .sz-panorama .sz-houston-photo-pair img.sz-photo-night{
+    top:auto;bottom:-1%;height:82%;object-position:52% center;
+    -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 28%);
+    mask-image:linear-gradient(180deg,transparent 0%,#000 28%);
+  }
+  body.szara-relaunch .sz-houston-live-sky{
+    left:13px;bottom:12px;width:152px;
+  }
+  body.szara-relaunch .sz-live-sky-heading{font-size:8px}
+  body.szara-relaunch .sz-live-sky-heading span{font-size:6px}
+  body.szara-relaunch .sz-live-sky-footer{font-size:7px}
+  body.szara-relaunch .sz-live-sky-footer span:last-child{font-size:7px}
+}
+@media(max-width:380px){
+  body.szara-relaunch .sz-panorama{min-height:615px}
+  body.szara-relaunch .sz-houston-live-sky{width:138px}
+}
+@media(prefers-reduced-motion:reduce){
+  body.szara-relaunch .sz-houston-live-sky{transition:none}
+}
+
+body.szara-relaunch .sz-live-sky-footer .sz-live-sky-method{
+  font:600 6px/1.5 Arial,sans-serif;letter-spacing:.08em;opacity:.7;
+  color:#d9eef8;margin-top:2px;
+}
