@@ -519,3 +519,21 @@ body.szara-relaunch .sz-panorama .sz-houston-photo-pair img.sz-photo-night{
     transform:none!important;
   }
 }
+
+/* Let the calculated Houston sky live in the actual open sky, away from
+   headline and CTA. Satellite stays left; chart sits quietly right. */
+body.szara-relaunch .sz-panorama .sz-houston-live-sky{
+  left:auto;right:clamp(19px,3vw,45px);top:5%;bottom:auto;
+  width:clamp(175px,15vw,215px);
+}
+@media(max-width:720px){
+  body.szara-relaunch .sz-panorama .sz-houston-live-sky{
+    left:auto;right:11px;top:11%;bottom:auto;
+    width:clamp(135px,38vw,151px);
+  }
+}
+@media(max-width:380px){
+  body.szara-relaunch .sz-panorama .sz-houston-live-sky{
+    right:7px;top:12%;width:130px;
+  }
+}
