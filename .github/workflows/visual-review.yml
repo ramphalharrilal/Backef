@@ -120,6 +120,15 @@ jobs:
                 const skyChart=page.locator('[data-houston-live-sky]');
                 await page.waitForFunction(()=>document.querySelector('[data-houston-live-sky]')?.dataset.ready==='true');
                 assert.equal(await skyChart.locator('svg circle').count()>8,true,'Real sky chart needs plotted stars');
+                const skyState=await skyChart.evaluate(el=>({
+                  ready:el.dataset.ready, mode:document.body.dataset.houstonTime,
+                  display:getComputedStyle(el).display,
+                  visibility:getComputedStyle(el).visibility,
+                  opacity:getComputedStyle(el).opacity,
+                  rect:el.getBoundingClientRect().toJSON(),
+                  css:[...document.styleSheets].map(x=>x.href).filter(Boolean)
+                }));
+                console.log('HOUSTON SKY DIAGNOSTIC',JSON.stringify(skyState));
                 assert.equal(await skyChart.isVisible(),true,'Sky chart should show at Houston night');
                 const summerSky=await skyChart.locator('svg').getAttribute('aria-label');
                 const summerGeometry=await skyChart.locator('svg').evaluate(svg=>[...svg.querySelectorAll('circle')].slice(2,12).map(c=>c.getAttribute('cx')+','+c.getAttribute('cy')).join('|'));
