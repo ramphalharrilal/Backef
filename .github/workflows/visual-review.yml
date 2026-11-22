@@ -41,6 +41,9 @@ jobs:
             const report={screens:[],failures:[],warnings:[]};
             for(const [label,w,h] of [['desktop',1440,900],['tablet',768,1024],['mobile',390,844],['small',320,720]]){
               const page=await browser.newPage({viewport:{width:w,height:h},deviceScaleFactor:1});
+              // Verify automatic imagery using fixed UTC instants: June 21 midday vs. 1 AM in Houston.
+              // Playwright changes Date while leaving timers functioning normally.
+              await page.clock.setFixedTime(new Date('2026-06-21T18:00:00Z'));
               const errs=[];
               page.on('pageerror',e=>errs.push(String(e)));
               page.on('console',m=>{if(m.type()==='error') errs.push('Console: '+m.text())});
@@ -55,9 +58,8 @@ jobs:
               const consent=page.locator('.analytics-choice [data-choice="rejected"]');
               if(await consent.isVisible()) await consent.click();
               assert.ok(await page.evaluate(()=>scrollY<10),'Privacy choice moved the viewport');
-              const sky=page.locator('[data-sz-scene-toggle]');
-              assert.equal(await sky.inputValue(),'auto');
-              await sky.selectOption('day');
+              assert.equal(await page.locator('[data-sz-scene-toggle]').count(),0,'No manual sky control should remain');
+              assert.equal(await page.locator('body').getAttribute('data-houston-time'),'day','Daytime follows Houston solar position');
               const top=await page.evaluate(()=>{
                 const hero=document.querySelector('.sz-panorama');
                 return {title:document.title,h1:document.querySelectorAll('h1').length,
@@ -84,13 +86,15 @@ jobs:
                 await page.screenshot({path:'visual-review/'+label+'-'+section+'.png',fullPage:false,animations:'disabled'});
               }
               if(label==='desktop'||label==='mobile'){
-                await page.evaluate(()=>window.scrollTo(0,0));
-                await sky.selectOption('night');
-                assert.equal(await page.locator('body').getAttribute('data-houston-time'),'night');
+                await page.clock.setFixedTime(new Date('2026-06-21T06:00:00Z'));
+                await page.reload({waitUntil:'domcontentloaded'});
+                assert.equal(await page.locator('body').getAttribute('data-houston-time'),'night','Nighttime follows Houston solar position');
                 await page.waitForTimeout(2000);
                 await page.screenshot({path:'visual-review/'+label+'-alternate-sky.png',fullPage:false,animations:'disabled'});
+                await page.clock.setFixedTime(new Date('2026-06-21T18:00:00Z'));
+                await page.reload({waitUntil:'domcontentloaded'});
+                assert.equal(await page.locator('body').getAttribute('data-houston-time'),'day');
               }
-              await sky.selectOption('auto');
               const forwards=await page.locator('[data-sz-mission="launch"]').getAttribute('data-progress');
               await page.evaluate(()=>window.scrollTo({top:200,behavior:'instant'}));
               await page.waitForFunction(previous=>document.querySelector('[data-sz-mission="launch"]').dataset.progress!==previous, forwards);
