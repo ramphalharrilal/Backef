@@ -151,6 +151,8 @@ jobs:
                 const summerSky=await skyChart.locator('svg').getAttribute('aria-label');
                 const summerGeometry=await skyChart.locator('svg').evaluate(svg=>[...svg.querySelectorAll('circle')].slice(2,12).map(c=>c.getAttribute('cx')+','+c.getAttribute('cy')).join('|'));
                 await page.waitForTimeout(1100);
+                await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
+                await page.waitForTimeout(250);
                 await page.screenshot({path:'visual-review/'+label+'-alternate-sky.png',fullPage:false,animations:'disabled'});
                 // The star map has to actually depend on the date, not a random decoration.
                 await page.clock.setFixedTime(new Date('2026-12-21T06:00:00Z'));
