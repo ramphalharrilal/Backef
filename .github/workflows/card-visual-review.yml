@@ -1,0 +1,112 @@
+name: SZARA card cinematic QA
+on:
+  pull_request:
+    paths:
+      - "card/**"
+      - "assets/card-experience.*"
+      - "assets/szara-contact.vcf"
+      - "assets/szara-card-qr.svg"
+      - ".github/workflows/card-visual-review.yml"
+permissions:
+  contents: read
+
+jobs:
+  card:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Setup Chromium
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Test card and capture visual states
+        shell: bash
+        run: |
+          mkdir -p card-review
+          python3 -m http.server 8765 --bind 127.0.0.1 >/tmp/card-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" || true' EXIT
+          sleep 2
+          node <<'NODE'
+          const {chromium}=require('playwright');
+          const fs=require('fs');
+          const assert=require('node:assert/strict');
+          (async()=>{
+            const report={screens:[],failures:[],warnings:[]};
+            const browser=await chromium.launch({headless:true});
+            const utc={day:'2026-06-21T18:00:00Z',night:'2026-06-21T06:00:00Z'};
+            for(const [view,width,height] of [['desktop',1440,900],['tablet',768,1024],['mobile',390,844],['small',320,720]]){
+              const page=await browser.newPage({viewport:{width,height},deviceScaleFactor:1,acceptDownloads:true});
+              const errors=[];
+              page.on('pageerror',e=>errors.push(e.message));
+              page.on('response',r=>{if(r.status()>=400&&r.url().startsWith('http://127.0.0.1:8765'))errors.push(r.status()+' '+r.url());});
+              for(const phase of ['day','night']){
+                await page.clock.setFixedTime(new Date(utc[phase]));
+                await page.goto('http://127.0.0.1:8765/card/',{waitUntil:'domcontentloaded'});
+                await page.waitForTimeout(2000);
+                const state=await page.evaluate(()=>{
+                  const day=document.querySelector('.card-day'),night=document.querySelector('.card-night');
+                  return {h1:document.querySelectorAll('h1').length,
+                    documentWidth:document.documentElement.scrollWidth,
+                    viewport:innerWidth,sky:document.documentElement.dataset.cardSky,
+                    dayImage:day.complete&&day.naturalWidth>0,
+                    nightImage:night.complete&&night.naturalWidth>0,
+                    dayOpacity:getComputedStyle(day).opacity,
+                    nightOpacity:getComputedStyle(night).opacity,
+                    skylineControl:document.querySelectorAll('[data-sz-scene-toggle]').length,
+                    qr:document.querySelector('.card-qr')?.naturalWidth>0,
+                    vCard:!!document.querySelector('a[href="/assets/szara-contact.vcf"][download]'),
+                    social:['trustpilot.com','facebook.com','tiktok.com'].every(t=>
+                      [...document.querySelectorAll('.card-social a')].some(a=>a.href.includes(t))),
+                    noFounder:!document.body.innerText.includes('Harry'),
+                    contacts:!!document.querySelector('a[href^="mailto:hello@withszara.com"]')&&
+                      !!document.querySelector('a[href="tel:+12819498261"]')};
+                });
+                report.screens.push({view,phase,...state});
+                if(state.h1!==1)report.failures.push(view+phase+': incorrect H1 count');
+                if(state.documentWidth>width+2)report.failures.push(view+phase+': horizontal overflow '+state.documentWidth);
+                if(state.sky!==phase)report.failures.push(view+phase+': sky is '+state.sky);
+                if(!state.dayImage||!state.nightImage)report.failures.push(view+phase+': city image failed');
+                if(state.skylineControl)report.failures.push(view+phase+': manual lighting selector remains');
+                if(!state.qr||!state.vCard||!state.social||!state.contacts||!state.noFounder)report.failures.push(view+phase+': missing card feature');
+                await page.screenshot({path:'card-review/'+view+'-'+phase+'.png',fullPage:true,animations:'disabled'});
+              }
+              await page.clock.setFixedTime(new Date(utc.day));
+              await page.goto('http://127.0.0.1:8765/card/',{waitUntil:'domcontentloaded'});
+              const btn=page.locator('[data-card-share]');
+              await btn.click();
+              await page.waitForFunction(() => /copied|Select and copy/i.test(
+                document.querySelector('[data-card-share-status]')?.textContent || ''),{},{timeout:4000});
+              const result=await page.locator('[data-card-share-status]').innerText();
+              if(!/Card link copied|Select and copy/i.test(result))report.failures.push(view+': share action did not finish');
+              if(/Select and copy/i.test(result)){
+                if(!await page.locator('[data-card-share-fallback]').isVisible())report.failures.push(view+': share fallback not visible');
+              }
+              const download=page.waitForEvent('download');
+              await page.locator('a[download="SZARA.vcf"]').click();
+              const downloaded=await download;
+              if(downloaded.suggestedFilename()!=='SZARA.vcf')report.failures.push(view+': contact file name differs');
+              if(errors.length)report.warnings.push({view,errors:errors.slice(0,8)});
+              await page.close();
+            }
+            await browser.close();
+            const qr=fs.readFileSync('assets/szara-card-qr.svg','utf8');
+            const contact=fs.readFileSync('assets/szara-contact.vcf','utf8');
+            if(!qr.includes('https://withszara.com/card/'))report.failures.push('QR target invalid');
+            if(!contact.includes('BEGIN:VCARD')||!contact.includes('TEL;TYPE=WORK'))report.failures.push('vCard invalid');
+            fs.writeFileSync('card-review/report.json',JSON.stringify(report,null,2));
+            console.log(JSON.stringify(report,null,2));
+            if(report.failures.length)process.exitCode=1;
+          })().catch(e=>{console.error(e);process.exit(1)});
+          NODE
+      - name: Upload proof
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: szara-card-review
+          path: card-review/
+          retention-days: 7

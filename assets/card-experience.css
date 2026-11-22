@@ -1,0 +1,87 @@
+/* SZARA / Digital Card, designed to share the studio's visual language. */
+:root{color-scheme:light;--ink:#183e4e;--accent:#347b95;--faint:#6a8390;--stroke:#d8e5e9;--paper:#fff}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;min-height:100svh;padding:clamp(16px,4vw,48px) 16px 32px;
+ background:radial-gradient(ellipse at 50% 0%,#e7f1f4,#f6f9f9 60%,#ecf3f5 100%);
+ font:400 15px/1.6 "Avenir Next","Segoe UI",Arial,sans-serif;
+ color:var(--ink);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:where(button,a,input):focus-visible{outline:3px solid #3787a4;outline-offset:3px}
+.card-wrap{width:min(100%,520px);margin:0 auto}
+.card{background:var(--paper);border:1px solid #cddfe5;box-shadow:0 22px 56px #1d50601b;overflow:hidden}
+.card-cover{position:relative;height:clamp(210px,48vw,266px);background:#264c60;isolation:isolate;overflow:hidden}
+.card-cover-image{position:absolute;inset:0}
+.card-cover-image img{position:absolute;width:100%;height:100%;object-fit:cover;object-position:center 49%;transition:opacity 1.6s ease;display:block}
+.card-cover-image .card-day{opacity:1}
+.card-cover-image .card-night{opacity:0}
+html[data-card-sky="night"] .card-cover-image .card-day{opacity:0}
+html[data-card-sky="night"] .card-cover-image .card-night{opacity:1}
+.card-cover::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+ background:linear-gradient(180deg,#102b3a9b 0%,transparent 44%,#0c2638a6 100%)}
+.card-cover-top{position:absolute;inset:23px 27px auto;z-index:3;display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.card-brand{font:400 40px/.9 Georgia,"Times New Roman",serif;letter-spacing:-.06em;text-decoration:none;color:white;text-shadow:0 2px 13px #001c2a45}
+.card-brand span{color:#cdeaf0}
+.card-brand small{display:block;margin-top:12px;font:700 9px/1.4 "Segoe UI",Arial,sans-serif;letter-spacing:.17em;text-transform:uppercase;color:#e9f4f5}
+.card-tag{font:700 9px/1.6 "Segoe UI",Arial,sans-serif;letter-spacing:.13em;color:#eaf4f5;text-align:right;white-space:nowrap}
+.card-city{position:absolute;z-index:3;bottom:20px;left:27px;color:#fff;letter-spacing:.18em;text-transform:uppercase;font:700 9px/1.6 Arial,sans-serif;text-shadow:0 2px 8px #002537a9}
+.card-stars{position:absolute;z-index:2;top:55px;right:15px;width:150px;height:auto;opacity:0;transition:opacity 1.6s ease;filter:drop-shadow(0 0 4px #dcf8ff9c)}
+.card-stars path{fill:none;stroke:#e1f6ff;stroke-width:1;stroke-dasharray:2 5}
+.card-stars circle{fill:#f1faff}
+html[data-card-sky="night"] .card-stars{opacity:.52}
+.card-content{padding:32px clamp(23px,6vw,40px) 30px}
+.card-eyebrow{margin:0 0 12px;color:#548397;letter-spacing:.16em;text-transform:uppercase;font:700 10px/1.5 "Segoe UI",Arial,sans-serif}
+h1{margin:0;font:400 clamp(32px,7vw,43px)/1.13 Georgia,"Times New Roman",serif;letter-spacing:-.045em;color:#173e4e}
+h1 em{color:#377d95;font-weight:400}
+.card-summary{margin:17px 0 26px;max-width:40ch;color:#58717b;font-size:14px;line-height:1.7}
+.card-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 10px}
+.card-action{display:flex;align-items:center;justify-content:center;gap:10px;
+ min-height:48px;padding:13px 14px;text-align:center;text-decoration:none;
+ border:1px solid #8db2bf;border-radius:2px;background:transparent;color:#285c70;
+ font:700 12px/1.25 "Segoe UI",Arial,sans-serif;letter-spacing:.045em;
+ cursor:pointer;transition:background-color .2s,color .2s,border-color .2s}
+.card-action:hover{background:#e9f3f6;border-color:#347f97}
+.card-action.primary{background:#317b96;border-color:#317b96;color:#fff}
+.card-action.primary:hover{background:#1e5e77;border-color:#1e5e77}
+.card-action svg,.card-link svg{height:17px;width:17px;fill:none;stroke:currentColor;stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+.card-utilities{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.card-link{background:#f8fbfb;border:1px solid #e2ebee;min-height:45px;display:flex;align-items:center;justify-content:center;gap:9px;
+ text-decoration:none;font:700 11px/1.35 "Segoe UI",Arial,sans-serif;letter-spacing:.035em;color:#3e6979;cursor:pointer}
+.card-link:hover{background:#edf5f7;color:#1c5268}
+.card-divider{border:0;border-top:1px solid #e1eaed;margin:27px 0 22px}
+.card-social-head{font:700 10px/1.5 "Segoe UI",Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#607e8a;margin:0 0 10px}
+.card-social{display:flex;flex-wrap:wrap;gap:11px 21px;align-items:center}
+.card-social a{display:inline-flex;align-items:center;gap:7px;min-height:32px;text-decoration:none;color:#346c81;font:700 11px/1.4 "Segoe UI",Arial,sans-serif}
+.card-social a:hover{text-decoration:underline;text-underline-offset:4px}
+.card-social svg{height:16px;width:16px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.card-share-row{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-top:26px;padding-top:23px;border-top:1px solid #e1eaed}
+.card-share-label{font:400 14px/1.35 Georgia,"Times New Roman",serif;color:#2d5364;margin:0 0 3px}
+.card-share-caption{font:400 11px/1.45 "Segoe UI",Arial,sans-serif;color:#68848e;margin:0}
+.card-qr{width:92px;height:92px;border:1px solid #dae7ea;background:#fff;padding:4px}
+.card-feedback{margin:12px 0 0;font:400 12px/1.5 Arial,sans-serif;color:#2f758c;min-height:0}
+.card-fallback{width:100%;margin-top:8px;border:1px solid #adc7d0;background:#fafdfd;color:#205269;font:400 13px/1.5 Arial,sans-serif;padding:9px}
+.card-footer{color:#718892;margin:16px auto 0;font:400 10px/1.6 "Segoe UI",Arial,sans-serif;text-align:center;max-width:510px}
+.card-footer a{color:#617e88}
+.card-footer a:hover{color:#1c5d77}
+@media(max-width:360px){
+ body{padding:12px 10px 26px}
+ .card-cover{height:200px}
+ .card-cover-top{inset:19px 18px auto}
+ .card-city{left:18px}
+ .card-brand{font-size:35px}
+ .card-tag{font-size:8px}
+ .card-content{padding:26px 19px}
+ h1{font-size:32px}
+ .card-action{font-size:11px;gap:7px;padding:11px 8px}
+ .card-link{font-size:10px}
+ .card-social{gap:8px 14px}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+@media print{
+ body{background:white;padding:0}
+ .card{box-shadow:none;break-inside:avoid}
+ .card-utilities button{display:none}
+ .card-footer{color:#24495a}
+}
