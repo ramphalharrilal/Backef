@@ -400,12 +400,12 @@ body.szara-relaunch .sz-orbit-station svg{
 body.szara-relaunch .sz-houston-live-sky{
   position:absolute;left:clamp(24px,4.5vw,65px);bottom:18px;z-index:6;
   width:clamp(177px,18vw,225px);pointer-events:none;color:#eef9fc;
-  text-align:center;opacity:0;visibility:hidden;
-  transition:opacity .9s ease,visibility .9s ease;
+  text-align:center;opacity:0;visibility:hidden;display:none;
+  transition:opacity .9s ease;
   filter:drop-shadow(0 4px 11px rgba(0,17,34,.67));
 }
 body.szara-relaunch[data-houston-time="night"] .sz-houston-live-sky[data-ready="true"]{
-  opacity:1;visibility:visible;
+  display:block;opacity:1;visibility:visible;
 }
 body.szara-relaunch .sz-houston-live-sky svg{
   display:block;width:100%;height:auto;max-height:220px;overflow:visible;
