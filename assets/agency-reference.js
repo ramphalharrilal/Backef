@@ -45,10 +45,16 @@
       const centerDistance = viewport / 2 - (rect.top + rect.height / 2);
       // Counteract a fraction of the section's scroll: the background travels
       // more slowly than foreground text, matching the recorded blue panel.
-      const fraction = section.classList.contains('sz-blue-quote') ? .26 : .18;
-      const travel = section.classList.contains('sz-panorama') ? rect.height * .05 : Math.min(98, rect.height * .16);
+      const isQuote = section.classList.contains('sz-blue-quote');
+      const isInterlude = section.classList.contains('sz-panorama-interlude');
+      const fraction = isQuote ? .35 : isInterlude ? .29 : .18;
+      // Photo wrappers extend beyond each section; keep movement inside those
+      // bounds to prevent exposed edges on narrow screens.
+      const travel = isQuote
+        ? Math.min(95, rect.height * .2)
+        : isInterlude ? Math.min(75, rect.height * .145) : rect.height * .05;
       const offset = Math.max(-travel, Math.min(travel, centerDistance * fraction));
-      image.style.transform = 'translate3d(0,' + offset.toFixed(1) + 'px,0) scale(1.035)';
+      image.style.transform = 'translate3d(0,' + offset.toFixed(1) + 'px,0) scale(1.055)';
     }
   }
   function queueUpdate() {
@@ -58,6 +64,7 @@
   }
   addEventListener('scroll', queueUpdate, { passive: true });
   addEventListener('resize', queueUpdate, { passive: true });
+  addEventListener('pageshow', queueUpdate, { passive: true });
   motion.addEventListener && motion.addEventListener('change', queueUpdate);
   update();
 })();
