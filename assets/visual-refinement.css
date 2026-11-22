@@ -455,3 +455,8 @@ body.szara-relaunch .sz-panorama .sz-night-constellation.sz-sky-s{display:none}
 @media(prefers-reduced-motion:reduce){
   body.szara-relaunch .sz-houston-live-sky{transition:none}
 }
+
+body.szara-relaunch .sz-live-sky-footer .sz-live-sky-method{
+  font:600 6px/1.5 Arial,sans-serif;letter-spacing:.08em;opacity:.7;
+  color:#d9eef8;margin-top:2px;
+}
