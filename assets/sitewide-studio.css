@@ -259,3 +259,17 @@ body.szara-sitewide.szara-card nav .primary:hover{background:#1e586f}
   animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important;
  }
 }
+/* Quiet in-page jumps retained on service and media-kit sections. */
+.szx-page-links{
+ display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:12px 30px;
+ border-bottom:1px solid #dbe7ea;background:#f7fafb;min-height:45px;padding:7px 20px;
+}
+.szx-page-links a{
+ font:700 10px/1.4 Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;
+ color:#427286;text-decoration:none;border-bottom:1px solid transparent;padding:6px 0;
+}
+.szx-page-links a:hover{color:#18546c;border-color:#4d92a7}
+@media(max-width:720px){
+ .szx-page-links{gap:9px 18px;justify-content:flex-start;padding:9px 20px}
+ .szx-page-links a{font-size:9px}
+}
