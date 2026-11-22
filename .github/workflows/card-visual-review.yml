@@ -79,8 +79,13 @@ jobs:
               await page.goto('http://127.0.0.1:8765/card/',{waitUntil:'domcontentloaded'});
               const btn=page.locator('[data-card-share]');
               await btn.click();
+              await page.waitForFunction(() => /copied|Select and copy/i.test(
+                document.querySelector('[data-card-share-status]')?.textContent || ''),{},{timeout:4000});
               const result=await page.locator('[data-card-share-status]').innerText();
-              if(!/copied|share|copy/i.test(result))report.failures.push(view+': share action did not respond');
+              if(!/Card link copied|Select and copy/i.test(result))report.failures.push(view+': share action did not finish');
+              if(/Select and copy/i.test(result)){
+                if(!await page.locator('[data-card-share-fallback]').isVisible())report.failures.push(view+': share fallback not visible');
+              }
               const download=page.waitForEvent('download');
               await page.locator('a[download="SZARA.vcf"]').click();
               const downloaded=await download;
