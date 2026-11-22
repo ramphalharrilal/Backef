@@ -115,12 +115,26 @@ jobs:
               if(label==='desktop'||label==='mobile'){
                 await page.clock.setFixedTime(new Date('2026-06-21T06:00:00Z'));
                 await page.reload({waitUntil:'domcontentloaded'});
+                await page.evaluate(()=>scrollTo({top:0,behavior:'instant'}));
                 assert.equal(await page.locator('body').getAttribute('data-houston-time'),'night','Nighttime follows Houston solar position');
-                await page.waitForTimeout(2000);
+                const skyChart=page.locator('[data-houston-live-sky]');
+                await page.waitForFunction(()=>document.querySelector('[data-houston-live-sky]')?.dataset.ready==='true');
+                assert.equal(await skyChart.locator('svg circle').count()>8,true,'Real sky chart needs plotted stars');
+                assert.equal(await skyChart.isVisible(),true,'Sky chart should show at Houston night');
+                const summerSky=await skyChart.locator('svg').getAttribute('aria-label');
+                await page.waitForTimeout(1100);
                 await page.screenshot({path:'visual-review/'+label+'-alternate-sky.png',fullPage:false,animations:'disabled'});
+                // The star map has to actually depend on the date, not a random decoration.
+                await page.clock.setFixedTime(new Date('2026-12-21T06:00:00Z'));
+                await page.reload({waitUntil:'domcontentloaded'});
+                assert.equal(await page.locator('body').getAttribute('data-houston-time'),'night');
+                await page.waitForFunction(()=>document.querySelector('[data-houston-live-sky]')?.dataset.ready==='true');
+                const winterSky=await skyChart.locator('svg').getAttribute('aria-label');
+                assert.notEqual(summerSky,winterSky,'Constellation plot should change with Houston season');
                 await page.clock.setFixedTime(new Date('2026-06-21T18:00:00Z'));
                 await page.reload({waitUntil:'domcontentloaded'});
                 assert.equal(await page.locator('body').getAttribute('data-houston-time'),'day');
+                assert.equal(await skyChart.isVisible(),false,'Star diagram should hide in Houston daylight');
               }
               const forwards=await page.locator('[data-sz-mission="launch"]').getAttribute('data-progress');
               await page.evaluate(()=>window.scrollTo({top:200,behavior:'instant'}));
