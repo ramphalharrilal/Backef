@@ -73,7 +73,7 @@ jobs:
                 if(!state.dayImage||!state.nightImage)report.failures.push(view+phase+': city image failed');
                 if(state.skylineControl)report.failures.push(view+phase+': manual lighting selector remains');
                 if(!state.qr||!state.vCard||!state.social||!state.contacts||!state.noFounder)report.failures.push(view+phase+': missing card feature');
-                await page.screenshot({path:'card-review/'+view+'-'+phase+'.png',animations:'disabled'});
+                await page.screenshot({path:'card-review/'+view+'-'+phase+'.png',fullPage:true,animations:'disabled'});
               }
               await page.clock.setFixedTime(new Date(utc.day));
               await page.goto('http://127.0.0.1:8765/card/',{waitUntil:'domcontentloaded'});
