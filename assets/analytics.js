@@ -35,8 +35,10 @@
     if (location.pathname==='/thank-you/') {
       try {
         const pending=JSON.parse(sessionStorage.getItem(pendingKey));sessionStorage.removeItem(pendingKey);
-        if(pending && Date.now()-pending.time<1800000 && ['/', '/small-business-websites/'].includes(pending.page)) {
+        if(pending && Date.now()-pending.time<1800000 && ['/', '/small-business-websites/', '/quick-fixes/', '/business-support/', '/remote-tech-support/'].includes(pending.page)) {
           gtag('event','enquiry_returned',{form_page:pending.page});
+          // Conversions require a successful Formspree response and prior analytics consent.
+          gtag('event','generate_lead',{form_page:pending.page});
         }
       } catch {}
     }
