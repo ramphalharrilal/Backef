@@ -1,0 +1,135 @@
+name: SZARA sitewide visual QA
+on:
+  push:
+    branches:
+      - design/sitewide-studio-social
+  pull_request:
+    paths:
+      - '**/*.html'
+      - 'assets/sitewide-studio.css'
+      - '.github/workflows/sitewide-studio-review.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Prepare Chromium
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Test page structure, navigation, forms and visual layout
+        shell: bash
+        run: |
+          mkdir -p sitewide-review
+          python3 -m http.server 8765 --bind 127.0.0.1 >/tmp/szara-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" || true' EXIT
+          sleep 2
+          node <<'NODE'
+          const fs = require('fs');
+          const {chromium} = require('playwright');
+          const routes = [
+            '/','/advice/','/advice/small-business-website-checklist/',
+            '/advice/small-business-website-cost/','/advice/website-maintenance-cost/',
+            '/advice/website-or-facebook/','/advice/wix-vs-web-designer/',
+            '/business-support/','/card/','/hoa-website-design/',
+            '/home-care-website-design/','/insights/',
+            '/insights/invoice-fraud-small-businesses/',
+            '/insights/is-your-home-router-secure/',
+            '/insights/who-can-access-your-security-cameras/',
+            '/insights/who-controls-your-business-website/',
+            '/media-kit/','/nonprofit-web-design/',
+            '/privacy/','/remote-tech-support/','/small-business-websites/',
+            '/thank-you/','/web-design/','/website-maintenance/',
+            '/work/','/work/gaining-ground-youth-services/','/work/kenswick-meadows/'
+          ];
+          const screenshots=new Set(['/','/advice/','/business-support/','/card/','/insights/','/media-kit/','/privacy/','/remote-tech-support/','/small-business-websites/','/thank-you/','/web-design/','/work/']);
+          const report={meta:{routes:routes.length,viewports:[1440,390]},checks:[],failures:[],warnings:[]};
+          const safeName=path=>path==='/'?'home':path.replaceAll('/','-').replace(/^-|-$/g,'');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            for(const [size,w,h] of [['desktop',1440,900],['mobile',390,844]]){
+              const page=await browser.newPage({viewport:{width:w,height:h},deviceScaleFactor:1});
+              for(const route of routes){
+                const url='http://127.0.0.1:8765'+route;
+                const errors=[]; const notFound=[];
+                const onError=e=>errors.push(e.message);
+                const onResponse=res=>{
+                  if(res.status()===404&&res.url().startsWith('http://127.0.0.1:8765/'))notFound.push(res.url());
+                };
+                page.on('pageerror',onError);page.on('response',onResponse);
+                const response=await page.goto(url,{waitUntil:'domcontentloaded',timeout:20000});
+                await page.waitForTimeout(screenshots.has(route)?700:180);
+                const check=await page.evaluate(()=>{
+                  const body=document.body;
+                  const home=location.pathname==='/',card=location.pathname==='/card/';
+                  const header=document.querySelector('.szx-header');
+                  const social=document.querySelector('.szx-social-band');
+                  const links=[...document.querySelectorAll('a[href]')].map(a=>a.getAttribute('href'));
+                  const found=(regex)=>links.some(v=>regex.test(v));
+                  const h1=document.querySelector('h1');
+                  const rect=h1?.getBoundingClientRect();
+                  return {
+                    page:location.pathname,viewport:innerWidth,documentWidth:document.documentElement.scrollWidth,
+                    h1Count:document.querySelectorAll('h1').length,
+                    h1Text:h1?.innerText.trim().slice(0,120) ?? '',
+                    h1Font:h1?getComputedStyle(h1).fontFamily:null,
+                    h1Visible:rect?rect.width>0&&rect.height>0:false,
+                    studioCSS:[...document.styleSheets].some(s=>s.href?.includes('sitewide-studio.css')),
+                    header:!!header,headerContact:!!header?.querySelector('a.szx-contact[href="/#contact"]'),
+                    footerSocial:!!social,
+                    social:found(/trustpilot\.com\/review\/withszara\.com/)&&found(/facebook\.com\/share\/1Hdv1mRW9S/)&&found(/tiktok\.com\/@with_szara/),
+                    consentControls:!!document.querySelector('.analytics-choice [data-choice="rejected"]')||card,
+                    founderName:body.innerText.includes('Harry'),
+                    headlineButtons:[...document.querySelectorAll('header a')].map(a=>a.innerText.trim()).filter(Boolean).slice(0,10),
+                    home,card,
+                    form:home?!!document.querySelector('form[action="https://formspree.io/f/xvkgydqn"]'):true
+                  };
+                });
+                report.checks.push({viewport:size,...check});
+                const prefix=size+': '+route+' ';
+                if(response.status()>=400)report.failures.push(prefix+'HTTP '+response.status());
+                if(check.h1Count!==1)report.failures.push(prefix+'H1 count '+check.h1Count);
+                if(!check.h1Visible)report.failures.push(prefix+'H1 hidden');
+                if(check.documentWidth>w+2)report.failures.push(prefix+'horizontal overflow '+check.documentWidth);
+                if(!check.studioCSS)report.failures.push(prefix+'missing shared CSS');
+                if(!check.home&&!check.card&&(!check.header||!check.headerContact))report.failures.push(prefix+'missing shared navigation');
+                if(!check.card&&!check.footerSocial)report.failures.push(prefix+'missing social footer');
+                if(!check.social)report.failures.push(prefix+'missing social profiles');
+                if(check.founderName)report.failures.push(prefix+'old founder name visible');
+                if(!check.form)report.failures.push(prefix+'contact endpoint changed');
+                if(notFound.length)report.warnings.push(prefix+'local 404: '+notFound.join('; '));
+                if(errors.length)report.warnings.push(prefix+'JS errors: '+errors.slice(0,3).join('; '));
+                if(screenshots.has(route)){
+                  await page.screenshot({path:'sitewide-review/'+size+'-'+safeName(route)+'.png',animations:'disabled'});
+                }
+                if(size==='mobile'&&!check.home&&!check.card){
+                  await page.locator('.szx-mobile summary').click();
+                  const visible=await page.locator('.szx-mobile-links a[href="/#contact"]').isVisible();
+                  if(!visible)report.failures.push(prefix+'mobile nav does not open');
+                }
+                page.off('pageerror',onError);page.off('response',onResponse);
+              }
+              await page.close();
+            }
+            await browser.close();
+            fs.writeFileSync('sitewide-review/results.json',JSON.stringify(report,null,2));
+            console.log(JSON.stringify({count:report.checks.length,failures:report.failures,warnings:report.warnings.slice(0,22)},null,2));
+            if(report.failures.length)process.exitCode=1;
+          })().catch(e=>{console.error(e);process.exit(1)});
+          NODE
+      - name: Upload responsive screenshots and report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: szara-sitewide-review
+          path: sitewide-review/
+          retention-days: 7
