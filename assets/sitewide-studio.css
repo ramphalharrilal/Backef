@@ -1,0 +1,312 @@
+/* SZARA / One Studio — cohesive editorial system for all internal pages.
+   Built to complement, not override, the approved Houston homepage.
+   Distinctive real projects, accessible navigation, restrained typography. */
+body.szara-sitewide{
+ --szx-ink:#254958;--szx-ink-dark:#15394a;--szx-accent:#387e96;
+ --szx-line:#d9e4e7;--szx-muted:#627b85;--szx-white:#fff;
+ --szx-light:#f5f9f9;--szx-slate:#edf3f4;
+ background:#fff;color:var(--szx-ink);font-family:"Avenir Next","Segoe UI",Arial,sans-serif;
+}
+body.szara-sitewide{overflow-wrap:break-word}
+body.szara-sitewide :where(h1,h2,h3){color:var(--szx-ink-dark)}
+body.szara-sitewide :where(h1,h2):not(.sr-only){font-family:Georgia,"Times New Roman",serif;font-weight:400;letter-spacing:-.045em;line-height:1.13}
+body.szara-sitewide :where(h1,h2) em{font-weight:400;color:#397f96}
+body.szara-sitewide :where(p,li){line-height:1.75}
+body.szara-sitewide :where(img,video){max-width:100%}
+body.szara-sitewide a:focus-visible,body.szara-sitewide button:focus-visible,
+body.szara-sitewide summary:focus-visible{outline:3px solid #347f9a;outline-offset:4px}
+body.szara-sitewide :where(.button,.btn,.support-btn,.advice-talk,.advice-prompt a,
+ .bs-actions .button,.hero-actions .button){
+ border-radius:2px!important;box-shadow:none!important;
+ font-family:"Avenir Next","Segoe UI",Arial,sans-serif!important;
+ font-size:12px;font-weight:700;letter-spacing:.055em;
+}
+body.szara-sitewide :where(.button,.btn,.support-btn):not(.secondary){
+ background:#2c738a!important;border:1px solid #2c738a!important;color:#fff!important;
+}
+body.szara-sitewide :where(.button,.btn,.support-btn):not(.secondary):hover{
+ background:#1b556b!important;border-color:#1b556b!important;color:#fff!important;
+}
+body.szara-sitewide :where(.eyebrow,.advice-eyebrow,.port-kicker,.support-tag,.bs-tag,.insights-kicker){
+ color:var(--szx-accent)!important;font:700 10px/1.65 "Segoe UI",Arial,sans-serif!important;
+ letter-spacing:.18em!important;text-transform:uppercase;
+}
+body.szara-sitewide :where(.detail-page,.sz-advice,.portfolio-page){background:#fff}
+body.szara-sitewide :where(.detail-intro,.advice-hero,.port-top,.support-hero){
+ background:linear-gradient(180deg,#f2f7f9 0%,#fff 100%)!important;
+ border-bottom:1px solid var(--szx-line)!important;
+}
+body.szara-sitewide :where(.detail-intro h1,.advice-hero h1,.port-top h1,.support-hero h1){
+ font-family:Georgia,"Times New Roman",serif!important;
+ font-size:clamp(38px,5.8vw,73px)!important;line-height:1.10!important;
+ font-weight:400!important;color:var(--szx-ink-dark)!important;
+ max-width:1000px;letter-spacing:-.045em!important;
+}
+body.szara-sitewide :where(.detail-intro h1 em,.advice-hero h1 em,.port-top h1 em){
+ color:#3f8ca3!important;font-style:italic;font-weight:400!important;
+}
+body.szara-sitewide :where(.detail-intro,.advice-hero,.port-top){
+ padding-top:clamp(35px,6vw,80px);padding-bottom:clamp(35px,5vw,64px);
+}
+body.szara-sitewide :where(.detail-content section,.advice-list-item,.port-section,.support-section){
+ border-color:var(--szx-line);
+}
+body.szara-sitewide :where(.detail-content p,.advice-prose p,.advice-intro,.port-lead,.support-hero p){
+ color:#4f6671;
+}
+body.szara-sitewide :where(.detail-page .breadcrumbs,.advice-back,.detail-page figcaption){
+ color:#68828c;
+}
+body.szara-sitewide .detail-page figure img{
+ border-radius:2px;box-shadow:none;border:1px solid var(--szx-line);
+}
+body.szara-sitewide .detail-page .detail-content h2{
+ font-size:clamp(29px,3.3vw,44px);font-weight:400;
+}
+body.szara-sitewide .detail-page .detail-content p,
+body.szara-sitewide .detail-page .detail-content li{
+ font-size:16px;line-height:1.8;
+}
+body.szara-sitewide .sz-insights .insights-card,
+body.szara-sitewide .insights-card,
+body.szara-sitewide :where(.port-thumb,.support-card,.bs-card){
+ background:#fff;border:1px solid var(--szx-line);border-radius:2px!important;
+ box-shadow:none!important;
+}
+body.szara-sitewide .insights-card:hover,
+body.szara-sitewide .port-thumb:hover{
+ box-shadow:0 9px 20px #17445811!important;
+}
+body.szara-sitewide .port-top{background:linear-gradient(180deg,#f3f8f9,#fff)!important}
+body.szara-sitewide :where(.port-project h3,.port-titlebar h2){color:#244b5c}
+body.szara-sitewide .advice-list-item{border-color:var(--szx-line)!important}
+body.szara-sitewide .advice-list-item:hover,
+body.szara-sitewide .advice-links a:hover{color:#1a6077!important}
+body.szara-sitewide .advice-prose a,body.szara-sitewide .detail-content a{
+ text-decoration-color:#90b7c2;text-underline-offset:3px;
+}
+body.szara-sitewide .advice-prompt{background:#f2f8f9!important;border-color:var(--szx-line)!important}
+body.szara-sitewide .advice-prompt h2{color:#24495a}
+body.szara-sitewide :where(.privacy-copy,.detail-content,.advice-prose){max-width:850px}
+body.szara-sitewide :where(.advice-footer,.support-footer,.footer){border-color:var(--szx-line)}
+/* Unified studio navigation. Existing page-local anchors and main sections remain. */
+.szx-header{
+ position:relative;z-index:1900;background:#fff;
+ border-bottom:1px solid #dbe6e9;color:#315c6e;
+ font-family:"Avenir Next","Segoe UI",Arial,sans-serif;
+}
+.szx-strap{
+ background:#f0f5f6;color:#638795;border-bottom:1px solid #ecf1f3;
+ padding:8px max(22px,calc((100vw - 1210px)/2));
+ font:700 9px/1.3 Arial,sans-serif;letter-spacing:.15em;
+}
+.szx-header-inner{
+ display:flex;align-items:center;justify-content:space-between;gap:24px;
+ width:min(1210px,calc(100% - 60px));min-height:92px;margin:0 auto;
+}
+.szx-brand{
+ display:flex;flex-direction:column;gap:5px;flex-shrink:0;
+ font:400 33px/1 Georgia,"Times New Roman",serif!important;
+ letter-spacing:-.065em;color:#376b80!important;text-decoration:none!important;
+}
+.szx-brand small{
+ font:700 8px/1.3 Arial,sans-serif;letter-spacing:.20em;color:#7e9aa6;
+}
+.szx-desktop-nav{display:flex;align-items:center;justify-content:flex-end;gap:clamp(16px,2.5vw,36px);flex:1}
+.szx-desktop-nav a{
+ display:inline-flex;align-items:center;min-height:42px;
+ color:#426979!important;font:700 10px/1.2 Arial,sans-serif;
+ letter-spacing:.09em;text-transform:uppercase;text-decoration:none!important;
+ border-bottom:1px solid transparent;
+}
+.szx-desktop-nav a:hover,.szx-desktop-nav a[aria-current="page"]{
+ color:#1e5269!important;border-bottom-color:#4d879d;
+}
+.szx-contact{
+ display:inline-flex;align-items:center;justify-content:center;
+ flex:0 0 auto;min-height:42px;padding:11px 19px;background:#347e97;
+ color:#fff!important;text-decoration:none!important;border:1px solid #347e97;
+ font:700 11px/1.3 Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;
+ transition:background .2s,border-color .2s;
+}
+.szx-contact:hover{background:#1e5a71;border-color:#1e5a71;color:#fff!important}
+.szx-mobile{display:none;position:relative}
+.szx-mobile>summary{
+ min-height:43px;display:flex;align-items:center;gap:13px;
+ cursor:pointer;list-style:none;text-transform:uppercase;
+ font:700 10px Arial,sans-serif;letter-spacing:.12em;
+}
+.szx-mobile>summary::-webkit-details-marker{display:none}
+.szx-mobile>summary::after{
+ content:"";width:17px;height:9px;
+ border-top:1.5px solid currentColor;border-bottom:1.5px solid currentColor;
+}
+.szx-mobile[open]>summary::after{height:0;border-bottom:0}
+.szx-mobile-links{
+ position:absolute;right:0;top:calc(100% + 14px);width:min(320px,calc(100vw - 42px));
+ padding:16px 22px;background:#fff;border:1px solid #d8e5e9;box-shadow:0 10px 30px #1d485c18;
+ display:flex;flex-direction:column;gap:0;z-index:2200;
+}
+.szx-mobile-links a{
+ padding:13px 0;border-bottom:1px solid #e7eef0;color:#244e60!important;
+ font:700 11px/1.35 Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;text-decoration:none!important;
+}
+.szx-mobile-links a:last-child{border:0}
+.szx-header .szx-mobile-links a:hover{color:#287d9c!important}
+/* Consistent review and social signposts: no embedded trackers or widgets. */
+.szx-social-band{
+ display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px 30px;
+ width:min(1210px,calc(100% - 50px));margin:25px auto 0;
+ padding:24px 0;border-top:1px solid #d9e5e9;
+}
+.szx-social-label{
+ font:700 10px/1.6 Arial,sans-serif;letter-spacing:.17em;text-transform:uppercase;
+ color:#648390;
+}
+.szx-social-links{display:flex;flex-wrap:wrap;gap:12px 26px;align-items:center}
+.szx-social-links a{
+ display:inline-flex;align-items:center;gap:7px;min-height:38px;
+ font:700 11px/1.35 Arial,sans-serif;text-decoration:none!important;
+ letter-spacing:.035em;color:#386e82!important;
+ border-bottom:1px solid transparent;
+}
+.szx-social-links a:hover{border-bottom-color:#558fa4;color:#195269!important}
+.szx-social-links svg{width:17px;height:17px;display:block;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+body:not(.szara-sitewide) .szx-social-band{color:#396d81}
+body.szara-sitewide footer{color:#5c7885!important}
+body.szara-sitewide footer a{color:#326d81}
+body.szara-sitewide footer :where(.brand,.advice-brand){color:#31677e!important}
+body.szara-sitewide footer :where(.brand,.advice-brand) span{color:#518fa5!important}
+/* Media kit originally uses separate rose and beige design tokens; align them. */
+body.szara-sitewide.szara-media-kit{
+ --bg:#fff;--text:#244a59;--muted:#647982;--surface:#f2f8f9;
+ --line:#dbe7ea;--rose:#4d95aa;--rose-light:#deedf1;--dark:#244a5b;
+}
+body.szara-sitewide.szara-media-kit .hero{background:linear-gradient(180deg,#f2f8f9 0%,#fff 100%);padding-top:70px}
+body.szara-sitewide.szara-media-kit :where(.hero h1,.hero h2){
+ font-family:Georgia,"Times New Roman",serif!important;font-weight:400!important;color:#20495b!important;
+ font-size:clamp(39px,5.7vw,72px);letter-spacing:-.05em;
+}
+body.szara-sitewide.szara-media-kit .pill{border-radius:2px}
+body.szara-sitewide.szara-media-kit .btn{border-radius:2px;background:#2c758e;border-color:#2c758e}
+body.szara-sitewide.szara-media-kit .btn.secondary{background:transparent!important;color:#2c758e!important}
+body.szara-sitewide.szara-media-kit .card{border-radius:2px!important}
+/* Digital card intentionally stays compact, but carries studio typography. */
+body.szara-sitewide.szara-card{
+ min-height:100svh;padding:24px;background:linear-gradient(145deg,#eff6f8 0%,#fff 72%);
+ color:#244858;
+}
+body.szara-sitewide.szara-card main{
+ max-width:455px;width:100%;background:#fff;border:1px solid #cfdee3;
+ padding:clamp(25px,5vw,42px);border-radius:2px!important;
+ box-shadow:0 15px 45px #25485b11;
+}
+body.szara-sitewide.szara-card .brand{
+ font:400 39px/1 Georgia,serif;letter-spacing:-.055em;color:#326c82;
+}
+body.szara-sitewide.szara-card .brand span{color:#4795ab}
+body.szara-sitewide.szara-card header{border-color:#d4e4e8}
+body.szara-sitewide.szara-card h1{
+ font:400 clamp(34px,7.5vw,47px)/1.12 Georgia,serif;letter-spacing:-.04em;
+ margin:26px 0 10px;color:#244a5a;
+}
+body.szara-sitewide.szara-card p{color:#597782;max-width:33ch}
+body.szara-sitewide.szara-card nav{gap:10px}
+body.szara-sitewide.szara-card nav a{
+ border:1px solid #cbdfe5;border-radius:2px;padding:14px 12px;
+ color:#2e6478;font:700 12px/1.3 Arial,sans-serif;
+ transition:background .2s,color .2s;
+}
+body.szara-sitewide.szara-card nav a:hover{background:#f0f6f8;text-decoration:none}
+body.szara-sitewide.szara-card nav .primary{
+ background:#317d97;border-color:#317d97;color:white;
+}
+body.szara-sitewide.szara-card nav .primary:hover{background:#1e586f}
+/* Responsive layout with no duplicate menus or horizontal overflow. */
+@media(max-width:840px){
+ .szx-desktop-nav{gap:13px}
+ .szx-header-inner{width:calc(100% - 40px);min-height:78px}
+ .szx-brand{font-size:30px!important}
+ .szx-desktop-nav a{font-size:9px}
+}
+@media(max-width:720px){
+ .szx-strap{padding:6px 21px;font-size:8px}
+ .szx-header-inner{width:calc(100% - 40px);min-height:74px;gap:14px}
+ .szx-brand{font-size:29px!important}
+ .szx-desktop-nav,.szx-header-inner>.szx-contact{display:none}
+ .szx-mobile{display:block}
+ .szx-social-band{width:calc(100% - 40px);display:block;padding:18px 0}
+ .szx-social-label{display:block;margin-bottom:5px;font-size:9px}
+ .szx-social-links{gap:8px 18px}
+ .szx-social-links a{font-size:11px}
+ body.szara-sitewide :where(.detail-intro h1,.advice-hero h1,.port-top h1,.support-hero h1){
+  font-size:clamp(33px,9.5vw,54px)!important;
+ }
+ body.szara-sitewide .detail-page .detail-content p,
+ body.szara-sitewide .detail-page .detail-content li{font-size:15px}
+ body.szara-sitewide .port-grid{gap:20px}
+ body.szara-sitewide.szara-media-kit .hero{padding-top:40px}
+}
+@media(max-width:360px){
+ .szx-strap{letter-spacing:.08em}
+ .szx-header-inner{width:calc(100% - 30px)}
+ .szx-social-band{width:calc(100% - 30px)}
+ body.szara-sitewide.szara-card nav{grid-template-columns:1fr}
+ body.szara-sitewide.szara-card nav a{grid-column:1 / -1}
+}
+@media(prefers-reduced-motion:reduce){
+ body.szara-sitewide *,body.szara-sitewide *::before,body.szara-sitewide *::after{
+  animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important;
+ }
+}
+/* Quiet in-page jumps retained on service and media-kit sections. */
+.szx-page-links{
+ display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:12px 30px;
+ border-bottom:1px solid #dbe7ea;background:#f7fafb;min-height:45px;padding:7px 20px;
+}
+.szx-page-links a{
+ font:700 10px/1.4 Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;
+ color:#427286;text-decoration:none;border-bottom:1px solid transparent;padding:6px 0;
+}
+.szx-page-links a:hover{color:#18546c;border-color:#4d92a7}
+@media(max-width:720px){
+ .szx-page-links{gap:9px 18px;justify-content:flex-start;padding:9px 20px}
+ .szx-page-links a{font-size:9px}
+}
+
+/* Match the shared consent controls to the studio visual system. Both choices stay available. */
+body.szara-sitewide .analytics-choice{
+ bottom:16px;left:16px;z-index:2500;width:min(360px,calc(100% - 32px));
+ max-height:min(66vh,390px);overflow:auto;
+ background:#fff;color:#244957;border:1px solid #cbdde2;border-radius:2px;
+ padding:17px 19px;box-shadow:0 12px 36px #10364729;font-family:Arial,sans-serif;
+}
+body.szara-sitewide .analytics-choice h2{
+ font:400 22px/1.2 Georgia,serif;color:#244958;margin:0 0 9px;letter-spacing:-.025em;
+}
+body.szara-sitewide .analytics-choice p{
+ color:#556f78;font:400 12px/1.55 Arial,sans-serif;margin:0 0 14px;
+}
+body.szara-sitewide .analytics-choice a{color:#2f7a94}
+body.szara-sitewide .analytics-choice>div{gap:10px}
+body.szara-sitewide .analytics-choice button{
+ border:1px solid #2b7089;border-radius:2px;box-shadow:none;
+ background:#2b7089;color:white;font:700 11px Arial,sans-serif;
+ letter-spacing:.01em;min-height:40px;padding:10px;
+}
+body.szara-sitewide .analytics-choice button[data-choice="rejected"]{
+ background:white;color:#2b7089;
+}
+body.szara-sitewide .analytics-choice button:hover{background:#1b536a;color:white}
+body.szara-sitewide .advice-list-item :where(.advice-list-arrow,.advice-list-action,.advice-read-more){
+ color:#2c7d96;
+}
+@media(max-width:720px){
+ body.szara-sitewide .analytics-choice{
+  left:12px;right:12px;bottom:12px;width:auto;max-height:42svh;
+  padding:12px 15px;
+ }
+ body.szara-sitewide .analytics-choice h2{font-size:19px;margin-bottom:6px}
+ body.szara-sitewide .analytics-choice p{font-size:11px;margin-bottom:10px}
+ body.szara-sitewide .analytics-choice button{font-size:11px;min-height:39px}
+}
