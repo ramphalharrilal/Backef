@@ -122,6 +122,7 @@ jobs:
                 assert.equal(await skyChart.locator('svg circle').count()>8,true,'Real sky chart needs plotted stars');
                 assert.equal(await skyChart.isVisible(),true,'Sky chart should show at Houston night');
                 const summerSky=await skyChart.locator('svg').getAttribute('aria-label');
+                const summerGeometry=await skyChart.locator('svg').evaluate(svg=>[...svg.querySelectorAll('circle')].slice(2,12).map(c=>c.getAttribute('cx')+','+c.getAttribute('cy')).join('|'));
                 await page.waitForTimeout(1100);
                 await page.screenshot({path:'visual-review/'+label+'-alternate-sky.png',fullPage:false,animations:'disabled'});
                 // The star map has to actually depend on the date, not a random decoration.
@@ -130,6 +131,8 @@ jobs:
                 assert.equal(await page.locator('body').getAttribute('data-houston-time'),'night');
                 await page.waitForFunction(()=>document.querySelector('[data-houston-live-sky]')?.dataset.ready==='true');
                 const winterSky=await skyChart.locator('svg').getAttribute('aria-label');
+                const winterGeometry=await skyChart.locator('svg').evaluate(svg=>[...svg.querySelectorAll('circle')].slice(2,12).map(c=>c.getAttribute('cx')+','+c.getAttribute('cy')).join('|'));
+                assert.notEqual(summerGeometry,winterGeometry,'Calculated star positions must change with season');
                 assert.notEqual(summerSky,winterSky,'Constellation plot should change with Houston season');
                 await page.clock.setFixedTime(new Date('2026-06-21T18:00:00Z'));
                 await page.reload({waitUntil:'domcontentloaded'});
