@@ -36,16 +36,10 @@
     if(!button||!status||!fallback)return;
     const link='https://withszara.com/card/';
     button.addEventListener('click',async()=>{
-      if(navigator.share){
-        try{
-          await navigator.share({title:'SZARA | Design & Technology',text:'Connect with SZARA',url:link});
-          status.textContent='Card shared.';
-          return;
-        }catch(error){
-          if(error?.name==='AbortError')return;
-        }
-      }
-      if(navigator.clipboard?.writeText){
+      // Clipboard first: native share sheets can remain unresolved on desktop.
+      // The button must always provide immediate, usable feedback.
+      status.textContent='Preparing card link...';
+      if(navigator.clipboard?.writeText && window.isSecureContext){
         try{
           await navigator.clipboard.writeText(link);
           status.textContent='Card link copied.';
@@ -56,7 +50,7 @@
       fallback.value=link;
       fallback.focus();
       fallback.select();
-      status.textContent='Select and copy the card link.';
+      status.textContent='Select and copy the card link below.';
     });
   });
 })();
