@@ -273,3 +273,40 @@ body.szara-sitewide.szara-card nav .primary:hover{background:#1e586f}
  .szx-page-links{gap:9px 18px;justify-content:flex-start;padding:9px 20px}
  .szx-page-links a{font-size:9px}
 }
+
+/* Match the shared consent controls to the studio visual system. Both choices stay available. */
+body.szara-sitewide .analytics-choice{
+ bottom:16px;left:16px;z-index:2500;width:min(360px,calc(100% - 32px));
+ max-height:min(66vh,390px);overflow:auto;
+ background:#fff;color:#244957;border:1px solid #cbdde2;border-radius:2px;
+ padding:17px 19px;box-shadow:0 12px 36px #10364729;font-family:Arial,sans-serif;
+}
+body.szara-sitewide .analytics-choice h2{
+ font:400 22px/1.2 Georgia,serif;color:#244958;margin:0 0 9px;letter-spacing:-.025em;
+}
+body.szara-sitewide .analytics-choice p{
+ color:#556f78;font:400 12px/1.55 Arial,sans-serif;margin:0 0 14px;
+}
+body.szara-sitewide .analytics-choice a{color:#2f7a94}
+body.szara-sitewide .analytics-choice>div{gap:10px}
+body.szara-sitewide .analytics-choice button{
+ border:1px solid #2b7089;border-radius:2px;box-shadow:none;
+ background:#2b7089;color:white;font:700 11px Arial,sans-serif;
+ letter-spacing:.01em;min-height:40px;padding:10px;
+}
+body.szara-sitewide .analytics-choice button[data-choice="rejected"]{
+ background:white;color:#2b7089;
+}
+body.szara-sitewide .analytics-choice button:hover{background:#1b536a;color:white}
+body.szara-sitewide .advice-list-item :where(.advice-list-arrow,.advice-list-action,.advice-read-more){
+ color:#2c7d96;
+}
+@media(max-width:720px){
+ body.szara-sitewide .analytics-choice{
+  left:12px;right:12px;bottom:12px;width:auto;max-height:42svh;
+  padding:12px 15px;
+ }
+ body.szara-sitewide .analytics-choice h2{font-size:19px;margin-bottom:6px}
+ body.szara-sitewide .analytics-choice p{font-size:11px;margin-bottom:10px}
+ body.szara-sitewide .analytics-choice button{font-size:11px;min-height:39px}
+}

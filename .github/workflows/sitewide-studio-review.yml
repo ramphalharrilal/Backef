@@ -84,7 +84,7 @@ jobs:
                     h1Font:h1?getComputedStyle(h1).fontFamily:null,
                     h1Visible:rect?rect.width>0&&rect.height>0:false,
                     studioCSS:[...document.styleSheets].some(s=>s.href?.includes('sitewide-studio.css')),
-                    header:!!header,headerContact:!!header?.querySelector('a.szx-contact[href="/#contact"]'),
+                    header:!!header,headerContact:[...(header?.querySelectorAll('a.szx-contact')||[])].some(a=>{const u=new URL(a.href);return u.pathname==='/'&&u.hash==='#contact'}),
                     footerSocial:!!social,
                     social:found(/trustpilot\.com\/review\/withszara\.com/)&&found(/facebook\.com\/share\/1Hdv1mRW9S/)&&found(/tiktok\.com\/@with_szara/),
                     consentControls:!!document.querySelector('.analytics-choice [data-choice="rejected"]')||card,
@@ -113,7 +113,7 @@ jobs:
                 }
                 if(size==='mobile'&&!check.home&&!check.card){
                   await page.locator('.szx-mobile summary').click();
-                  const visible=await page.locator('.szx-mobile-links a[href="/#contact"]').isVisible();
+                  const visible=await page.locator('.szx-mobile-links a').filter({hasText:'Contact us'}).isVisible();
                   if(!visible)report.failures.push(prefix+'mobile nav does not open');
                 }
                 page.off('pageerror',onError);page.off('response',onResponse);
