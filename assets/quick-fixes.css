@@ -1,0 +1,91 @@
+/* SZARA / Quick website help — editorial service offers, 2026-11-22 */
+.szq-page main{background:#fff;color:#254958;overflow-x:clip}
+.szq-page main .wrap{width:min(1170px,calc(100% - 72px))}
+.szq-page main :where(h1,h2,h3){color:#15394a}
+.szq-page main h1{font:400 clamp(54px,7.3vw,108px)/1.035 Georgia,"Times New Roman",serif;letter-spacing:-.06em;margin:16px 0 24px}
+.szq-page main h2{font:400 clamp(36px,4.2vw,67px)/1.12 Georgia,"Times New Roman",serif;letter-spacing:-.045em}
+.szq-page main h3{font:400 clamp(25px,2.4vw,34px)/1.2 Georgia,"Times New Roman",serif;letter-spacing:-.03em}
+.szq-page main em{color:#387e96;font-style:italic}
+.szq-page main p{line-height:1.72}
+.szq-page main .eyebrow{font:700 11px/1.5 "Avenir Next","Segoe UI",Arial,sans-serif!important;letter-spacing:.16em!important;color:#387e96!important}
+.szq-page main a{text-underline-offset:4px}
+.szq-page main a:focus-visible{outline:3px solid #397f96;outline-offset:3px}
+.szq-crumb{padding-top:30px;font-size:12px;letter-spacing:.04em;color:#597480}
+.szq-crumb a{text-decoration:none}
+.szq-crumb span{margin:0 6px}
+.szq-intro{padding:70px 0 105px;display:grid;grid-template-columns:minmax(0,1.65fr) minmax(250px,.7fr);gap:clamp(32px,5vw,90px);align-items:end}
+.szq-lead{font-size:clamp(16px,1.5vw,21px);max-width:710px;color:#47636f}
+.szq-actions{display:flex;align-items:center;gap:22px;flex-wrap:wrap;margin-top:34px}
+.szq-page .szq-text-link{text-decoration:none;font-size:13px;font-weight:700;border-bottom:1px solid #adcbd2;padding-bottom:5px}
+.szq-intro-note{border-top:2px solid #397e96;padding-top:24px;align-self:end}
+.szq-intro-note p{font-size:16px;margin-bottom:18px}
+.szq-intro-note .szq-aside-small{font-size:12px;color:#647981;margin-bottom:0}
+.szq-offers{padding:85px 0 88px;border-top:1px solid #d6e3e6}
+.szq-section-heading{margin-bottom:42px}
+.szq-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.szq-offer{min-width:0;display:flex;flex-direction:column;background:#f7f9f9;border:1px solid #d9e4e7;padding:clamp(22px,2.8vw,34px);transition:border-color .2s,transform .2s}
+.szq-offer:hover{border-color:#82b6c4;transform:translateY(-2px)}
+.szq-offer-primary{background:#eaf2f4;border-color:#a6c6ce}
+.szq-number{color:#5c7a84;font-size:10px!important;letter-spacing:.19em;font-weight:700;margin:0 0 35px}
+.szq-offer h3{min-height:68px;margin-bottom:18px}
+.szq-price{font:400 clamp(32px,3.4vw,46px)/1.1 Georgia,"Times New Roman",serif;margin:0 0 21px!important;color:#15394a}
+.szq-price span{display:block;margin-top:8px;font:600 11px/1.3 "Avenir Next","Segoe UI",Arial,sans-serif;letter-spacing:.04em;color:#56717c}
+.szq-offer p:not(.szq-price){font-size:14px;color:#486470}
+.szq-offer ul{margin:12px 0 22px;padding:0;list-style:none;color:#294d5b;font-size:13px}
+.szq-offer li{padding:10px 0;border-bottom:1px solid #d6e2e6;line-height:1.5!important}
+.szq-offer li:before{content:"✓";color:#397e96;font-weight:800;margin-right:9px}
+.szq-offer .szq-limit{font-size:12px!important;color:#67808a!important;margin-top:auto}
+.szq-offer .szq-link{display:flex;justify-content:space-between;align-items:center;margin-top:22px;padding-top:18px;border-top:1px solid #b9cfd6;text-decoration:none;font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:11px}
+.szq-fine{margin-top:24px;font-size:12px;color:#65808b;max-width:920px}
+.szq-proof{border-top:1px solid #d6e3e6;border-bottom:1px solid #d6e3e6;padding:85px 0;display:grid;grid-template-columns:1fr 1fr;gap:70px}
+.szq-proof p{font-size:17px;color:#47636f}
+.szq-flow{padding:85px 0}
+.szq-flow ol{list-style:none;counter-reset:flow;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px;margin:45px 0 0;padding:0}
+.szq-flow li{counter-increment:flow;border-top:1px solid #bdd2d8;padding:22px 0 0;display:flex;flex-direction:column;gap:8px;font-size:14px}
+.szq-flow li:before{content:"0" counter(flow);color:#397f96;font:400 22px/1 Georgia,"Times New Roman",serif;margin-bottom:12px}
+.szq-flow li strong{font-size:17px;font-weight:600}
+.szq-flow li span{color:#587480}
+.szq-contact{padding:88px 0 110px;border-top:1px solid #d6e3e6;display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.1fr);gap:clamp(30px,6vw,100px);align-items:start}
+.szq-contact>div p{max-width:390px}
+.szq-form{padding:clamp(24px,3vw,46px);border:1px solid #d5e2e7;background:#f4f8f9;border-radius:0;min-width:0}
+.szq-page .szq-form h3{margin-bottom:12px}
+.szq-form label{display:block;margin-top:17px;font-weight:650;font-size:13px;color:#294d59}
+.szq-form input,.szq-form textarea,.szq-form select{display:block;width:100%;max-width:100%;border:1px solid #bdcfd6;border-radius:0;min-height:46px;margin:7px 0 0;padding:10px 12px;background:white;color:#15394a;box-sizing:border-box}
+.szq-form textarea{min-height:124px;resize:vertical}
+.szq-form .button{margin-top:24px}
+.szq-form .form-fallback,.szq-form .szq-privacy{font-size:12px;color:#587480;line-height:1.65}
+.szq-form .form-status:not(:empty){margin-top:14px;font-size:13px}
+.szq-form .button.light{color:#15394a!important;background:transparent!important;border:1px solid #aac5cc!important}
+@media(max-width:950px){
+.szq-intro{grid-template-columns:1fr;gap:38px;padding:55px 0 70px}
+.szq-grid{grid-template-columns:1fr}
+.szq-offer h3{min-height:0}
+.szq-proof{grid-template-columns:1fr;gap:16px}
+.szq-contact{grid-template-columns:1fr;gap:28px}
+.szq-flow ol{grid-template-columns:1fr;gap:22px}
+}
+@media(max-width:600px){
+.szq-page main .wrap{width:min(100% - 36px,1170px)}
+.szq-crumb{padding-top:22px}
+.szq-intro{padding:40px 0 60px}
+.szq-page main h1{font-size:clamp(50px,12.5vw,72px)}
+.szq-offers,.szq-proof,.szq-flow,.szq-contact{padding:64px 0}
+.szq-offer{padding:24px}
+.szq-actions{align-items:stretch;flex-direction:column;gap:18px}
+.szq-actions .button{justify-content:center}
+.szq-form{padding:24px 18px}
+.szq-page main h2{font-size:clamp(35px,10vw,49px)}
+}
+@media(prefers-reduced-motion:reduce){.szq-offer{transition:none}.szq-offer:hover{transform:none}}
+
+/* Homepage service teaser: inherits the approved studio visual system */
+.szq-feature-line{margin:42px 0 22px;padding:32px 36px;border:1px solid rgba(52,114,132,.24);background:#f2f7f8;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(200px,.65fr);align-items:end;gap:32px;color:#244858}
+.szq-feature-line .szq-feature-kicker{font:700 10px/1.5 "Segoe UI",Arial,sans-serif;letter-spacing:.17em;color:#427a8d;margin:0 0 13px}
+.szq-feature-line h3{font:400 clamp(27px,3.3vw,45px)/1.12 Georgia,"Times New Roman",serif!important;letter-spacing:-.045em;margin:0 0 15px}
+.szq-feature-line h3 em{font-weight:400;color:#387e96}
+.szq-feature-line p:not(.szq-feature-kicker){font-size:14px;line-height:1.6;max-width:560px;margin:0}
+.szq-feature-actions{display:flex;flex-direction:column;gap:17px;align-items:flex-start}
+.szq-feature-actions>span{font-size:12px;letter-spacing:.01em;color:#526d78}
+.szq-feature-actions a{display:inline-flex;padding:12px 0;border-bottom:1px solid #387e96;text-decoration:none;color:#1f5b70;font-weight:700;font-size:12px;letter-spacing:.025em}
+.szq-feature-actions a span{margin-left:12px}
+@media(max-width:750px){.szq-feature-line{grid-template-columns:1fr;margin-top:26px;padding:25px 20px;gap:24px}}

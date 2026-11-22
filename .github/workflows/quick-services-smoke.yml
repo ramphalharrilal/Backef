@@ -1,0 +1,87 @@
+name: Quick website help smoke test
+on:
+  pull_request:
+    paths:
+      - 'quick-fixes/**'
+      - 'assets/quick-fixes.css'
+      - 'assets/site.js'
+      - 'assets/analytics.js'
+      - 'index.html'
+      - '.github/workflows/quick-services-smoke.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'quick-fixes/**'
+      - 'assets/quick-fixes.css'
+      - 'assets/site.js'
+      - 'assets/analytics.js'
+      - '.github/workflows/quick-services-smoke.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Chromium
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Verify mobile layout, enquiry validation and safe failure recovery
+        run: |
+          python3 -m http.server 8765 --bind 127.0.0.1 >/tmp/szq-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" || true' EXIT
+          sleep 2
+          node <<'NODE'
+          const {chromium}=require('playwright');
+          const assert=require('node:assert/strict');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const widths=[320,390,768,1440];
+            for(const w of widths){
+              const page=await browser.newPage({viewport:{width:w,height:900}});
+              const errors=[];
+              page.on('pageerror',err=>errors.push(String(err)));
+              await page.goto('http://127.0.0.1:8765/quick-fixes/',{waitUntil:'domcontentloaded'});
+              const reject=page.locator('.analytics-choice [data-choice="rejected"]');
+              if(await reject.isVisible()) await reject.click();
+              assert.equal(await page.locator('h1').count(),1);
+              assert.equal(await page.locator('.szq-offer').count(),3);
+              assert.ok(await page.locator('[data-service-pick]').count()>=2);
+              assert.ok(await page.locator('#szara-enquiry').count());
+              await page.locator('[data-service-pick="Website Rescue"]').click();
+              assert.equal(await page.locator('[name="service"]').inputValue(),'Website Rescue');
+              const dims=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,viewport:innerWidth}));
+              assert.ok(dims.scroll<=w+2,'Horizontal overflow at '+w+': '+dims.scroll);
+              const form=page.locator('#szara-enquiry');
+              await form.locator('[name="name"]').fill('QA Example');
+              await form.locator('[name="email"]').fill('qa@example.test');
+              await form.locator('[name="website"]').fill('https://example.test/');
+              await form.locator('[name="message"]').fill('This is a safe form test; no request is sent externally.');
+              assert.ok(await form.evaluate(f=>f.checkValidity()));
+              let attempts=0;
+              await page.route('https://formspree.io/f/xvkgydqn',async route=>{
+                attempts++;
+                if(attempts===1)return route.fulfill({status:500,contentType:'application/json',body:'{"errors":[{"message":"simulated rejection"}]}'});
+                return route.fulfill({status:200,contentType:'application/json',body:'{"ok":true}'});
+              });
+              await form.locator('[type="submit"]').click();
+              await page.waitForFunction(()=>document.querySelector('.form-status')?.textContent.includes('try again'));
+              assert.equal(await form.locator('[name="message"]').inputValue(),'This is a safe form test; no request is sent externally.');
+              await form.locator('[type="submit"]').click();
+              await page.waitForURL('**/thank-you/',{timeout:12000});
+              assert.equal(attempts,2);
+              assert.deepEqual(errors,[],'Browser JS errors at width '+w);
+              await page.close();
+            }
+            await browser.close();
+            console.log('Quick help page passed at 320, 390, 768 and 1440px');
+          })().catch(e=>{console.error(e);process.exit(1)});
+          NODE

@@ -19,7 +19,7 @@
   for (const link of document.querySelectorAll('a[href]')) {
     const url = new URL(link.href, location.href);
     if (url.origin !== location.origin || url.pathname === location.pathname) continue;
-    if (!/(?:\/|\/small-business-websites\/)$/.test(url.pathname)) continue;
+    if (!/(?:\/|\/small-business-websites\/|\/quick-fixes\/)$/.test(url.pathname)) continue;
     for (const [key, value] of Object.entries(campaign)) url.searchParams.set(key, value);
     link.href = url.href;
   }
@@ -36,7 +36,7 @@
   fallback.before(copy);
   copy.addEventListener('click',async()=>{
     const data=new FormData(form);
-    const text='Name: '+data.get('name')+'\nEmail: '+data.get('email')+'\n\n'+data.get('message');
+    const text='Name: '+data.get('name')+'\nEmail: '+data.get('email')+'\nService: '+(data.get('service')||'Not specified')+'\nWebsite: '+(data.get('website')||'Not supplied')+'\n\n'+data.get('message');
     try {await navigator.clipboard.writeText(text);status.textContent='Copied. You can paste this into an email to hello@withszara.com. Nothing has been sent by copying.';}
     catch {status.textContent='Please select and copy your message, then email hello@withszara.com.';}
   });
