@@ -460,3 +460,80 @@ body.szara-relaunch .sz-live-sky-footer .sz-live-sky-method{
   font:600 6px/1.5 Arial,sans-serif;letter-spacing:.08em;opacity:.7;
   color:#d9eef8;margin-top:2px;
 }
+
+/* 2026-11-22: photo/sky art direction for both screen sizes.
+   The source photograph barely includes sky above its tallest tower;
+   object-position alone can't add sky. Provide a naturally toned sky
+   extension above a photo layer with ample overscan for scroll parallax.
+   Approximate target: 25% sky desktop, 30% sky on mobile. */
+body.szara-relaunch .sz-panorama .sz-houston-photo-pair{
+  inset:0;
+  overflow:hidden;
+  background:
+    radial-gradient(ellipse at 13% 12%,rgba(246,250,255,.44),transparent 31%),
+    radial-gradient(ellipse at 23% 45%,rgba(240,246,250,.32),transparent 49%),
+    radial-gradient(ellipse at 77% 61%,rgba(218,234,247,.20),transparent 45%),
+    linear-gradient(180deg,#b4c6d9 0%,#c1d1e2 48%,#d4deeb 100%);
+}
+body.szara-relaunch[data-houston-time="night"] .sz-panorama .sz-houston-photo-pair{
+  background:
+    radial-gradient(ellipse at 70% 8%,rgba(91,124,160,.2),transparent 48%),
+    linear-gradient(180deg,#0b1d37 0%,#19324d 62%,#26475a 100%);
+}
+body.szara-relaunch .sz-panorama .sz-houston-photo-pair img.sz-photo-day,
+body.szara-relaunch .sz-panorama .sz-houston-photo-pair img.sz-photo-night{
+  /* Image scroll transform is still owned by agency-reference.js */
+  inset:auto 0 auto 0;
+  top:18%;
+  bottom:auto;
+  width:100%;
+  height:112%;
+  object-fit:cover;
+  object-position:50% 49%;
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0%,rgba(0,0,0,.08) 3%,rgba(0,0,0,.35) 7%,rgba(0,0,0,.75) 10%,#000 13%);
+  mask-image:linear-gradient(to bottom,transparent 0%,rgba(0,0,0,.08) 3%,rgba(0,0,0,.35) 7%,rgba(0,0,0,.75) 10%,#000 13%);
+}
+@media(min-width:1600px){
+  body.szara-relaunch .sz-panorama .sz-houston-photo-pair img.sz-photo-day,
+  body.szara-relaunch .sz-panorama .sz-houston-photo-pair img.sz-photo-night{
+    top:21%;
+    height:111%;
+  }
+}
+@media(max-width:720px){
+  body.szara-relaunch .sz-panorama .sz-houston-photo-pair{inset:0;}
+  body.szara-relaunch .sz-panorama .sz-houston-photo-pair img.sz-photo-day,
+  body.szara-relaunch .sz-panorama .sz-houston-photo-pair img.sz-photo-night{
+    top:25%;
+    bottom:auto;
+    height:112%;
+    width:100%;
+    object-position:52% 48%;
+    -webkit-mask-image:linear-gradient(to bottom,transparent 0%,rgba(0,0,0,.08) 3%,rgba(0,0,0,.32) 6%,rgba(0,0,0,.7) 10%,#000 13%);
+    mask-image:linear-gradient(to bottom,transparent 0%,rgba(0,0,0,.08) 3%,rgba(0,0,0,.32) 6%,rgba(0,0,0,.7) 10%,#000 13%);
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  body.szara-relaunch .sz-panorama .sz-houston-photo-pair img.sz-photo-day,
+  body.szara-relaunch .sz-panorama .sz-houston-photo-pair img.sz-photo-night{
+    transform:none!important;
+  }
+}
+
+/* Let the calculated Houston sky live in the actual open sky, away from
+   headline and CTA. Satellite stays left; chart sits quietly right. */
+body.szara-relaunch .sz-panorama .sz-houston-live-sky{
+  left:auto;right:clamp(19px,3vw,45px);top:5%;bottom:auto;
+  width:clamp(175px,15vw,215px);
+}
+@media(max-width:720px){
+  body.szara-relaunch .sz-panorama .sz-houston-live-sky{
+    left:auto;right:11px;top:11%;bottom:auto;
+    width:clamp(135px,38vw,151px);
+  }
+}
+@media(max-width:380px){
+  body.szara-relaunch .sz-panorama .sz-houston-live-sky{
+    right:7px;top:12%;width:130px;
+  }
+}
