@@ -362,3 +362,35 @@ body.szara-relaunch .sz-panorama-interlude::after{
     background:linear-gradient(180deg,rgba(8,42,61,.70),rgba(7,55,75,.59));
   }
 }
+
+/* Original orbital station complements the branded satellite in the lower
+   photographic chapter; an illustration, not a claim of space-agency ties. */
+body.szara-relaunch .sz-panorama-interlude .sz-orbit-station{
+  position:absolute;right:3.5%;top:8%;width:clamp(165px,25vw,325px);
+  height:auto;z-index:4;pointer-events:none;opacity:.93;
+  transform:translate3d(0,var(--sz-station-shift,0px),0);
+  filter:drop-shadow(0 3px 9px rgba(0,24,39,.85));
+}
+body.szara-relaunch .sz-orbit-station svg{
+  display:block;width:100%;height:auto;overflow:visible;
+}
+@media(prefers-reduced-motion:no-preference){
+  body.szara-relaunch .sz-orbit-station-drift{
+    transform-origin:50% 50%;
+    animation:sz-orbital-station-drift 16s ease-in-out infinite alternate;
+  }
+  @keyframes sz-orbital-station-drift{
+    from{transform:translate3d(-8px,3px,0) rotate(-2deg)}
+    to{transform:translate3d(9px,-5px,0) rotate(2deg)}
+  }
+}
+@media(max-width:720px){
+  body.szara-relaunch .sz-panorama-interlude .sz-orbit-station{
+    width:clamp(120px,34vw,170px);top:7%;right:1%;opacity:.86;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  body.szara-relaunch .sz-panorama-interlude .sz-orbit-station{
+    transform:none!important;filter:drop-shadow(0 3px 6px rgba(0,24,39,.6));
+  }
+}
