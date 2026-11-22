@@ -85,6 +85,28 @@ jobs:
                 await page.waitForTimeout(1100);
                 await page.screenshot({path:'visual-review/'+label+'-'+section+'.png',fullPage:false,animations:'disabled'});
               }
+              // Regression guard: both blue photo panels must visibly respond
+              // to scrolling rather than behaving like flat-color sections.
+              for (const [id,selector] of [
+                ['client-feedback','#client-feedback .sz-blue-quote-photo img'],
+                ['houston-studio','#houston-studio .sz-interlude-image .sz-photo-day']
+              ]) {
+                const moving=page.locator(selector);
+                assert.equal(await moving.count(),1,id+': photographic layer missing');
+                assert.ok(await moving.evaluate(im=>im.complete&&im.naturalWidth>0),id+': photograph unavailable');
+                const start=await page.evaluate(sectionId=>{
+                  const section=document.getElementById(sectionId);
+                  return Math.max(0,Math.round(section.getBoundingClientRect().top+
+                    scrollY-innerHeight*.4));
+                },id);
+                await page.evaluate(y=>scrollTo({top:y,behavior:'instant'}),start);
+                await page.waitForTimeout(200);
+                const before=await moving.evaluate(el=>el.style.transform);
+                await page.evaluate(()=>scrollBy({top:120,behavior:'instant'}));
+                await page.waitForTimeout(200);
+                const after=await moving.evaluate(el=>el.style.transform);
+                assert.notEqual(after,before,id+': photo did not move on scroll');
+              }
               if(label==='desktop'||label==='mobile'){
                 await page.clock.setFixedTime(new Date('2026-06-21T06:00:00Z'));
                 await page.reload({waitUntil:'domcontentloaded'});
