@@ -394,3 +394,64 @@ body.szara-relaunch .sz-orbit-station svg{
     transform:none!important;filter:drop-shadow(0 3px 6px rgba(0,24,39,.6));
   }
 }
+
+/* A compact, time-calculated planisphere. It represents directions in the
+   celestial sphere, not stars optically registered onto the Houston photo. */
+body.szara-relaunch .sz-houston-live-sky{
+  position:absolute;left:clamp(24px,4.5vw,65px);bottom:18px;z-index:6;
+  width:clamp(177px,18vw,225px);pointer-events:none;color:#eef9fc;
+  text-align:center;opacity:0;visibility:hidden;
+  transition:opacity .9s ease,visibility .9s ease;
+  filter:drop-shadow(0 4px 11px rgba(0,17,34,.67));
+}
+body.szara-relaunch[data-houston-time="night"] .sz-houston-live-sky[data-ready="true"]{
+  opacity:1;visibility:visible;
+}
+body.szara-relaunch .sz-houston-live-sky svg{
+  display:block;width:100%;height:auto;max-height:220px;overflow:visible;
+}
+body.szara-relaunch .sz-live-sky-heading{
+  font:700 9px/1.4 Arial,sans-serif;letter-spacing:.20em;
+  text-shadow:0 1px 6px #0c2b43;margin:0 0 2px;
+}
+body.szara-relaunch .sz-live-sky-heading span{
+  font-size:7px;letter-spacing:.10em;opacity:.72;margin-left:5px;
+}
+body.szara-relaunch .sz-live-sky-footer{
+  display:flex;flex-direction:column;gap:2px;margin-top:-2px;
+  font:650 8px/1.5 Arial,sans-serif;letter-spacing:.04em;
+  text-shadow:0 1px 6px #0b2b42;
+}
+body.szara-relaunch .sz-live-sky-footer span:last-child{
+  color:#d1e8f2;font-weight:400;font-size:8px;
+}
+/* The previous S-shaped decorative "constellation" was not calculated
+   from star positions and should not compete with the real sky chart. */
+body.szara-relaunch .sz-panorama .sz-night-constellation.sz-sky-s{display:none}
+@media(max-width:720px){
+  /* More breathing room above the Houston buildings without stretching them:
+     the night photograph sits lower and feathers into an ink-blue sky. */
+  body.szara-relaunch .sz-panorama{height:min(80svh,700px);min-height:620px}
+  body.szara-relaunch .sz-panorama .sz-houston-photo-pair{
+    background:linear-gradient(180deg,#102844 0%,#173554 54%,#28495b 100%);
+  }
+  body.szara-relaunch .sz-panorama .sz-houston-photo-pair img.sz-photo-night{
+    top:auto;bottom:-1%;height:82%;object-position:52% center;
+    -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 28%);
+    mask-image:linear-gradient(180deg,transparent 0%,#000 28%);
+  }
+  body.szara-relaunch .sz-houston-live-sky{
+    left:13px;bottom:12px;width:152px;
+  }
+  body.szara-relaunch .sz-live-sky-heading{font-size:8px}
+  body.szara-relaunch .sz-live-sky-heading span{font-size:6px}
+  body.szara-relaunch .sz-live-sky-footer{font-size:7px}
+  body.szara-relaunch .sz-live-sky-footer span:last-child{font-size:7px}
+}
+@media(max-width:380px){
+  body.szara-relaunch .sz-panorama{min-height:615px}
+  body.szara-relaunch .sz-houston-live-sky{width:138px}
+}
+@media(prefers-reduced-motion:reduce){
+  body.szara-relaunch .sz-houston-live-sky{transition:none}
+}
