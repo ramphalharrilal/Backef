@@ -274,8 +274,6 @@ body.szara-relaunch .sz-panorama .sz-hero-discover:hover,
 body.szara-relaunch .sz-panorama-interlude a:hover { background: #163541; color: #fff; }
 body.szara-relaunch .sz-panorama .sz-hero-bottom-rail { left: auto; right: 5%; bottom: 8%; }
 body.szara-relaunch .sz-panorama .sz-photo-place { display:none; }
-.sz-sky-control { display:flex; align-items:center; gap:.7rem; padding:0 .65rem; color:white; background:#142d38eb; font: .85rem/1.4 Arial,sans-serif; }
-.sz-sky-control select { font:inherit; color:inherit; background:#142d38; border:0; padding:.65rem .2rem; min-height:44px; }
 body.szara-relaunch .sz-panorama .sz-mission-scene { top:9%; opacity:.86; }
 body.szara-relaunch .sz-mission-progress,body.szara-relaunch .sz-mission-track { opacity:0!important; }
 body.szara-relaunch .sz-panorama .sz-sky-s { opacity:0; }

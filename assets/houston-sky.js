@@ -6,7 +6,7 @@
 (() => {
   const root = document.body;
   const hero = document.querySelector('[data-houston-scene="hero"]');
-  const toggle = hero && hero.querySelector('[data-sz-scene-toggle]');
+
   if (!root || !hero) return;
 
   const rad = Math.PI / 180;
@@ -47,11 +47,10 @@
   }
 
   function applyLighting() {
-    const selected = toggle?.value || 'auto';
-    root.dataset.houstonTime = selected === 'auto' ? currentHoustonScene() : selected;
+    // Always follow the sun's position over Houston; no manual override.
+    root.dataset.houstonTime = currentHoustonScene();
   }
 
-  toggle?.addEventListener('change', applyLighting);
   addEventListener('pageshow', applyLighting);
   setInterval(applyLighting, 60000);
   applyLighting();
