@@ -148,6 +148,14 @@ jobs:
                 }));
                 console.log('HOUSTON SKY DIAGNOSTIC',JSON.stringify(skyState));
                 assert.equal(await skyChart.isVisible(),true,'Sky chart should show at Houston night');
+                const heroOverlap=await page.evaluate(()=>{
+                  const a=document.querySelector('.sz-houston-live-sky').getBoundingClientRect();
+                  const b=document.querySelector('.sz-panorama-copy').getBoundingClientRect();
+                  return a.left < b.right && a.right > b.left &&
+                    a.top < b.bottom && a.bottom > b.top;
+                });
+                assert.equal(heroOverlap,false,'Night sky chart must not overlap hero copy');
+
                 const summerSky=await skyChart.locator('svg').getAttribute('aria-label');
                 const summerGeometry=await skyChart.locator('svg').evaluate(svg=>[...svg.querySelectorAll('circle')].slice(2,12).map(c=>c.getAttribute('cx')+','+c.getAttribute('cy')).join('|'));
                 await page.waitForTimeout(1100);
@@ -183,7 +191,11 @@ jobs:
               }
               const broken=await page.locator('a[href^="#"]').evaluateAll(links=>links.filter(a=>!document.getElementById(a.hash.slice(1))).map(a=>a.hash));
               assert.deepEqual(broken,[]);
-              const assets=await page.locator('main img').evaluateAll(imgs=>imgs.filter(im=>!im.complete||!im.naturalWidth).map(im=>im.src));
+              // Lazy photos outside the viewport may legitimately remain unloaded.
+              // Eager hero images are checked separately above and here.
+              const assets=await page.locator('main img').evaluateAll(imgs=>
+                imgs.filter(im=>im.loading!=='lazy' && (!im.complete||!im.naturalWidth))
+                  .map(im=>im.src));
               assert.deepEqual(assets,[]);
               const form=page.locator('#szara-enquiry');
               assert.equal(await form.evaluate(f=>f.checkValidity()),false);
