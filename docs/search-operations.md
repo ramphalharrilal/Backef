@@ -1,9 +1,15 @@
 # SZARA search operations
 
+## Confirmed business constraints
+
+- SZARA operates entirely remotely (owner confirmed November 28, 2026).
+- Google Business Profile is blocked, per the owner. Do not create a duplicate or replacement local listing. Search Console verification is separate and remains completed.
+- Owner tested the contact form and confirmed it works; enquiry delivery is closed as owner-verified. Do not submit another test enquiry.
+
 ## Completion checklist — November 28, 2026
 
 - [x] Google Search Console verified; sitemap successful with 31 discovered pages (earlier completed work). Priority service URL indexing requests already submitted.
-- [x] Imported https://withszara.com/ from Google Search Console into Bing with approved read-only access. Submitted https://withszara.com/sitemap.xml; Bing showed 31 URLs, zero errors/warnings and Processing.
+- [x] Imported https://withszara.com/ from Google Search Console into Bing with approved read-only access. Submitted https://withszara.com/sitemap.xml; Bing now shows Success, 31 URLs, zero errors/warnings and a November 28 crawl.
 - [x] Bing AI Performance beta available without an upgrade. Report showed zero citations; new property reports may need 48 hours. No separate activation was required.
 - [x] Existing IndexNow workflow succeeded with HTTP 200 for 17 URLs. Bing's new-property dashboard still showed onboarding; acceptance does not guarantee indexing.
 - [x] Reviewed Cloudflare AI Crawl Control: Googlebot, BingBot, OAI-SearchBot, PerplexityBot and Claude-SearchBot were not blocked. Existing security protection was preserved.
@@ -25,7 +31,8 @@ Exact host match: withszara.com or www.withszara.com.
 These rules do not match article subpaths. Preserve every individual article URL and all 16 articles. GitHub Pages HTML redirect fallbacks remain in the repository; GitHub Pages does not implement _redirects files.
 
 - [ ] Confirm live HTTP 301 and Location after DNS propagation, including www, slash/no-slash and a query string; confirm representative article URLs still return 200. The initial check reached GitHub directly before proxy activation. Later shell verification was blocked by the session permission policy and browser verification timed out. Deployed rule configuration is verified; live HTTP status is not yet verified.
-- [ ] Revisit Bing after processing: sitemap Success, IndexNow reporting and AI citations. Zero citations on a newly imported property is not evidence of a configuration failure.
+- [x] Revisited Bing: sitemap Success confirmed with 31 URLs.
+- [ ] Revisit Bing IndexNow reporting and AI citations: IndexNow still shows onboarding and AI Performance still shows zero citations. Zero citations on a newly imported property is not evidence of a configuration failure.
 - [ ] Mobile performance remains an improvement opportunity: existing local Lighthouse report scored 71 with LCP about 10 seconds (desktop 93). Large day/night skyline JPEGs were identified in the report. These are lab results, not live field Core Web Vitals. No speculative design or animation changes were made.
 
 ## Free listings and genuine referral opportunities
@@ -34,10 +41,10 @@ Prioritize customer enquiries and consistent business identity; check for an exi
 
 | Priority | Opportunity | Commercial focus and next action |
 | --- | --- | --- |
-| 1 | [Google Business Profile](https://www.about.google/business/) | Free Search/Maps presence for Houston web design and IT support. Eligible only if SZARA makes real in-person contact with customers; [Google eligibility](https://support.google.com/business/answer/13763036). Confirm that condition before claiming a storefront or service-area profile. |
-| 2 | [Bing Places](https://www.bing.com/forbusiness/) | Free local listing, separate from Webmaster Tools. Reuse accurate Google business details through the available import/sync flow; verify service-area eligibility and avoid duplicate profiles. |
+| 1 | [Google Business Profile](https://www.about.google/business/) | Free Search/Maps presence for Houston web design and IT support. Eligible only if SZARA makes real in-person contact with customers; [Google eligibility](https://support.google.com/business/answer/13763036). SZARA is entirely remote and its Google profile is blocked; do not pursue a new local profile. |
+| 2 | [Bing Places](https://www.bing.com/forbusiness/) | Free local listing, separate from Webmaster Tools. Entirely remote operation is now confirmed. Establish eligibility before any local listing; do not import the blocked Google profile or invent an address. |
 | 3 | [Clutch](https://help.clutch.co/en/knowledge/free-features-clutch-offers) | Free profile, client reviews and inclusion on The Manifest. Focus on Houston small-business/nonprofit web design, maintenance and documented portfolio work. Basic listing is sufficient; no paid verification or subscription is required for a profile. |
-| 4 | [Yelp](https://www.yelp-support.com/article/What-is-a-claimed-business?l=en_US) | Claiming is free. Use truthful web-design/IT service categories and respond to enquiries; decline advertising offers. |
+| 4 | [Yelp](https://www.yelp-support.com/article/What-is-a-claimed-business?l=en_US) | Claiming is free. Confirm eligibility for an entirely remote business before proceeding; do not invent a local presence. Decline advertising offers. |
 
 Genuine backlink prospects based on the existing portfolio:
 
