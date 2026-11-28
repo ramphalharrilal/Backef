@@ -30,10 +30,12 @@ Exact host match: withszara.com or www.withszara.com.
 
 These rules do not match article subpaths. Preserve every individual article URL and all 16 articles. GitHub Pages HTML redirect fallbacks remain in the repository; GitHub Pages does not implement _redirects files.
 
-- [ ] Confirm live HTTP 301 and Location after DNS propagation, including www, slash/no-slash and a query string; confirm representative article URLs still return 200. The initial check reached GitHub directly before proxy activation. Later shell verification was blocked by the session permission policy and browser verification timed out. Deployed rule configuration is verified; live HTTP status is not yet verified.
+- [x] Live verification passed in [Actions run 46121987286](https://github.com/ramphalharrilal/Backef/actions/runs/46121987286): eight host/slash variants return HTTP 301 with query strings preserved; all 16 article URLs, sitemap and IndexNow key return HTTP 200. The check remains in the search-quality workflow.
 - [x] Revisited Bing: sitemap Success confirmed with 31 URLs.
 - [ ] Revisit Bing IndexNow reporting and AI citations: IndexNow still shows onboarding and AI Performance still shows zero citations. Zero citations on a newly imported property is not evidence of a configuration failure.
-- [ ] Mobile performance remains an improvement opportunity: existing local Lighthouse report scored 71 with LCP about 10 seconds (desktop 93). Large day/night skyline JPEGs were identified in the report. These are lab results, not live field Core Web Vitals. No speculative design or animation changes were made.
+- [x] Added 960px versions of the original day/night photographs with responsive srcset selection. Mobile pair is 229,740 bytes versus about 1.17 MB originally; larger screens retain the original 1920px images. Attribution, design and animations are preserved. [Commit 68460dc](https://github.com/ramphalharrilal/Backef/commit/68460dc7225e113e3ab1ebc54bd8908a81c89956).
+- [x] Re-ran existing responsive/Lighthouse workflow: all 40 page/viewport checks passed. Mobile performance 71 -> 76, LCP 9.97s -> 5.41s; desktop performance 93 -> 92, LCP 1.80s; CLS zero for both. Lab results, not live field Core Web Vitals. Mobile LCP still needs improvement.
+- [x] Fixed generic Python user-agent rejection for automated key/sitemap checks by identifying the client as SZARA-IndexNow. The live verification uses SZARA-Search-Check. No Cloudflare security protections were disabled. [Commit 4abf31d](https://github.com/ramphalharrilal/Backef/commit/4abf31df39c5c83766a1cfb6b502e43d1cace517). The optimization run's IndexNow notification failed before this fix; a later no-page-change job does not prove resubmission of that homepage update.
 
 ## Free listings and genuine referral opportunities
 
@@ -52,7 +54,11 @@ Genuine backlink prospects based on the existing portfolio:
 - [Kenswick Meadows Community Association](https://kenswickmeadows.org/) publishes community updates and a newsletter. A voluntary credit for actual delivered work or a useful website-safety contribution could introduce SZARA to local organizations. Confirm the work and obtain the association's agreement before publication.
 - Clutch's free contributed-content option is a relevant editorial route for a practical nonprofit website or small-business maintenance article based on actual experience. Acceptance and links are not guaranteed.
 
-No outreach was sent and no third-party accounts or listings were created. Avoid paid link schemes, invented reviews, forced footer credits and duplicate city pages. Map commercial terms to existing /web-design/, /nonprofit-web-design/ and /website-maintenance/ pages; do not create unnecessary pages.
+Voluntary project-credit requests were sent to existing Gaining Ground Youth Services and Kenswick Meadows contacts on November 28; wording makes any credit subject to their approval and the relevant work being ready. No backlink has been secured yet.
+
+Clutch Basic setup was started with the owner's approval of its terms and Google sign-in. Company copy, founding year 2022 and team size 2–9 (four people) were saved through onboarding. Location requires a street address and ZIP, with no hide-address option visible. The owner instructed leaving the profile unfinished, so it was not submitted or published. The SZARA Canva brand kit was located (kAGnR9L7iN4); no replacement logo or website rebrand was made. Do not resume Clutch publication without resolving the approved public-address requirement.
+
+Bing Places and Yelp have not been created; entirely remote operation requires eligibility verification before any local listing. Avoid paid link schemes, invented reviews, forced footer credits and duplicate city pages. Map commercial terms to existing /web-design/, /nonprofit-web-design/ and /website-maintenance/ pages; do not create unnecessary pages.
 
 ## Ongoing measurement
 
