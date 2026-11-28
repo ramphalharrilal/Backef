@@ -4,10 +4,7 @@
    The user's device clock provides the current UTC instant.
    No API calls, location permission, cookies, analytics or storage. */
 (() => {
-  const root = document.body;
-  const hero = document.querySelector('[data-houston-scene="hero"]');
-
-  if (!root || !hero) return;
+  // Runs early in the homepage head so only the visible skyline is preloaded.
 
   const rad = Math.PI / 180;
   const HOUSTON_LAT = 29.7604;
@@ -46,11 +43,32 @@
     return sunAltitudeDegrees(date) > -0.833 ? 'day' : 'night';
   }
 
-  function applyLighting() {
-    // Always follow the sun's position over Houston; no manual override.
-    root.dataset.houstonTime = currentHoustonScene();
+  function loadScene(scene) {
+    document.querySelectorAll('.sz-photo-' + scene + '[data-src]').forEach(img => {
+      img.sizes = img.dataset.sizes || '100vw';
+      img.srcset = img.dataset.srcset;
+      img.src = img.dataset.src;
+      delete img.dataset.src;
+    });
   }
 
+  function applyLighting() {
+    const scene = currentHoustonScene();
+    loadScene(scene);
+    if (document.body) document.body.dataset.houstonTime = scene;
+  }
+
+  const scene = currentHoustonScene();
+  const preload = document.createElement('link');
+  preload.rel = 'preload';
+  preload.as = 'image';
+  preload.href = '/assets/houston-' + scene + '-1920.webp';
+  preload.imageSrcset = '/assets/houston-' + scene + '-960.webp 960w, /assets/houston-' + scene + '-1920.webp 1920w';
+  preload.imageSizes = '100vw';
+  preload.fetchPriority = 'high';
+  document.head.append(preload);
+  window.szaraApplyHoustonLighting = applyLighting;
+  document.addEventListener('DOMContentLoaded', applyLighting, {once: true});
   addEventListener('pageshow', applyLighting);
   setInterval(applyLighting, 60000);
   applyLighting();

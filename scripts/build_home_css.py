@@ -26,7 +26,13 @@ def build():
 if __name__ == '__main__':
     import sys
     result = build()
+    index = ROOT / 'index.html'
+    html = index.read_text(encoding='utf-8')
+    lighting = '<!-- houston-lighting:start --><script>' + (ROOT / 'assets/houston-sky.js').read_text(encoding='utf-8') + '</script><!-- houston-lighting:end -->'
+    updated = re.sub(r'<!-- houston-lighting:start -->[\s\S]*?<!-- houston-lighting:end -->', lambda m: lighting, html)
     if '--check' in sys.argv:
         assert OUTPUT.read_text(encoding='utf-8') == result, 'Run python scripts/build_home_css.py'
+        assert html == updated, 'Rebuild the inline Houston lighting script'
     else:
         OUTPUT.write_text(result, encoding='utf-8')
+        index.write_text(updated, encoding='utf-8')

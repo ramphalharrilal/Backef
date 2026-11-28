@@ -56,6 +56,7 @@ jobs:
             if(issues.length){console.error(JSON.stringify(issues));process.exitCode=1;}
           })().catch(e=>{console.error(e);process.exit(1)})
           NODE
+          node scripts/check_home_lighting.cjs
       - name: Capture lab Lighthouse reports
         if: always()
         run: |
