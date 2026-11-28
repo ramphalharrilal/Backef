@@ -12,7 +12,7 @@ const assert=require('node:assert/strict');
     assert.equal(await page.locator('body').getAttribute('data-houston-time'),scene);
     assert(images.length===1 && images[0].includes('houston-'+scene+'-960.webp'),JSON.stringify(images));
     assert(await page.locator('.sz-panorama .sz-photo-'+scene).evaluate(img=>img.complete&&img.naturalWidth>0));
-    await page.locator('.mobile-menu summary').click();
+    await page.locator('.mobile-menu summary .menu-bars').click();
     assert(await page.locator('.mobile-menu-links').isVisible());
     await page.screenshot({path:'search-review/lighting-'+scene+'.png'});
     await page.close();
