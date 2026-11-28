@@ -27,12 +27,14 @@
   menu.querySelectorAll('.mobile-menu-links a').forEach(link => {
     link.addEventListener('click', () => {
       // Navigate normally; for same-page anchors, collapse the overlay.
-      if (link.hash && link.origin === location.origin && link.pathname === location.pathname) {
+      if (link.origin === location.origin && link.pathname === location.pathname) {
         menu.open = false;
         menu.classList.remove('is-closing');
       }
     });
   });
+  menu.addEventListener('toggle',()=>summary.setAttribute('aria-expanded',String(menu.open)));
+  summary.setAttribute('aria-expanded',String(menu.open));
   document.addEventListener('keydown', event => {
     if (event.key === 'Escape' && menu.open) {
       closeMenu();

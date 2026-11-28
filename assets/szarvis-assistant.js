@@ -333,16 +333,19 @@
     const tokens=(question.toLowerCase().match(/[a-z0-9]+/g)||[]).filter(w=>w.length>2&&!stop.has(w));
     if(/(hello|hi|hey)\b/i.test(question)&&tokens.length<2) return {answer:'Hello! I’m SZARVIS. I can explore this website and show you where to find information about our work. What would you like to know?',source:''};
     if(/\b(price|prices|pricing|cost|monthly|package|subscription)\b|how much/i.test(question)){
+      if(/website rescue|website repair|broken (form|link)|website fix/i.test(question)){return {answer:'Website Rescue starts at US$199 for a defined website issue. We review access and scope before confirming a quote.',source:new URL('/quick-fixes/',location.origin).href};}
+      if(/booking|enquiry setup|contact form setup/i.test(question)){return {answer:'Enquiry and Booking Setup starts at US$349 for a standard agreed workflow. Extra integrations and third-party fees are scoped separately.',source:new URL('/quick-fixes/',location.origin).href};}
+      if(/insight|audit|assessment/i.test(question)){return {answer:'SZARA Insight starts at US$299 for up to five pages, US$799 for up to 25 pages, and from US$2,499 for custom assessments up to 100 pages. Remediation is separate.',source:new URL('/quick-fixes/#insight',location.origin).href};}
       if(/tech support|computer|remote|troubleshoot|quick fix|consultation/i.test(question)){
-        return {answer:'Remote tech support starts with a free 10-minute phone consultation. A 30-minute Quick Fix is US$35, or up to 60 minutes is US$59. Extra time needs your approval. Tell Harry the problem first, so he can confirm whether remote support is suitable.',source:new URL('/remote-tech-support/',location.origin).href};
+        return {answer:'Remote tech support starts with a free 10-minute phone consultation. A 30-minute Quick Fix is US$35, or up to 60 minutes is US$59. Extra time needs your approval. Tell SZARA the problem first so we can confirm whether remote support is suitable.',source:new URL('/remote-tech-support/',location.origin).href};
       }
       if(/business support|admin|virtual|inbox|follow.up|tracker|spreadsheet/i.test(question)){
         return {answer:'Monthly business support starts at US$250 for up to 8 hours. There are also US$450 and US$700 plans for more ongoing support. The exact responsibilities and working arrangements are agreed before starting.',source:new URL('/business-support/',location.origin).href};
       }
       if(/care|maintenan|hosting|updates/i.test(question)){
-        return {answer:'Optional SZARA Care starts at US$79 per month for basic website oversight. Plans with content updates start at US$149 per month. Hosting and domains are quoted separately unless a written proposal includes them.',source:new URL('/website-maintenance/',location.origin).href};
+        return {answer:'SiteCare starts at US$79 per month for 30 minutes of support, US$149 for 90 minutes, and US$299 for three hours. Existing websites require a review. Hosting and domains are quoted separately unless a written proposal includes them.',source:new URL('/website-maintenance/',location.origin).href};
       }
-      return {answer:'A one-page Starter website begins at US$999. A business website with up to five pages starts at US$1,799. Ongoing SZARA Care is optional for new customers, with plans from US$79 per month. Larger projects and added features are quoted separately.',source:new URL('/small-business-websites/',location.origin).href};
+      return {answer:'Website design starts at US$999 for one page, US$1,799 for up to five pages, and US$2,999 for advanced websites. Optional SiteCare starts at US$79 per month. Scope and additional costs are agreed in writing.',source:new URL('/web-design/#pricing',location.origin).href};
     }
     if(/contact|email|reach|book|start a project|consultation|quote/i.test(question)){
       const c=documents.find(d=>/contact|get in touch|project|quote/i.test(d.title+' '+d.text));
@@ -405,7 +408,7 @@
   }
   function toggle(open){
     panel.hidden=!open;launcher.setAttribute('aria-expanded',String(open));launcher.textContent=open?'Close assistant ✕':'●  Ask '+cfg.name+' ↗';
-    if(open){checkAI();input.focus();if(transcript.children.length===0)appendMessage(`Hi! I'm ${cfg.name}. I can walk through this website, scan its sections and help you find answers. What are you looking for?`);}
+    if(!open){launcher.focus();} if(open){checkAI();input.focus();if(transcript.children.length===0)appendMessage(`Hi! I'm ${cfg.name}. I can walk through this website, scan its sections and help you find answers. What are you looking for?`);}
   }
   // A tap on the character is a direct audio gesture: opens chat and starts voice.
   function talkToWalker(){
