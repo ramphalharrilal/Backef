@@ -43,11 +43,18 @@
     return sunAltitudeDegrees(date) > -0.833 ? 'day' : 'night';
   }
 
+  // Small phones use the existing compact skyline; larger screens retain responsive candidates.
+  const compactSkyline = matchMedia('(max-width: 480px)');
+  function skylineSrc(src) {
+    return compactSkyline.matches ? src.replace('-1920.webp', '-960.webp') : src;
+  }
+
   function loadScene(scene) {
     document.querySelectorAll('.sz-photo-' + scene + '[data-src]').forEach(img => {
       img.sizes = img.dataset.sizes || '100vw';
-      img.srcset = img.dataset.srcset;
-      img.src = img.dataset.src;
+      img.srcset = compactSkyline.matches ? skylineSrc(img.dataset.src) : img.dataset.srcset;
+      img.src = skylineSrc(img.dataset.src);
+      img.dataset.skylineLoaded = 'true';
       delete img.dataset.src;
     });
   }
@@ -62,14 +69,24 @@
   const preload = document.createElement('link');
   preload.rel = 'preload';
   preload.as = 'image';
-  preload.href = '/assets/houston-' + scene + '-1920.webp';
-  preload.imageSrcset = '/assets/houston-' + scene + '-960.webp 960w, /assets/houston-' + scene + '-1920.webp 1920w';
-  preload.imageSizes = '100vw';
+  preload.href = skylineSrc('/assets/houston-' + scene + '-1920.webp');
+  if (!compactSkyline.matches) {
+    preload.imageSrcset = '/assets/houston-' + scene + '-960.webp 960w, /assets/houston-' + scene + '-1920.webp 1920w';
+    preload.imageSizes = '100vw';
+  }
   preload.fetchPriority = 'high';
   document.head.append(preload);
   window.szaraApplyHoustonLighting = applyLighting;
   document.addEventListener('DOMContentLoaded', applyLighting, {once: true});
   addEventListener('pageshow', applyLighting);
+  compactSkyline.addEventListener('change', () => {
+    const current = currentHoustonScene();
+    document.querySelectorAll('.sz-photo-' + current + '[data-skyline-loaded]').forEach(img => {
+      const full = '/assets/houston-' + current + '-1920.webp';
+      img.srcset = compactSkyline.matches ? skylineSrc(full) : img.dataset.srcset;
+      img.src = skylineSrc(full);
+    });
+  });
   setInterval(applyLighting, 60000);
   applyLighting();
 })();
