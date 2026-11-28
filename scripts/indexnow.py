@@ -28,9 +28,9 @@ if not selected:
 # Pages deploy separately. Confirm the key and changed canonical pages are reachable first.
 for attempt in range(18):
     try:
-        with urllib.request.urlopen(KEY_URL,timeout=20) as r:
+        with urllib.request.urlopen(urllib.request.Request(KEY_URL,headers={"User-Agent":"SZARA-IndexNow/1.0 (+https://withszara.com/)"}),timeout=20) as r:
             assert r.read().decode().strip()==KEY
-        with urllib.request.urlopen(BASE+"/sitemap.xml",timeout=20) as r:
+        with urllib.request.urlopen(urllib.request.Request(BASE+"/sitemap.xml",headers={"User-Agent":"SZARA-IndexNow/1.0 (+https://withszara.com/)"}),timeout=20) as r:
             live={e.text for e in ET.fromstring(r.read()).findall(".//{*}loc")}
         assert (selected & urls)<=live
         break

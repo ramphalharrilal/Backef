@@ -44,6 +44,7 @@ jobs:
               def redirect_request(self, req, fp, code, msg, headers, newurl):
                   return None
           opener = urllib.request.build_opener(NoRedirect())
+          opener.addheaders = [('User-Agent', 'SZARA-Search-Check/1.0 (+https://withszara.com/)')]
           failures = []
           def inspect(url):
               try:
@@ -68,7 +69,7 @@ jobs:
                       and urllib.parse.urlparse(node.text).path not in ('/advice/', '/insights/')]
           if len(articles) != 16:
               failures.append(f'Expected 16 articles, found {len(articles)}')
-          for url in articles:
+          for url in articles + ['https://withszara.com/sitemap.xml', 'https://withszara.com/ab9eaed911fddcb7e36d234e7aaa9e444.txt']:
               status, location = inspect(url)
               print(f'{status} ARTICLE {url}', flush=True)
               if status != 200:
