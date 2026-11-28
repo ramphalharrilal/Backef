@@ -26,3 +26,12 @@ body.szara-sitewide .analytics-choice button[data-choice="rejected"]{background:
 .card-action.primary:hover,.head .contact:hover{background:var(--sz-accent-hover);border-color:var(--sz-accent-hover)}
 :where(.szx-brand,.brand,.card-brand) img[src*="szara-wordmark"]{object-fit:contain;object-position:left center}
 @media(max-width:720px){.szx-brand img[src*="szara-wordmark"],.head .brand img[src*="szara-wordmark"]{width:clamp(140px,45vw,180px)!important;height:auto!important}.szx-brand small,.head .brand small{color:var(--sz-muted)}}
+
+/* Homepage contrast: retain the existing light header and dark teal footer. */
+body.szara-relaunch .sz-top-strip,body.szara-relaunch .sz-top-strip a{color:var(--sz-muted)}
+body.szara-relaunch .sz-studio-nav .sz-brand small,body.szara-relaunch .sz-studio-nav .sz-brand .sz-brand-sub{color:var(--sz-muted)}
+body.szara-relaunch .sz-desktop-contact{color:#fff;background:var(--sz-accent);border-color:var(--sz-accent)}
+body.szara-relaunch .sz-desktop-contact:hover,body.szara-relaunch .sz-desktop-contact:focus-visible{background:var(--sz-accent-hover);border-color:var(--sz-accent-hover)}
+body.szara-relaunch .footer,body.szara-relaunch .footer .footer-bottom,body.szara-relaunch .footer a,body.szara-relaunch .footer .szx-social-label{color:#e7f1f4}
+body.szara-relaunch .footer .szx-social-links a{color:var(--sz-pale)!important}
+body.szara-relaunch .footer .szx-social-links a:hover,body.szara-relaunch .footer .szx-social-links a:focus-visible{color:#fff!important;border-bottom-color:var(--sz-pale)}
