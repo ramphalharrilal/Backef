@@ -1,0 +1,28 @@
+/* SZARA approved brand tokens. The homepage composition and photography are unchanged. */
+:root{--sz-brand-black:#080808;--sz-brand-blue:#0838F1;--sz-navy:#102438;--sz-accent:#306b85;--sz-accent-hover:#1b556b;--sz-ink:#15394a;--sz-muted:#526b76;--sz-line:#d9e4e7;--sz-surface:#f5f9f9;--sz-white:#fff;--sz-pale:#b9e2ef}
+body.szara-sitewide{--paper:var(--sz-white);--ink:var(--sz-ink);--white:var(--sz-white);--line:var(--sz-line);--muted:var(--sz-muted);--sage:var(--sz-surface);--orange:var(--sz-accent);--cobalt:var(--sz-accent);--lime:var(--sz-pale);--sz-rose:var(--sz-pale);--sz-rose-dark:var(--sz-accent);--sz-stone:var(--sz-muted);--sz-ivory:var(--sz-white);--sz-dark:var(--sz-navy);--szx-ink:var(--sz-ink);--szx-accent:var(--sz-accent);--szx-muted:var(--sz-muted)}
+body.szara-sitewide ::selection{background:var(--sz-pale);color:var(--sz-ink)}
+body.szara-sitewide :where(.szx-header,.szx-header-inner){background:#fff}
+body.szara-sitewide .szx-strap{background:#edf3f4;color:var(--sz-muted)}
+body.szara-sitewide .szx-desktop-nav a{color:var(--sz-accent)!important}
+body.szara-sitewide .szx-contact,body.szara-sitewide :where(.button,.btn,.support-btn):not(.secondary):not(.light){background:var(--sz-accent)!important;border-color:var(--sz-accent)!important;color:white!important}
+body.szara-sitewide .szx-contact:hover,body.szara-sitewide :where(.button,.btn,.support-btn):not(.secondary):not(.light):hover{background:var(--sz-accent-hover)!important;border-color:var(--sz-accent-hover)!important;color:white!important}
+body.szara-sitewide :where(.sz-price-card,.port-mini,.bs-hero,.bs-plan.featured,.bs-contact .brief){background:var(--sz-white);border-color:var(--sz-line)}
+body.szara-sitewide .sz-price-featured{border-color:var(--sz-accent);box-shadow:none}
+body.szara-sitewide :where(.bs-pricing,.contact,.bs-contact){background-color:var(--sz-navy)}
+body.szara-sitewide :where(.bs-pricing,.contact,.bs-contact) h2 em{color:var(--sz-pale)!important}
+body.szara-sitewide :where(.sticker,.scene-label,.campaign-cutout,.pour-note,.bs-pill.is-new){background:var(--sz-pale);color:var(--sz-ink)}
+body.szara-sitewide :where(.care-price,.voice-label,.independent-reviews .eyebrow){color:var(--sz-pale)}
+body.szara-sitewide :where(.bs-plan.featured,.brief) :where(.care-price,.voice-label){color:var(--sz-accent)}
+body.szara-sitewide .footer:has(img[src*="wordmark-white"]){background:var(--sz-navy)!important;color:#e7f1f4!important}
+body.szara-sitewide .footer:has(img[src*="wordmark-white"]) :where(a,.footer-bottom,.szx-social-label,.szx-social-links a){color:#e7f1f4!important}
+body.szara-sitewide .footer:has(img[src*="wordmark-white"]) :where(.footer-bottom,.szx-social-band){border-color:#466174!important}
+body.szara-sitewide.szara-media-kit :where(.service-card .num,.work-item .type,.nav a:hover){color:var(--sz-accent)}
+body.szara-sitewide.szara-media-kit .proof .stars{color:var(--sz-pale)}
+body.szara-sitewide .analytics-choice button,body.szara-sitewide .analytics-preferences{border-color:var(--sz-accent)}
+body.szara-sitewide .analytics-choice button[data-choice="accepted"]{background:var(--sz-accent);color:white}
+body.szara-sitewide .analytics-choice button[data-choice="rejected"]{background:white;color:var(--sz-accent)}
+.card-action.primary,.head .contact{background:var(--sz-accent);border-color:var(--sz-accent);color:white}
+.card-action.primary:hover,.head .contact:hover{background:var(--sz-accent-hover);border-color:var(--sz-accent-hover)}
+:where(.szx-brand,.brand,.card-brand) img[src*="szara-wordmark"]{object-fit:contain;object-position:left center}
+@media(max-width:720px){.szx-brand img[src*="szara-wordmark"],.head .brand img[src*="szara-wordmark"]{width:clamp(140px,45vw,180px)!important;height:auto!important}.szx-brand small,.head .brand small{color:var(--sz-muted)}}
