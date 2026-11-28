@@ -17,6 +17,7 @@ jobs:
           node-version: '22'
       - run: npm install --no-save playwright lighthouse
       - run: npx playwright install --with-deps chromium
+      - run: python3 scripts/build_home_css.py --check
       - name: Check responsive pages and payment groups
         run: |
           mkdir -p search-review
@@ -68,6 +69,16 @@ jobs:
             if [ "$mode" = desktop ]; then flags+=(--preset=desktop); fi
             npx lighthouse http://127.0.0.1:8766/ "${flags[@]}" --chrome-flags="--headless --no-sandbox" --only-categories=performance,accessibility,best-practices,seo --output=json --output-path=search-review/lighthouse-$mode.json --quiet || echo "Lighthouse $mode failed"
           done
+      - name: Summarize lab results
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          for path in Path("search-review").glob("lighthouse-*.json"):
+              data = json.loads(path.read_text())
+              print(path.name, "performance", round(data["categories"]["performance"]["score"] * 100), "LCP", round(data["audits"]["largest-contentful-paint"]["numericValue"]), "CLS", data["audits"]["cumulative-layout-shift"]["numericValue"])
+          PY
       - uses: actions/upload-artifact@v4
         if: always()
         with:
