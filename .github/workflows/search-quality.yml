@@ -27,3 +27,53 @@ jobs:
           BEFORE: ${{ github.event.before }}
           FULL: ${{ github.event_name == 'workflow_dispatch' }}
         run: python3 scripts/indexnow.py
+
+  live-redirects:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify permanent redirects and preserved articles
+        run: |
+          python3 - <<'PY'
+          import urllib.request
+          import urllib.error
+          import urllib.parse
+          import xml.etree.ElementTree as ET
+          class NoRedirect(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self, req, fp, code, msg, headers, newurl):
+                  return None
+          opener = urllib.request.build_opener(NoRedirect())
+          failures = []
+          def inspect(url):
+              try:
+                  response = opener.open(url, timeout=20)
+              except urllib.error.HTTPError as error:
+                  response = error
+              with response:
+                  return response.code, response.headers.get('Location', '')
+          for host in ('withszara.com', 'www.withszara.com'):
+              for source, target in (('/advice', '/insights/'), ('/small-business-websites', '/web-design/')):
+                  for suffix in ('', '/'):
+                      query = '?redirect_check=1&source=qa'
+                      url = 'https://' + host + source + suffix + query
+                      status, location = inspect(url)
+                      expected = 'https://withszara.com' + target + query
+                      print(f'{status} {url} -> {location}', flush=True)
+                      if status != 301 or location != expected:
+                          failures.append(url)
+          root = ET.parse('sitemap.xml').getroot()
+          articles = [node.text for node in root.iter('{http://www.sitemaps.org/schemas/sitemap/0.9}loc')
+                      if urllib.parse.urlparse(node.text).path.startswith(('/advice/', '/insights/'))
+                      and urllib.parse.urlparse(node.text).path not in ('/advice/', '/insights/')]
+          if len(articles) != 16:
+              failures.append(f'Expected 16 articles, found {len(articles)}')
+          for url in articles:
+              status, location = inspect(url)
+              print(f'{status} ARTICLE {url}', flush=True)
+              if status != 200:
+                  failures.append(url)
+          if failures:
+              raise SystemExit('Failed live checks: ' + ', '.join(failures))
+          print('PASS: 8 exact redirects preserve queries; all 16 article URLs return 200.')
+          PY
