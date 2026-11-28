@@ -19,7 +19,7 @@
   for (const link of document.querySelectorAll('a[href]')) {
     const url = new URL(link.href, location.href);
     if (url.origin !== location.origin || url.pathname === location.pathname) continue;
-    if (!/(?:\/|\/small-business-websites\/|\/quick-fixes\/)$/.test(url.pathname)) continue;
+    if (!['/', '/web-design/', '/small-business-websites/', '/quick-fixes/', '/business-support/', '/remote-tech-support/'].includes(url.pathname)) continue;
     for (const [key, value] of Object.entries(campaign)) url.searchParams.set(key, value);
     link.href = url.href;
   }

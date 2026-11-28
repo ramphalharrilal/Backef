@@ -1,0 +1,75 @@
+name: SZARA responsive browser and performance review
+on:
+  push:
+    branches: [main]
+    paths: ['**/*.html','assets/**','.github/workflows/search-browser-review.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save playwright lighthouse
+      - run: npx playwright install --with-deps chromium
+      - name: Check responsive pages and payment groups
+        run: |
+          mkdir -p search-review
+          python3 -m http.server 8765 --bind 127.0.0.1 >/tmp/szara-http.log 2>&1 &
+          trap 'kill $!' EXIT
+          sleep 2
+          node <<'NODE'
+          const {chromium}=require('playwright');
+          const fs=require('fs');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const issues=[],report=[];
+            const paths=['/','/web-design/','/quick-fixes/','/website-maintenance/','/business-support/','/remote-tech-support/','/insights/','/pay/','/work/','/insights/small-business-website-audit-cost/'];
+            for(const width of [320,390,768,1440]){
+              const page=await browser.newPage({viewport:{width,height:900}});
+              for(const path of paths){
+                const errs=[]; const handler=e=>errs.push(String(e));page.on('pageerror',handler);
+                const res=await page.goto('http://127.0.0.1:8765'+path,{waitUntil:'domcontentloaded'});
+                const reject=page.locator('.analytics-choice [data-choice="rejected"]');if(await reject.isVisible())await reject.click();
+                const check=await page.evaluate(()=>({width:innerWidth,doc:document.documentElement.scrollWidth,h1:document.querySelectorAll('h1').length,title:document.title}));
+                report.push({path,width,...check,errors:errs});
+                if(res.status()!==200||check.h1!==1||check.doc>width+2||errs.length)issues.push({path,width,check,errs});
+                if(path==='/pay/'){
+                  for(const id of ['fix-pay','care-pay','insight-pay']){
+                    const g=page.locator('#'+id); await g.locator('summary').click();
+                    if(!(await g.getAttribute('open')!==null))issues.push({path,width,group:id,issue:'Cannot expand'});
+                    await g.locator('summary').click();
+                  }
+                }
+                if(width===390||width===1440)await page.screenshot({path:'search-review/'+width+'-'+(path.replaceAll('/','-')||'home')+'.png',animations:'disabled'});
+                page.off('pageerror',handler);
+              }
+              await page.close();
+            }
+            await browser.close();fs.writeFileSync('search-review/browser.json',JSON.stringify({report,issues},null,2));
+            if(issues.length){console.error(JSON.stringify(issues));process.exitCode=1;}
+          })().catch(e=>{console.error(e);process.exit(1)})
+          NODE
+      - name: Capture lab Lighthouse reports
+        if: always()
+        run: |
+          mkdir -p search-review
+          python3 -m http.server 8766 --bind 127.0.0.1 >/tmp/szara-lh.log 2>&1 &
+          trap 'kill $!' EXIT
+          sleep 2
+          export CHROME_PATH=$(node -e "console.log(require('playwright').chromium.executablePath())")
+          for mode in mobile desktop; do
+            flags=()
+            if [ "$mode" = desktop ]; then flags+=(--preset=desktop); fi
+            npx lighthouse http://127.0.0.1:8766/ "${flags[@]}" --chrome-flags="--headless --no-sandbox" --only-categories=performance,accessibility,best-practices,seo --output=json --output-path=search-review/lighthouse-$mode.json --quiet || echo "Lighthouse $mode failed"
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: szara-search-review
+          path: search-review/

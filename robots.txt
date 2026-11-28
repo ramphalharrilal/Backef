@@ -1,4 +1,11 @@
+# Public business content: search crawlers may access it.
 User-agent: *
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: Bingbot
 Allow: /
 
 Sitemap: https://withszara.com/sitemap.xml

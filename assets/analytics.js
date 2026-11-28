@@ -31,11 +31,21 @@
     gtag('config',id,{send_page_view:false,allow_google_signals:false,allow_ad_personalization_signals:false,
       page_location:location.origin+location.pathname,page_referrer:referrer,cookie_expires:15552000,cookie_update:false});
     gtag('event','page_view',{page_location:location.origin+location.pathname,page_title:document.title,page_referrer:referrer});
+    // Consent-only AI referral classification: compare hostnames, never retain referrer paths or prompt text.
+    try {
+      const host = referrer ? new URL(referrer).hostname.toLowerCase() : '';
+      const aiHosts = [['chatgpt.com','chatgpt'],['chat.openai.com','chatgpt'],['perplexity.ai','perplexity'],['gemini.google.com','gemini'],['copilot.microsoft.com','copilot'],['claude.ai','claude']];
+      const match=aiHosts.find(([domain])=>host===domain||host.endsWith('.'+domain));
+      const source=new URLSearchParams(location.search).get('utm_source')?.toLowerCase();
+      const known=['chatgpt','perplexity','gemini','copilot','claude'];
+      const aiSource=match?.[1]||(known.includes(source)?source:null);
+      if(aiSource)gtag('event','ai_search_visit',{ai_source:aiSource,page_location:location.origin+location.pathname});
+    }catch{}
     // A return after a valid form submission is a completion signal, not proof of email delivery.
     if (location.pathname==='/thank-you/') {
       try {
         const pending=JSON.parse(sessionStorage.getItem(pendingKey));sessionStorage.removeItem(pendingKey);
-        if(pending && Date.now()-pending.time<1800000 && ['/', '/small-business-websites/', '/quick-fixes/', '/business-support/', '/remote-tech-support/'].includes(pending.page)) {
+        if(pending && Date.now()-pending.time<1800000 && ['/', '/web-design/', '/small-business-websites/', '/quick-fixes/', '/business-support/', '/remote-tech-support/'].includes(pending.page)) {
           gtag('event','enquiry_returned',{form_page:pending.page});
           // Conversions require a successful Formspree response and prior analytics consent.
           gtag('event','generate_lead',{form_page:pending.page});
