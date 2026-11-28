@@ -67,8 +67,10 @@ jobs:
           articles = [node.text for node in root.iter('{http://www.sitemaps.org/schemas/sitemap/0.9}loc')
                       if urllib.parse.urlparse(node.text).path.startswith(('/advice/', '/insights/'))
                       and urllib.parse.urlparse(node.text).path not in ('/advice/', '/insights/')]
-          if len(articles) != 16:
-              failures.append(f'Expected 16 articles, found {len(articles)}')
+          required = ["https://withszara.com/advice/small-business-website-cost/","https://withszara.com/advice/website-or-facebook/","https://withszara.com/advice/website-maintenance-cost/","https://withszara.com/advice/wix-vs-web-designer/","https://withszara.com/advice/small-business-website-checklist/","https://withszara.com/insights/is-your-home-router-secure/","https://withszara.com/insights/who-can-access-your-security-cameras/","https://withszara.com/insights/invoice-fraud-small-businesses/","https://withszara.com/insights/who-controls-your-business-website/","https://withszara.com/insights/website-contact-form-not-working/","https://withszara.com/insights/small-business-website-maintenance-checklist/","https://withszara.com/insights/small-business-automation-first-workflow/","https://withszara.com/insights/small-business-website-audit-cost/","https://withszara.com/insights/online-booking-setup-small-business/","https://withszara.com/insights/hoa-website-maintenance-security/","https://withszara.com/insights/why-website-not-generating-leads/","https://withszara.com/insights/mobile-vs-desktop-website-performance/","https://withszara.com/insights/understanding-website-performance-scores/","https://withszara.com/insights/perfect-website-score-business-success/","https://withszara.com/insights/how-to-audit-your-website/"]
+          missing = set(required) - set(articles)
+          if missing:
+              failures.append('Missing preserved articles: ' + ', '.join(sorted(missing)))
           for url in articles + ['https://withszara.com/sitemap.xml', 'https://withszara.com/ab9eaed911fddcb7e36d234e7aaa9e444.txt']:
               status, location = inspect(url)
               print(f'{status} ARTICLE {url}', flush=True)
@@ -76,5 +78,5 @@ jobs:
                   failures.append(url)
           if failures:
               raise SystemExit('Failed live checks: ' + ', '.join(failures))
-          print('PASS: 8 exact redirects preserve queries; all 16 article URLs return 200.')
+          print(f'PASS: 8 exact redirects preserve queries; all {len(articles)} article URLs return 200.')
           PY
