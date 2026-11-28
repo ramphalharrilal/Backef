@@ -65,3 +65,13 @@ Bing Places and Yelp have not been created; entirely remote operation requires e
 Keep GA4 consent requirements and the ai_source parameter; never transmit prompts or form values. Existing generate_lead indicates successful form acceptance, not verified email delivery. Measure enquiries, actual Google/Bing indexing and citations rather than technical eligibility alone. Google Indexing API is not intended for general service pages.
 
 Use existing Actions/Lighthouse artifacts before rerunning checks. Preserve design, branding, Houston positioning, prices, services, animations and article URLs. Update editorial dates only when content changes.
+
+## Latest speed fix — November 28, 2026
+
+- Owner excluded Google Business Profile and Clutch from further work. Leave the Clutch draft unfinished.
+- Homepage now serves responsive 960/1920px WebP versions of the same skyline photographs. Bundled 18 stylesheet links and eight inline blocks in the original cascade order, including the existing navigation import. Design, animations, copy and all articles are preserved.
+- Edit shared CSS or assets/home-style-sources.json, then run `python scripts/build_home_css.py`. CI checks the generated bundle is current.
+- [Commit 780c57a](https://github.com/ramphalharrilal/Backef/commit/780c57a87bd54aca773373592a12b461fdc88118) deployed; live stylesheet and image loading verified.
+- [Responsive/Lighthouse run](https://github.com/ramphalharrilal/Backef/actions/runs/46122803513): all 40 responsive checks passed. Mobile 81, LCP 4.952s; desktop 96, LCP 1.422s; both CLS 0. Original mobile baseline was 71 / 9.97s. These are lab measurements; mobile LCP remains above the good threshold.
+- [Search-quality run](https://github.com/ramphalharrilal/Backef/actions/runs/46122803543): canonical/article validation and live redirect checks passed; IndexNow HTTP 200 for one changed URL (homepage), resolving the earlier failed notification.
+- Remaining external follow-up: Bing dashboard processing/AI citation data and voluntary backlink replies. Do not manufacture traffic, citations, reviews or credits.
